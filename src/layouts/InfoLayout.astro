@@ -95,118 +95,267 @@ const subNavigationItems = Astro.props.subNavigationItems
 </script>
 
 <style lang="scss" is:global>
-  // TODO: Markdown CSS
-
+  // 文章排版样式 — 情报终端阅读体验
   article {
-    font-size: 18px;
+    max-width: 48rem;
+    font-size: 1.125rem;
+    line-height: 2;
     font-family: "Source Han Sans", "微软雅黑", sans-serif;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.025em;
 
+    // ========== 选中 ==========
     ::selection {
-      color: black;
-      background-color: #fe2;
+      color: #000;
+      background-color: #ffd700;
     }
 
-    h1 {
-      font-size: 58px;
-      font-weight: 900;
-    }
-
-    h2 {
-      font-size: 48px;
-      font-weight: 800;
-      padding-top: 2rem;
-    }
-
-    h3 {
-      font-size: 42px;
-      font-weight: 700;
-      padding-top: 1.5rem;
-    }
-
-    h4 {
-      font-size: 38px;
-      font-weight: 600;
-    }
-
-    h5 {
-      font-size: 36px;
-      font-weight: 500;
-    }
-
-    h6 {
-      font-size: 32px;
-      font-weight: 400;
-    }
-
-    h4, h5, h6 {
-      padding-top: 1rem;
-    }
-
+    // ========== 段落 ==========
     p {
-      margin: .3rem 0;
+      margin: 1.25rem 0;
+      text-align: justify;
+      text-indent: 2em;
 
       img {
         display: inline-block;
       }
     }
 
-    ul {
-      margin: 1rem 0;
-      padding-left: 2.5rem;
-      list-style: disc;
+    // ========== 标题体系 ==========
+    h1, h2, h3, h4, h5, h6 {
+      color: #fff;
+      line-height: 1.3;
+      letter-spacing: 0.05em;
+    }
 
-      ul {
-        margin: 0;
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin: 3rem 0 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid #ffd700;
+      text-indent: 0;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin: 2.5rem 0 1.25rem;
+      padding-left: 1.25rem;
+      border-left: 4px solid #ffd700;
+      text-indent: 0;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 2rem 0 1rem;
+      padding-left: 0.75rem;
+      border-left: 3px solid rgba(255, 215, 0, 0.6);
+      text-indent: 0;
+    }
+
+    h4 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 1.75rem 0 0.75rem;
+      text-indent: 0;
+    }
+
+    h5 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 1.5rem 0 0.5rem;
+      text-indent: 0;
+    }
+
+    h6 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin: 1.25rem 0 0.5rem;
+      text-indent: 0;
+    }
+
+    // ========== 分割线 ==========
+    hr {
+      margin: 2.5rem 0;
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #ffd700, transparent);
+      opacity: 0.6;
+    }
+
+    // ========== 强调 ==========
+    strong {
+      color: #ffd700;
+      font-weight: 800;
+    }
+
+    em {
+      color: rgba(255, 255, 255, 0.9);
+      font-style: italic;
+    }
+
+    em strong {
+      color: #ffe44d;
+      font-weight: 900;
+    }
+
+    // ========== 删除线 ==========
+    del {
+      color: rgba(255, 255, 255, 0.35);
+      text-decoration: line-through;
+    }
+
+    // ========== 链接 ==========
+    a {
+      color: #ffd700;
+      padding: 0 2px;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.4);
+      transition: color 200ms, background-color 200ms, border-color 200ms;
+
+      &:hover {
+        color: #000;
+        background-color: #ffd700;
+        border-bottom-color: #ffd700;
+      }
+    }
+
+    // ========== 引用块 ==========
+    blockquote {
+      margin: 1.5rem 0;
+      padding: 1rem 1.5rem;
+      border-left: 4px solid #ffd700;
+      background: rgba(255, 215, 0, 0.06);
+      border-radius: 0 4px 4px 0;
+
+      p {
+        margin: 0.5rem 0;
+        text-indent: 0;
+      }
+
+      blockquote {
+        margin: 0.75rem 0;
+        border-left-color: rgba(255, 215, 0, 0.4);
+        background: rgba(255, 215, 0, 0.03);
+      }
+    }
+
+    // ========== 列表 ==========
+    ul, ol {
+      margin: 1.25rem 0;
+      padding-left: 2rem;
+      line-height: 1.9;
+
+      li {
+        margin: 0.35rem 0;
+      }
+
+      ul, ol {
+        margin: 0.25rem 0;
+      }
+    }
+
+    ul {
+      list-style: none;
+
+      li {
+        position: relative;
+        padding-left: 0.25rem;
+
+        &::before {
+          content: "▸";
+          position: absolute;
+          left: -1.5rem;
+          color: #ffd700;
+          font-size: 0.75rem;
+          top: 0.15rem;
+        }
       }
     }
 
     ol {
-      margin: 1rem 0;
-      padding-left: 2.5rem;
-      list-style: decimal outside;
-    }
+      list-style: none;
+      counter-reset: article-ol;
 
-    a {
-      color: #ffd700;
-      padding: 0 3px;
-      display: inline-block;
-      transition: color, background-color;
-      transition-duration: 300ms;
+      li {
+        counter-increment: article-ol;
 
-      &:hover {
-        color: black;
-        background-color: #ffd700;
+        &::before {
+          content: counter(article-ol, decimal-leading-zero) ".";
+          color: #ffd700;
+          font-weight: 700;
+          font-family: "Oswald-Medium", monospace;
+          margin-right: 0.5rem;
+        }
       }
     }
 
-    em strong {
-      color: #fe2;
-    }
-
-    strong {
-      color: rgb(192, 57, 43);
-    }
-
-    blockquote {
-      /*background-color: rgba(black, .2);*/
-      margin: .5rem 0;
-      border-left: .25rem solid #5a5a5a;
-      padding: .3rem .6rem;
-      box-sizing: border-box;
-    }
-
+    // ========== 内联代码 ==========
     p, li, th, td {
       code {
-        background-color: rgba(255, 255, 255, 0.125);
-        padding: 0 3px;
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #ffd700;
+        padding: 0.15em 0.4em;
+        border-radius: 3px;
+        font-size: 0.9em;
+        font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
       }
     }
 
+    // ========== 代码块 ==========
     .astro-code {
-      margin: 1rem 0;
-      padding: 1rem 2rem;
-      box-sizing: border-box;
-      /* TODO: 显示行号、可设置高亮行、中英文等宽字体、复制代码按钮、切换自动换行按钮、可折叠、 */
+      margin: 1.5rem 0;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.4) !important;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      overflow-x: auto;
+    }
+
+    // ========== 表格 ==========
+    table {
+      width: 100%;
+      margin: 1.5rem 0;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 0.6rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      text-align: left;
+    }
+
+    th {
+      background: rgba(255, 215, 0, 0.1);
+      color: #ffd700;
+      font-weight: 700;
+      font-family: "Oswald-Medium", sans-serif;
+      letter-spacing: 0.08em;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    // ========== 图片 ==========
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+
+    // ========== 脚注 ==========
+    .footnotes {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.5);
     }
   }
 </style>
