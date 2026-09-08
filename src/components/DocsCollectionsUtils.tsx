@@ -7,7 +7,7 @@ const allDocs = await getCollection("docs")
 /**
  * 去除 slug 的前缀
  * 
- * @param {string} slug 示例输入：`01_用户文档/01_项目介绍`
+ * @param {string} slug 示例输入：`02_用户文档/01_项目介绍`
  * @returns {string} 示例输出：`用户文档/项目介绍`
  */
 export function trimSlugPrefix(slug: string): string {

@@ -69,7 +69,7 @@ export default {
   rootPage: {
     INDEX: {
       title: "SCHNIE:ARK",
-      subtitle: "POWERED BY RHODES ISLAND",
+      subtitle: "POWERED BY NINTH EDGE",
       url: "HTTPS://ARK.SCH-NIE.COM/",
       heroActions: [
         {
@@ -115,28 +115,28 @@ export default {
         autoplay: { delay: 5000 },
         data: [
           {
-            title: "用户文档",
-            subtitle: "User Documentation",
+            title: "帮助文档",
+            subtitle: "Help Documentation",
             date: "2026 // 03 / 22",
-            url: "HTTPS://ARK.SCH-NIE.COM/",
+            url: "HTTPS://ARK.SCH-NIE.COM/docs",
             href: base + "docs/",
-            image: base + "info-swiper/UserDocumentation.jpg",
+            image: base + "info-swiper/doc.jpg",
           },
           {
-            title: "第九宇宙",
-            subtitle: "The Ninth Universe",
+            title: "第九世界",
+            subtitle: "The Ninth World",
             date: "2026 // 03 / 22",
-            url: "HTTPS://ARK.SCH-NIE.COM/",
+            url: "HTTPS://ARK.SCH-NIE.COM/world",
             href: base + "world/",
-            image: base + "info-swiper/World.jpg",
+            image: base + "info-swiper/world.jpg",
           },
           {
             title: "角色诞生",
             subtitle: "Character Appears",
             date: "2026 // 03 / 22",
-            url: "HTTPS://ARK.SCH-NIE.COM/",
+            url: "HTTPS://ARK.SCH-NIE.COM/operator",
             href: base + "operator/",
-            image: base + "info-swiper/DeveloperDocumentation.jpg",
+            image: base + "info-swiper/operator.jpg",
           },
         ],
       },

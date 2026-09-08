@@ -6,7 +6,21 @@ import GoBackTool from "../../components/GoBackTool"
 const base = import.meta.env.BASE_URL
 const allworld = await getCollection("world");
 
-// 辅助函数：获取缩略图路径
+// ========== 按标题字典序升序排序（不涉及 id） ==========
+const sortedWorld = allworld.sort((a, b) => {
+  const titleA = (a.data.title ?? a.id).toLowerCase()
+  const titleB = (b.data.title ?? b.id).toLowerCase()
+  return titleA.localeCompare(titleB)
+})
+
+const CATEGORY_LABELS = {
+  事件: 'events',
+  微故事: 'story',
+  世界观: 'setting',
+  // 可继续添加其他分类
+};
+
+// 辅助函数：获取缩略图路径（保持不变）
 function getThumbnailPath(category: string | undefined, thumbnail: string | undefined): string {
     const categoryToThumbnail: Record<string, string> = {
         "微故事": "ACTIVITY.jpg",
@@ -16,25 +30,31 @@ function getThumbnailPath(category: string | undefined, thumbnail: string | unde
     return thumbnail ?? categoryToThumbnail[category as keyof typeof categoryToThumbnail] ?? "ACTIVITY.jpg";
 }
 
-// 辅助函数：从内容 id（如 "2025-11-17_标题"）解析日期
-function getDateParts(id: string): { year: string, month: string, day: string } | null {
-    const match = id.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
-    return match ? { year: match[1], month: match[2], day: match[3] } : null;
+// ========== 仅从 updated 字段解析日期，不回退到 id ==========
+function getDisplayDate(item: any): { year: string, month: string, day: string } | null {
+    const updated = item.data.updated
+    if (updated) {
+        const match = updated.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/)
+        if (match) return { year: match[1], month: match[2], day: match[3] }
+    }
+    // 没有有效的 updated 字段则返回 null
+    return null
 }
 ---
 
-<InfoLayout title="Universe" subTitle="宇宙" tabTitle="宇宙">
+<InfoLayout title="World" subTitle="世界" tabTitle="世界">
     <div id="world-container" class="h-full flex-auto mr-[-16px] overflow-x-hidden overflow-y-scroll">
         <div id="world-scroll-wrapper">
             <nav id="world-content" class="max-w-[80.75rem] mx-auto">
                 {
-                    (allworld.length > 0) && allworld.map((item) => {
+                    sortedWorld.map((item) => {
                         const category = item.data.category ?? '未分类';
                         const title = item.data.title ?? item.id;
-                        const date = getDateParts(item.id);
-                        const year = date?.year ?? "----";
-                        const month = date?.month ?? "--";
-                        const day = date?.day ?? "--";
+                        // 仅使用 updated 字段
+                        const dateInfo = getDisplayDate(item);
+                        const year = dateInfo?.year ?? "----";
+                        const month = dateInfo?.month ?? "--";
+                        const day = dateInfo?.day ?? "--";
                         const thumbnail = `${base}info-thumbnail/${getThumbnailPath(item.data.category, item.data.thumbnail)}`;
                         return (
                             <div class="world-item w-full flex justify-center" data-category={category}>
@@ -48,7 +68,9 @@ function getDateParts(id: string): { year: string, month: string, day: string } 
 
                                     <div class="shrink-0 flex flex-col justify-center">
                                         <div class="text-ark-blue text-lg font-bold whitespace-nowrap">{category}</div>
-                                        <div class="mt-2 font-benderBold text-[0.6875rem] tracking-[0.25em] text-white/40">ARCHIVE</div>
+                                          <div className="mt-2 font-benderBold text-[0.6875rem] tracking-[0.25em] text-white/40">
+                                            {CATEGORY_LABELS[category] || 'ARCHIVE'}
+                                          </div>
                                     </div>
 
                                     <div class="flex-1 min-w-0 ml-6 pl-8 border-l border-white/10">
@@ -81,10 +103,6 @@ function getDateParts(id: string): { year: string, month: string, day: string } 
                     <span>全部</span>
                     <span class="font-benderBold text-sm opacity-70">ALL</span>
                 </button>
-                <button class="category-btn w-full flex items-center justify-between px-5 py-3 bg-[#5a5a5a] transition-colors duration-300 cursor-pointer font-bold" data-category="公告">
-                    <span>世界之外：公告</span>
-                    <span class="font-benderBold text-sm opacity-70">EXTRA：ARCHIVE</span>
-                </button>
                 <button class="category-btn w-full flex items-center justify-between px-5 py-3 bg-[#5a5a5a] transition-colors duration-300 cursor-pointer font-bold" data-category="微故事">
                     <span>微故事</span>
                     <span class="font-benderBold text-sm opacity-70">STORY</span>
@@ -95,7 +113,7 @@ function getDateParts(id: string): { year: string, month: string, day: string } 
                 </button>
                 <button class="category-btn w-full flex items-center justify-between px-5 py-3 bg-[#5a5a5a] transition-colors duration-300 cursor-pointer font-bold" data-category="世界观">
                     <span>世界观</span>
-                    <span class="font-benderBold text-sm opacity-70">WORLD</span>
+                    <span class="font-benderBold text-sm opacity-70">SETTING</span>
                 </button>
             </div>
         </div>
@@ -108,37 +126,32 @@ function getDateParts(id: string): { year: string, month: string, day: string } 
     document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('world-container');
         const wrapper = document.getElementById('world-scroll-wrapper');
-        
-        if (container && wrapper) {
-            // 复制整个内容包装器以实现循环滚动
 
-            
+        if (container && wrapper) {
+            // 复制整个内容包装器以实现循环滚动（原逻辑未完成，保留）
+
             let isScrolling = true;
-            const scrollSpeed = 0.8; // 滚动速度，值越小越慢
-            
-            // 当用户交互时暂停滚动
+            const scrollSpeed = 0.8;
+
             container.addEventListener('mouseenter', function() {
                 isScrolling = false;
             });
-            
+
             container.addEventListener('mouseleave', function() {
                 isScrolling = true;
             });
-            
+
             container.addEventListener('touchstart', function() {
                 isScrolling = false;
             });
-            
+
             container.addEventListener('touchend', function() {
                 isScrolling = true;
             });
-            
-            // 自动滚动函数
+
             function autoScroll() {
                 if (isScrolling) {
                     container.scrollTop += scrollSpeed;
-                    
-                    // 当滚动到原始内容的末尾时，无缝重置到复制内容的开头
                     const wrapperHeight = wrapper.offsetHeight;
                     if (container.scrollTop >= wrapperHeight) {
                         container.scrollTop = 0;
@@ -146,22 +159,19 @@ function getDateParts(id: string): { year: string, month: string, day: string } 
                 }
                 requestAnimationFrame(autoScroll);
             }
-            
-            // 开始自动滚动
+
             autoScroll();
         }
-        
-        // 筛选功能
+
+        // 筛选功能（保持不变）
         const categoryBtns = document.querySelectorAll('.category-btn');
         const worldItems = document.querySelectorAll('.world-item');
-        
-        // 从 URL 获取筛选参数
+
         function getSelectedCategoryFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('category') || 'all';
         }
-        
-        // 更新 URL 中的筛选参数
+
         function updateUrl(selectedCategory) {
             const url = new URL(window.location.href);
             if (selectedCategory === 'all') {
@@ -171,23 +181,19 @@ function getDateParts(id: string): { year: string, month: string, day: string } 
             }
             window.history.pushState({}, '', url);
         }
-        
-        // 执行筛选操作
+
         function performFilter(selectedCategory) {
-            // 移除所有按钮的 active 类
             categoryBtns.forEach(b => {
                 b.classList.remove('active', 'bg-ark-blue');
                 b.classList.add('bg-[#5a5a5a]');
             });
-            
-            // 添加当前按钮的 active 类
+
             const activeBtn = document.querySelector(`.category-btn[data-category="${selectedCategory}"]`);
             if (activeBtn) {
                 activeBtn.classList.add('active', 'bg-ark-blue');
                 activeBtn.classList.remove('bg-[#5a5a5a]');
             }
-            
-            // 筛选文章
+
             worldItems.forEach(item => {
                 if (selectedCategory === 'all' || item.dataset.category === selectedCategory) {
                     item.style.display = 'flex';
@@ -195,19 +201,16 @@ function getDateParts(id: string): { year: string, month: string, day: string } 
                     item.style.display = 'none';
                 }
             });
-            
-            // 重置滚动位置
+
             const worldContainer = document.getElementById('world-container');
             if (worldContainer) {
                 worldContainer.scrollTop = 0;
             }
         }
-        
-        // 初始化页面时，根据 URL 参数执行筛选
+
         const initialCategory = getSelectedCategoryFromUrl();
         performFilter(initialCategory);
-        
-        // 为筛选按钮添加点击事件
+
         categoryBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 const selectedCategory = this.dataset.category;

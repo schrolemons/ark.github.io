@@ -30,17 +30,14 @@ export async function GET({params, request}: APIContext) {
             .slice(0, 3)
             .map((item) => ({
                 title: item.data.title ?? item.id,
-                date: formatDate(item.data.date ?? item.id.substring(0, 9)),
+                date: formatDate(item.data.updated ?? item.data.date),
                 href: base + "world/" + item.slug,
                 category: item.data.category ?? "未分类"
             })) as BreakingNewsItemProps[];
     };
 
     return new Response(JSON.stringify([
-        {
-            name: "公告",
-            list: getItemsByCategory("公告")
-        },
+
         {name: "世界观", list: getItemsByCategory("世界观")},
         {name: "事件", list: getItemsByCategory("事件")},
         {name: "微故事", list: getItemsByCategory("微故事")},

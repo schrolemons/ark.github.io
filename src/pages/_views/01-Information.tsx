@@ -259,7 +259,7 @@ function BreakingNewsList() {
           </motion.div>
         </AnimatePresence>
 
-        {category[categoryIndex] !== "公告" && (
+        {category[categoryIndex] !== null && (
           <a
             target="_blank"
             href={base + "world/?category=" + category[categoryIndex]}
