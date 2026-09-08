@@ -1,11 +1,14 @@
 import {defineConfig} from 'astro/config';
 import react from "@astrojs/react";
+import remarkBreaks from "remark-breaks";
+import {remarkNoteBlock} from "./src/_plugins/remark-note-block";
 
 import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
     markdown: {
+        remarkPlugins: [remarkBreaks, remarkNoteBlock],
         shikiConfig: {
             theme: "one-dark-pro",
         },

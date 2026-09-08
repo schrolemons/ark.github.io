@@ -358,4 +358,46 @@ const subNavigationItems = Astro.props.subNavigationItems
       color: rgba(255, 255, 255, 0.5);
     }
   }
+
+  // ========== Note 块 ==========
+  .note-block {
+    margin: 1.5rem 0;
+    padding: 1.25rem 1.5rem;
+    border-left: 4px solid;
+    border-radius: 0 6px 6px 0;
+    font-size: 1rem;
+    line-height: 1.8;
+
+    p {
+      margin: 0.5rem 0;
+      text-indent: 0;
+    }
+
+    p:first-child { margin-top: 0; }
+    p:last-child { margin-bottom: 0; }
+
+    // Info: 中性蓝
+    &.note-block--info {
+      border-color: #4a90d9;
+      background: rgba(74, 144, 217, 0.08);
+    }
+
+    // Primary: 品牌金
+    &.note-block--primary {
+      border-color: #ffd700;
+      background: rgba(255, 215, 0, 0.08);
+    }
+
+    // Danger: 警示红
+    &.note-block--danger {
+      border-color: #e74c3c;
+      background: rgba(231, 76, 60, 0.08);
+    }
+
+    // Warning: 提醒橙
+    &.note-block--warning {
+      border-color: #f39c12;
+      background: rgba(243, 156, 18, 0.08);
+    }
+  }
 </style>
