@@ -23,8 +23,8 @@ const tabTitle = entry?.data?.title ?? "无标题"
     <div class="max-w-[80.75rem] h-full mx-auto overflow-y-auto transition-[height] duration-300">
         {headings && headings.length > 0 && (
             <details class="pb-8 landscape:hidden">
-                <summary class="text-black bg-white text-[24px] font-bold px-3 font-oswaldMedium">
-                    Document Index - 文档索引
+                <summary class="text-ark-blue text-[18px] font-bold px-3 py-1 font-oswaldMedium border-l-4 border-ark-blue cursor-pointer">
+                    DOCUMENT INDEX
                 </summary>
                 <DocumentIndexUL {...{headings}}/>
             </details>
@@ -36,8 +36,8 @@ const tabTitle = entry?.data?.title ?? "无标题"
 
     {headings && headings.length > 0 && (
         <nav slot="aside-header">
-            <h2 class="text-black bg-white text-[1.75rem] font-bold px-3 font-oswaldMedium">
-                Document Index - 文档索引
+            <h2 class="text-ark-blue text-[1.25rem] font-bold px-3 py-1.5 font-oswaldMedium border-l-4 border-ark-blue">
+                DOCUMENT INDEX
             </h2>
             <DocumentIndexUL {...{headings}}/>
         </nav>
