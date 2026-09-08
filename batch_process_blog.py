@@ -2,30 +2,30 @@
 import os
 import subprocess
 
-def batch_process_blog_files():
+def batch_process_world_files():
     """
-    批量处理blog目录下的所有md文件，在每一行之间添加空行
+    批量处理world目录下的所有md文件，在每一行之间添加空行
     """
-    # 定义blog目录路径
-    blog_dir = os.path.join('src', 'content', 'blog')
+    # 定义world目录路径
+    world_dir = os.path.join('src', 'content', 'world')
     
-    # 检查blog目录是否存在
-    if not os.path.exists(blog_dir):
-        print(f"错误: 目录 '{blog_dir}' 不存在")
+    # 检查world目录是否存在
+    if not os.path.exists(world_dir):
+        print(f"错误: 目录 '{world_dir}' 不存在")
         return
     
-    # 获取blog目录下的所有md文件
-    md_files = [f for f in os.listdir(blog_dir) if f.endswith('.md')]
+    # 获取world目录下的所有md文件
+    md_files = [f for f in os.listdir(world_dir) if f.endswith('.md')]
     
     if not md_files:
-        print(f"错误: 目录 '{blog_dir}' 中没有找到md文件")
+        print(f"错误: 目录 '{world_dir}' 中没有找到md文件")
         return
     
     print(f"找到 {len(md_files)} 个md文件，开始处理...")
     
     # 处理每个md文件
     for md_file in md_files:
-        file_path = os.path.join(blog_dir, md_file)
+        file_path = os.path.join(world_dir, md_file)
         print(f"处理文件: {md_file}")
         
         # 调用add_empty_lines.py脚本处理文件
@@ -45,4 +45,4 @@ def batch_process_blog_files():
     print(f"\n处理完成，共处理了 {len(md_files)} 个文件")
 
 if __name__ == "__main__":
-    batch_process_blog_files()
+    batch_process_world_files()

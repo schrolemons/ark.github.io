@@ -12,7 +12,7 @@ import type {BreakingNewsItemProps} from "../../_types/RootPageViews.ts"
 export async function GET({params, request}: APIContext) {
     // TODO:
     const base = import.meta.env.BASE_URL
-    const allBlog = await getCollection("blog");
+    const allworld = await getCollection("world");
 
     const formatDate = (dateStr: string) => {
         const date = new Date(dateStr);
@@ -20,7 +20,7 @@ export async function GET({params, request}: APIContext) {
     };
 
     const getItemsByCategory = (category: string) => {
-        return allBlog
+        return allworld
             .filter(item => item.data.category === category)
             .sort((a, b) => {
                 const titleA = (a.data.title ?? a.id).toLowerCase();
@@ -31,7 +31,7 @@ export async function GET({params, request}: APIContext) {
             .map((item) => ({
                 title: item.data.title ?? item.id,
                 date: formatDate(item.data.date ?? item.id.substring(0, 9)),
-                href: base + "blog/" + item.slug,
+                href: base + "world/" + item.slug,
                 category: item.data.category ?? "未分类"
             })) as BreakingNewsItemProps[];
     };

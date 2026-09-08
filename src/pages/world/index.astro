@@ -4,7 +4,7 @@ import InfoLayout from "../../layouts/InfoLayout.astro"
 import GoBackTool from "../../components/GoBackTool"
 
 const base = import.meta.env.BASE_URL
-const allBlog = await getCollection("blog");
+const allworld = await getCollection("world");
 
 // 辅助函数：获取缩略图路径
 function getThumbnailPath(category: string | undefined, thumbnail: string | undefined): string {
@@ -24,11 +24,11 @@ function getDateParts(id: string): { year: string, month: string, day: string } 
 ---
 
 <InfoLayout title="Universe" subTitle="宇宙" tabTitle="宇宙">
-    <div id="blog-container" class="h-full flex-auto mr-[-16px] overflow-x-hidden overflow-y-scroll">
-        <div id="blog-scroll-wrapper">
-            <nav id="blog-content" class="max-w-[80.75rem] mx-auto">
+    <div id="world-container" class="h-full flex-auto mr-[-16px] overflow-x-hidden overflow-y-scroll">
+        <div id="world-scroll-wrapper">
+            <nav id="world-content" class="max-w-[80.75rem] mx-auto">
                 {
-                    (allBlog.length > 0) && allBlog.map((item) => {
+                    (allworld.length > 0) && allworld.map((item) => {
                         const category = item.data.category ?? '未分类';
                         const title = item.data.title ?? item.id;
                         const date = getDateParts(item.id);
@@ -37,8 +37,8 @@ function getDateParts(id: string): { year: string, month: string, day: string } 
                         const day = date?.day ?? "--";
                         const thumbnail = `${base}info-thumbnail/${getThumbnailPath(item.data.category, item.data.thumbnail)}`;
                         return (
-                            <div class="blog-item w-full flex justify-center" data-category={category}>
-                                <a target="_blank" href={`${base}blog/${item.slug}`} title={title}
+                            <div class="world-item w-full flex justify-center" data-category={category}>
+                                <a target="_blank" href={`${base}world/${item.slug}`} title={title}
                                    class="group relative flex items-center w-full max-w-[64rem] gap-8 px-2 py-7 border-b border-white/15 hover:bg-white/5 transition-colors duration-300 no-underline text-inherit cursor-pointer">
                                     <div class="shrink-0 w-44 h-28 overflow-hidden">
                                         <img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-500"
@@ -69,7 +69,7 @@ function getDateParts(id: string): { year: string, month: string, day: string } 
 
     <div slot="aside-header">
         <div class="pr-4">
-            <div class="flex items-center gap-3 pb-5 border-b border-white/15">
+            <div class="flex items-center gap-3 pb-5 border-b border-white/15  mt-4">
                 <span class="h-9 w-1 bg-ark-blue"></span>
                 <div>
                     <div class="text-white text-lg font-benderBold leading-none tracking-[0.2em]">FILTER</div>
@@ -80,6 +80,10 @@ function getDateParts(id: string): { year: string, month: string, day: string } 
                 <button class="category-btn active w-full flex items-center justify-between px-5 py-3 bg-ark-blue transition-colors duration-300 cursor-pointer font-bold" data-category="all">
                     <span>全部</span>
                     <span class="font-benderBold text-sm opacity-70">ALL</span>
+                </button>
+                <button class="category-btn w-full flex items-center justify-between px-5 py-3 bg-[#5a5a5a] transition-colors duration-300 cursor-pointer font-bold" data-category="公告">
+                    <span>世界之外：公告</span>
+                    <span class="font-benderBold text-sm opacity-70">EXTRA：ARCHIVE</span>
                 </button>
                 <button class="category-btn w-full flex items-center justify-between px-5 py-3 bg-[#5a5a5a] transition-colors duration-300 cursor-pointer font-bold" data-category="微故事">
                     <span>微故事</span>
@@ -102,14 +106,12 @@ function getDateParts(id: string): { year: string, month: string, day: string } 
 
 <script is:inline>
     document.addEventListener('DOMContentLoaded', function() {
-        const container = document.getElementById('blog-container');
-        const wrapper = document.getElementById('blog-scroll-wrapper');
+        const container = document.getElementById('world-container');
+        const wrapper = document.getElementById('world-scroll-wrapper');
         
         if (container && wrapper) {
             // 复制整个内容包装器以实现循环滚动
-            const wrapperClone = wrapper.cloneNode(true);
-            wrapperClone.id = 'blog-scroll-wrapper-clone';
-            wrapper.parentNode.insertBefore(wrapperClone, wrapper.nextSibling);
+
             
             let isScrolling = true;
             const scrollSpeed = 0.8; // 滚动速度，值越小越慢
@@ -151,7 +153,7 @@ function getDateParts(id: string): { year: string, month: string, day: string } 
         
         // 筛选功能
         const categoryBtns = document.querySelectorAll('.category-btn');
-        const blogItems = document.querySelectorAll('.blog-item');
+        const worldItems = document.querySelectorAll('.world-item');
         
         // 从 URL 获取筛选参数
         function getSelectedCategoryFromUrl() {
@@ -186,7 +188,7 @@ function getDateParts(id: string): { year: string, month: string, day: string } 
             }
             
             // 筛选文章
-            blogItems.forEach(item => {
+            worldItems.forEach(item => {
                 if (selectedCategory === 'all' || item.dataset.category === selectedCategory) {
                     item.style.display = 'flex';
                 } else {
@@ -195,9 +197,9 @@ function getDateParts(id: string): { year: string, month: string, day: string } 
             });
             
             // 重置滚动位置
-            const blogContainer = document.getElementById('blog-container');
-            if (blogContainer) {
-                blogContainer.scrollTop = 0;
+            const worldContainer = document.getElementById('world-container');
+            if (worldContainer) {
+                worldContainer.scrollTop = 0;
             }
         }
         

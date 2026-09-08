@@ -210,7 +210,7 @@ function BreakingNewsList() {
   const [categoryIndex, setCategoryIndex] = useState(0);
 
   useEffect(() => {
-    fetch(base + "blog/breaking-news.json")
+    fetch(base + "world/breaking-news.json")
       .then((response) => response.json())
       .then((data) => {
         setCategory(data.map((item: any) => item.name));
@@ -262,7 +262,7 @@ function BreakingNewsList() {
         {category[categoryIndex] !== "公告" && (
           <a
             target="_blank"
-            href={base + "blog/?category=" + category[categoryIndex]}
+            href={base + "world/?category=" + category[categoryIndex]}
             className={
               "w-[7.625rem] portrait:w-[11.125rem]" +
               " h-[1.5rem] portrait:h-[1.75rem] text-[.875rem] portrait:text-[1.3125rem] text-[#d2d2d2]" +

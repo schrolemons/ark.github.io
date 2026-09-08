@@ -3,7 +3,7 @@ import type {CollectionEntry} from 'astro:content';
 
 interface Props {
     index: number;
-    item: CollectionEntry<"blog"> | undefined;
+    item: CollectionEntry<"world"> | undefined;
 }
 
 const base = import.meta.env.BASE_URL;
@@ -20,7 +20,7 @@ const categoryToThumbnail: Record<string, string> = {
 
 const thumbnail = base + "info-thumbnail/" + (item?.data?.thumbnail ?? categoryToThumbnail[category] ?? "ACTIVITY.jpg");
 const title = item?.data?.title ?? item?.id ?? "";
-const href = item ? (base + "blog/" + item.slug) : "";
+const href = item ? (base + "world/" + item.slug) : "";
 const [year, month, day] = item?.id?.split("-") ?? ["yyyy", "MM", "dd"];
 ---
 

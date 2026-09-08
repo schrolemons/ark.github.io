@@ -8,7 +8,7 @@ import {z, defineCollection} from "astro:content";
  * [Reference](https://docs.astro.build/en/guides/content-collections/#defining-collections)
  */
 export const config = {
-    "blog": defineCollection({
+    "world": defineCollection({
         type: "content",
         schema: z.object({
             title: z.string(),

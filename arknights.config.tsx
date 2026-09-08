@@ -93,10 +93,10 @@ export default {
               <path d="M856.874667 448l51.285333 30.762667a21.333333 21.333333 0 0 1 0 36.608L512 753.066667l-396.16-237.696a21.333333 21.333333 0 0 1 0-36.608l51.285333-30.762667L512 654.933333l344.874667-206.933333z m0 200.533333l51.285333 30.762667a21.333333 21.333333 0 0 1 0 36.608l-374.186667 224.512a42.666667 42.666667 0 0 1-43.946666 0l-374.186667-224.512a21.333333 21.333333 0 0 1 0-36.608l51.285333-30.762667L512 855.466667l344.874667-206.933334zM533.930667 55.850667l374.229333 224.512a21.333333 21.333333 0 0 1 0 36.608L512 554.666667 115.84 316.970667a21.333333 21.333333 0 0 1 0-36.608l374.186667-224.512a42.666667 42.666667 0 0 1 43.946666 0z" />
             </svg>
           ),
-          label: "博客 - Blog",
-          // subLabel: "Blog",
+          label: "世界 - world",
+          // subLabel: "world",
           target: "_self",
-          href: base + "blog/",
+          href: base + "world/",
           className:
             "text-black bg-end-yellow border-[#fe2] hover:border-white font-bold font-benderBold",
         },
@@ -127,8 +127,8 @@ export default {
             subtitle: "The Ninth Universe",
             date: "2026 // 03 / 22",
             url: "HTTPS://ARK.SCH-NIE.COM/",
-            href: base + "blog/",
-            image: base + "info-swiper/Blog.jpg",
+            href: base + "world/",
+            image: base + "info-swiper/World.jpg",
           },
           {
             title: "角色诞生",
