@@ -34,3 +34,89 @@
         background-repeat: no-repeat;
     }
 }
+
+/* Note block styles */
+.note {
+    border-left-width: 4px;
+    border-left-style: solid;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+    line-height: 1.75;
+}
+
+.note > :first-child {
+    margin-top: 0;
+}
+
+.note > :last-child {
+    margin-bottom: 0;
+}
+
+/* Info note - blue */
+.note-info {
+    border-left-color: #3b82f6;
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #bfdbfe;
+}
+
+.note-info::before {
+    content: "ℹ 信息";
+    display: block;
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    color: #60a5fa;
+}
+
+/* Primary note - teal/green */
+.note-primary {
+    border-left-color: #10b981;
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #a7f3d0;
+}
+
+.note-primary::before {
+    content: "✦ 提示";
+    display: block;
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    color: #34d399;
+}
+
+/* Danger note - red */
+.note-danger {
+    border-left-color: #ef4444;
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #fecaca;
+}
+
+.note-danger::before {
+    content: "⚠ 危险";
+    display: block;
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    color: #f87171;
+}
+
+/* Warning note - yellow/amber */
+.note-warning {
+    border-left-color: #f59e0b;
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #fde68a;
+}
+
+.note-warning::before {
+    content: "⚠ 警告";
+    display: block;
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    color: #fbbf24;
+}
