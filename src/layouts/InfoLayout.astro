@@ -363,7 +363,8 @@ const subNavigationItems = Astro.props.subNavigationItems
   .note-block {
     margin: 1.5rem 0;
     padding: 1.25rem 1.5rem;
-    border-left: 4px solid;
+    border: 1px solid;
+    border-left-width: 4px;
     border-radius: 0 6px 6px 0;
     font-size: 1rem;
     line-height: 1.8;
@@ -376,28 +377,52 @@ const subNavigationItems = Astro.props.subNavigationItems
     p:first-child { margin-top: 0; }
     p:last-child { margin-bottom: 0; }
 
-    // Info: 中性蓝
+    // Info: 蓝调 — 资讯/说明
     &.note-block--info {
-      border-color: #4a90d9;
-      background: rgba(74, 144, 217, 0.08);
+      border-color: rgba(74, 144, 217, 0.5);
+      background: rgba(74, 144, 217, 0.12);
+      color: rgba(255, 255, 255, 0.9);
+
+      strong { color: #5ba0f0; }
+      a { color: #5ba0f0; border-bottom-color: rgba(91, 160, 240, 0.4);
+        &:hover { color: #000; background-color: #5ba0f0; }
+      }
     }
 
-    // Primary: 品牌金
+    // Primary: 金调 — 重点/强调
     &.note-block--primary {
-      border-color: #ffd700;
-      background: rgba(255, 215, 0, 0.08);
+      border-color: rgba(255, 215, 0, 0.5);
+      background: rgba(255, 215, 0, 0.12);
+      color: rgba(255, 255, 255, 0.95);
+
+      strong { color: #ffe44d; }
+      a { color: #ffd700; border-bottom-color: rgba(255, 215, 0, 0.4);
+        &:hover { color: #000; background-color: #ffd700; }
+      }
     }
 
-    // Danger: 警示红
+    // Danger: 红调 — 危险/警告
     &.note-block--danger {
-      border-color: #e74c3c;
-      background: rgba(231, 76, 60, 0.08);
+      border-color: rgba(231, 76, 60, 0.5);
+      background: rgba(231, 76, 60, 0.12);
+      color: rgba(255, 255, 255, 0.9);
+
+      strong { color: #f07070; }
+      a { color: #f07070; border-bottom-color: rgba(240, 112, 112, 0.4);
+        &:hover { color: #000; background-color: #f07070; }
+      }
     }
 
-    // Warning: 提醒橙
+    // Warning: 橙调 — 提醒/注意
     &.note-block--warning {
-      border-color: #f39c12;
-      background: rgba(243, 156, 18, 0.08);
+      border-color: rgba(243, 156, 18, 0.5);
+      background: rgba(243, 156, 18, 0.12);
+      color: rgba(255, 255, 255, 0.9);
+
+      strong { color: #f5b840; }
+      a { color: #f5b840; border-bottom-color: rgba(245, 184, 64, 0.4);
+        &:hover { color: #000; background-color: #f5b840; }
+      }
     }
   }
 </style>
