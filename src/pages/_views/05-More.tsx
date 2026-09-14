@@ -22,7 +22,7 @@ interface AkCard {
 const AK_CARDS: AkCard[] = [
   {
     id: "01",
-    title: "代码仓库",
+    title: "模板仓库",
     subtitle: "REPOSITORY",
     img: "/images/05-more/1.png",
     onClick: () =>

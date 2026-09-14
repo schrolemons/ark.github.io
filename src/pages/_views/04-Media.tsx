@@ -10,7 +10,7 @@ import { directions } from "../../components/store/lineDecoratorStore";
 import GalleryDetails from "./components/GalleryDetails.tsx"; // 引入刚才创建的组件
 
 // 定义子分类类型
-type Category = "books" | "gallery" | "website" | "Question_Set";
+type Category = "books" | "visual_archive" | "web_modules" | "Query_matrix";
 
 interface CategoryData {
   id: Category;
@@ -24,39 +24,39 @@ interface CategoryData {
 const CATEGORIES: CategoryData[] = [
   {
     id: "books",
-    en: "SEABLUE REVERY",
-    cn: "第九边缘：溯梦蓝海",
+    en: "SEABLUE // REVERY",
+    cn: "溯梦蓝海",
     bg:"/images/04-media/gallery/2-1.png",
     info:"第九边缘设定集。完成于2025年7月。\n" +
         "记载2025年及以前第九边缘的绝大部分作品，拥有良好的阅读结构。",
-    desc: "第九边缘官方作品\nHTTPS://ARK.SCH-NIE.COM/",
+    desc: "来自项目：现世凝结\nhttps://zero.sch-nie.com/download/seablue.pdf",
   },
   {
-    id: "gallery",
-    en: "GALLERY",
+    id: "visual_archive",
+    en: "VISUAL ARCHIVE",
     cn: "插画珍藏",
     bg:"/images/04-media/gallery/2-2.png",
     info:"展示来自 [OPERATOR-RUIFOX] 所描绘的世界。\n" +
         "画廊可以记载这些作品的痕迹，但在这之前，它们均已被安稳地留存在了一个温暖的地方。",
-    desc: "记录在这篇大地上的点滴瞬间\nHTTPS://ARK.SCH-NIE.COM/",
+    desc: "来自项目：万界相遇\nHTTPS://ARK.SCH-NIE.COM/#media",
   },
   {
-    id: "website",
-    en: "WEBSITE",
-    cn: "网站构建",
+    id: "web_modules",
+    en: "WEB MODULES",
+    cn: "网站模块",
     bg:"/images/04-media/gallery/2-3.png",
-    info:"第九边缘网站状况监视器。\n" +
-        "建立于2025年10月，展示第九边缘全部网站的可访问性。",
-    desc: "第九边缘网站一览\nHTTPS://ARK.SCH-NIE.COM/",
+    info:"以“启动器”的形式，呈现四个主体网站，建立于2026年9月。\n" +
+        "同时展示附属网站、其他媒体。",
+    desc: "来自项目：平台构造\nHTTPS://launcher.sch-nie.com/",
   },
   {
-    id: "Question_Set",
-    en: "QUESTION SET",
-    cn: "问题集",
+    id: "Query_matrix",
+    en: "QUERY MATRIX",
+    cn: "问题集合",
     bg:"/images/04-media/be.png",
     info:"第九边缘标准化认知测试，及其他“协作者”上传的测试。\n" +
         "结合第九边缘的世界观、自然观、价值观所制定的测试题合集。",
-    desc: "第九边缘测试题合集\nHTTPS://ARK.SCH-NIE.COM/",
+    desc: "来自项目：生涅接口\nhttps://zero.sch-nie.com/categories/tests/",
   },
 ];
 
@@ -109,15 +109,15 @@ export default function Media() {
 
   // 处理详情按钮点击
   const handleDetailClick = () => {
-    if (currentCat === "gallery") {
+    if (currentCat === "visual_archive") {
       setShowGallery(true);
       isScrollLocked.set(true); // 锁定主页面滚动
     } else if (currentCat === "books") {
-      window.open("https://zero.sch-nie.com/core/", "_blank");
-    } else if (currentCat === "Question_Set") {
+      window.open("http://zero.sch-nie.com/download/bluesea.pdf", "_blank");
+    } else if (currentCat === "Query_matrix") {
       window.open("https://zero.sch-nie.com/categories/tests/", "_blank");
-    } else if (currentCat === "website") {
-      window.open("https://monitor.sch-nie.com", "_blank");
+    } else if (currentCat === "web_modules") {
+      window.open("https://launcher.sch-nie.com", "_blank");
     } else {
       console.log(`${currentCat} clicked`);
       // 其他分类的逻辑...
