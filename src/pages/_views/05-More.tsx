@@ -4,6 +4,7 @@ import { viewIndex, readyToTouch, isFooterVisible } from "../../components/store
 import { directions } from "../../components/store/lineDecoratorStore";
 import { navigateRoute, useHashRoute } from "../../components/useHashRoute";
 import Footer from "./components/Footer.tsx";
+import arknightsConfig from "../../../arknights.config";
 
 interface ArchiveCard {
   id: string;
@@ -35,9 +36,19 @@ const ARCHIVE_CARDS: ArchiveCard[] = [
   },
 ];
 
+// Keep the dashboard counters tied to the same configuration that renders each section.
+const SITE_STATS = {
+  projectRecords: ARCHIVE_CARDS.length,
+  operatorRecords: arknightsConfig.rootPage.OPERATOR.data.length,
+  worldEntries: arknightsConfig.rootPage.WORLD?.items.length ?? 0,
+  navigationSections: arknightsConfig.navbar.items.length,
+};
+
+const formatStat = (value: number | null) => value === null ? "--" : String(value).padStart(2, "0");
+
 function ArchiveCardView({ card, selected, onOpen }: { card: ArchiveCard; selected: boolean; onOpen: () => void }) {
   return <article className={`group relative min-h-[25rem] overflow-hidden border border-white/15 bg-[#161616] transition-all duration-500 hover:-translate-y-2 hover:border-ark-gold ${selected ? "border-ark-gold shadow-[0_0_2rem_rgba(255,215,0,.12)]" : ""}`}>
-    <button type="button" aria-label={`${card.title} - ${card.subtitle}`} onClick={onOpen} className="absolute inset-0 z-20 cursor-pointer" />
+    <a href={card.url} target="_blank" rel="noreferrer" aria-label={`${card.title} - ${card.subtitle}`} onClick={onOpen} className="absolute inset-0 z-20 cursor-pointer" />
     <div className="absolute inset-0 flex items-center justify-center bg-black">
       <img src={card.img} alt="" loading="lazy" className="h-3/5 w-3/5 object-contain opacity-45 transition duration-700 group-hover:scale-110 group-hover:opacity-85" />
     </div>
@@ -62,6 +73,8 @@ export default function More() {
   const route = useHashRoute();
   const [active, setActive] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
+  const [archiveStatus, setArchiveStatus] = useState<"checking" | "active" | "unavailable">("checking");
+  const [informationRecords, setInformationRecords] = useState<number | null>(null);
   const selectedSlug = route.section === "more" ? route.segments[0] : undefined;
   const selectedCard = useMemo(() => ARCHIVE_CARDS.find(card => card.slug === selectedSlug), [selectedSlug]);
 
@@ -73,6 +86,37 @@ export default function More() {
   }, [selectedSlug]);
 
   useEffect(() => {
+    let cancelled = false;
+    const readWebsiteStatus = async () => {
+      try {
+        const response = await fetch(window.location.href, { method: "HEAD", cache: "no-store" });
+        if (!cancelled) setArchiveStatus(response.ok ? "active" : "unavailable");
+      } catch {
+        if (!cancelled) setArchiveStatus("unavailable");
+      }
+    };
+    void readWebsiteStatus();
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const readInformationRecords = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.BASE_URL}world/breaking-news.json`, { cache: "no-store" });
+        if (!response.ok) throw new Error(`Information records request failed: ${response.status}`);
+        const categories = await response.json() as Array<{ totalCount?: number }>;
+        const total = categories.reduce((sum, category) => sum + (category.totalCount ?? 0), 0);
+        if (!cancelled) setInformationRecords(total);
+      } catch {
+        // Keep the zero state when the archive endpoint is unavailable.
+      }
+    };
+    void readInformationRecords();
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
     const isActive = $viewIndex === 5 && $readyToTouch;
     if (isActive) directions.set({ top: true, right: false, bottom: !$isFooterVisible, left: false });
     setActive(isActive);
@@ -80,8 +124,10 @@ export default function More() {
 
   const handleOpen = (card: ArchiveCard) => {
     navigateRoute("more", [card.slug]);
-    window.open(card.url, "_blank", "noopener,noreferrer");
   };
+
+  const archiveStatusLabel = archiveStatus.toUpperCase();
+  const connectionLabel = archiveStatus === "unavailable" ? "OFFLINE" : archiveStatus === "checking" ? "CHECKING" : "ONLINE";
 
   return <div data-more-page className={`relative h-full w-full overflow-hidden bg-[#0c0c0c] transition-opacity duration-1000 ${active ? "opacity-100" : "opacity-0"}`}>
     <div className="h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" style={{ transform: $isFooterVisible ? "translateY(-400px)" : "translateY(0)" }}>
@@ -95,11 +141,22 @@ export default function More() {
           </div>
           <section aria-label="系统状态" className="w-[18rem] shrink-0 border-l border-ark-gold/70 pl-5 portrait:w-full portrait:border-l-0 portrait:border-t portrait:pt-4">
             <div className="text-xs tracking-[.35em] text-white/45 font-benderBold">SYSTEM STATUS</div>
-            <div className="mt-3 flex items-center gap-2 text-sm font-benderBold text-ark-gold"><span className="h-2 w-2 animate-pulse rounded-full bg-ark-gold" />ONLINE / ARCHIVE ACTIVE</div>
-            <dl className="mt-5 grid grid-cols-2 gap-y-3 text-xs font-benderRegular"><dt className="text-white/40">VERSION</dt><dd className="text-right text-white/75">1.0</dd><dt className="text-white/40">OPERATOR RECORDS</dt><dd className="text-right text-white/75">03</dd><dt className="text-white/40">WORLD ENTRIES</dt><dd className="text-right text-white/75">08</dd><dt className="text-white/40">LAST UPDATE</dt><dd className="text-right text-white/75">2026.09</dd></dl>
+            <div className={`mt-3 flex items-center gap-2 text-sm font-benderBold ${archiveStatus === "unavailable" ? "text-white/50" : "text-ark-gold"}`}><span className={`h-2 w-2 rounded-full ${archiveStatus === "checking" ? "animate-pulse bg-white/50" : archiveStatus === "active" ? "animate-pulse bg-ark-gold" : "bg-white/35"}`} />{connectionLabel} / ARCHIVE {archiveStatusLabel}</div>
+            <dl className="mt-5 grid grid-cols-2 gap-y-3 text-xs font-benderRegular">
+              <dt className="text-white/40">OPERATOR RECORDS</dt>
+              <dd data-stat="operator-records" className="text-right text-white/75">{formatStat(SITE_STATS.operatorRecords)}</dd>
+              <dt className="text-white/40">WORLD ENTRIES</dt>
+              <dd data-stat="world-entries" className="text-right text-white/75">{formatStat(SITE_STATS.worldEntries)}</dd>
+              <dt className="text-white/40">INFORMATION RECORDS</dt>
+              <dd data-stat="information-records" className="text-right text-white/75">{formatStat(informationRecords)}</dd>
+              <dt className="text-white/40">NAVIGATION SECTIONS</dt>
+              <dd data-stat="navigation-sections" className="text-right text-white/75">{formatStat(SITE_STATS.navigationSections)}</dd>
+              <dt className="text-white/40">LAST UPDATE</dt>
+              <dd className="text-right text-white/75">2026.09</dd>
+            </dl>
           </section>
         </div>
-        <div className="relative z-10 mt-12 flex items-center gap-4 text-xs tracking-[.35em] text-white/40 font-benderBold"><span className="text-ark-gold">PROJECTS</span><span className="h-px flex-1 bg-white/15" /><span>03 RECORDS</span></div>
+        <div className="relative z-10 mt-12 flex items-center gap-4 text-xs tracking-[.35em] text-white/40 font-benderBold"><span className="text-ark-gold">PROJECTS</span><span className="h-px flex-1 bg-white/15" /><span data-stat="project-records">{formatStat(SITE_STATS.projectRecords)} RECORDS</span></div>
         <div className="relative z-10 mt-5 grid grid-cols-3 gap-5 portrait:grid-cols-1">
           {ARCHIVE_CARDS.map(card => <ArchiveCardView key={card.slug} card={card} selected={selectedCard?.slug === card.slug} onOpen={() => handleOpen(card)} />)}
         </div>

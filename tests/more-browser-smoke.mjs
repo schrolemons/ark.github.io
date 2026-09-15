@@ -10,9 +10,11 @@ await page.locator('[data-more-page]').waitFor();
 assert.ok(await page.getByText('PROJECT ARCHIVE', { exact: true }).count() >= 1);
 assert.ok(await page.getByText('SYSTEM STATUS', { exact: true }).count() >= 1);
 assert.equal(await page.locator('[data-more-page] article').count(), 3);
-assert.ok(await page.getByText('03 RECORDS', { exact: true }).count() >= 1);
+for (const stat of ['project-records', 'operator-records', 'world-entries', 'information-records', 'navigation-sections']) {
+  assert.match(await page.locator(`[data-stat="${stat}"]`).innerText(), /^\d{2}$/);
+}
 await page.screenshot({ path: '.screens/more-page-final.png' });
-await page.getByRole('button', { name: '模板仓库 - REPOSITORY' }).click();
+await page.getByRole('link', { name: '模板仓库 - REPOSITORY' }).click();
 await page.waitForURL('**/#more/repository');
 assert.equal(await page.getByText('SELECTED // REPOSITORY', { exact: true }).count(), 1);
 await page.mouse.wheel(0, 800);

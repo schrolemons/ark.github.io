@@ -36,10 +36,13 @@ export async function GET({params, request}: APIContext) {
             })) as BreakingNewsItemProps[];
     };
 
+    const getCountByCategory = (category: string) =>
+        allworld.filter(item => item.data.category === category).length;
+
     return new Response(JSON.stringify([
 
-        {id: "world_view", name: "世界观", list: getItemsByCategory("世界观")},
-        {id: "events", name: "事件", list: getItemsByCategory("事件")},
-        {id: "short_stories", name: "微故事", list: getItemsByCategory("微故事")},
+        {id: "world_view", name: "世界观", totalCount: getCountByCategory("世界观"), list: getItemsByCategory("世界观")},
+        {id: "events", name: "事件", totalCount: getCountByCategory("事件"), list: getItemsByCategory("事件")},
+        {id: "short_stories", name: "微故事", totalCount: getCountByCategory("微故事"), list: getItemsByCategory("微故事")},
     ]));
 }
