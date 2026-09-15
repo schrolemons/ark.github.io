@@ -1,170 +1,111 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useStore } from "@nanostores/react";
-import {
-  viewIndex,
-  readyToTouch,
-  isFooterVisible,
-} from "../../components/store/rootLayoutStore.ts";
+import { viewIndex, readyToTouch, isFooterVisible } from "../../components/store/rootLayoutStore.ts";
 import { directions } from "../../components/store/lineDecoratorStore";
-import Footer from "./components/Footer.tsx"; 
+import { navigateRoute, useHashRoute } from "../../components/useHashRoute";
+import Footer from "./components/Footer.tsx";
 
-// --- 类型定义 ---
-interface AkCard {
+interface ArchiveCard {
   id: string;
+  slug: string;
   title: string;
   subtitle: string;
+  eyebrow: string;
+  description: string;
+  meta: string;
   img: string;
-  desc?: string;
-  onClick?: () => void;
+  url: string;
 }
 
-// --- 数据配置 ---
-const AK_CARDS: AkCard[] = [
+const ARCHIVE_CARDS: ArchiveCard[] = [
   {
-    id: "01",
-    title: "模板仓库",
-    subtitle: "REPOSITORY",
-    img: "/images/05-more/1.png",
-    onClick: () =>
-      window.open("https://github.com/Yue-plus/astro-arknights", "_blank"),
+    id: "01", slug: "repository", title: "模板仓库", subtitle: "REPOSITORY", eyebrow: "TEMPLATE SOURCE",
+    description: "站点模板与交互页面的源代码。", meta: "ASTRO / REACT / TAILWIND", img: "/images/05-more/1.png",
+    url: "https://github.com/Yue-plus/astro-arknights",
   },
   {
-    id: "02",
-    title: "相关文档",
-    subtitle: "DOCUMENTATION",
-    img: "/images/05-more/2.png",
-    onClick: () =>
-      window.open("https://arknights.astro.yue.zone/docs/", "_blank"),
+    id: "02", slug: "documentation", title: "相关文档", subtitle: "DOCUMENTATION", eyebrow: "PROJECT DOCUMENTS",
+    description: "人物、世界设定与故事的使用资料。", meta: "WORLD / OPERATOR / STORY", img: "/images/05-more/2.png",
+    url: "https://world.sch-nie.com/archives/",
   },
   {
-    id: "03",
-    title: "作者主页",
-    subtitle: "AUTHOR PROFILE",
-    img: "/images/05-more/3.png",
-    onClick: () => window.open("https://github.com/schrolemons", "_blank"),
+    id: "03", slug: "author_profile", title: "作者主页", subtitle: "AUTHOR PROFILE", eyebrow: "CREATOR PROFILE",
+    description: "查看作者的其他项目与公开资料。", meta: "SCHRO LEMONS", img: "/images/05-more/3.png",
+    url: "https://github.com/schrolemons",
   },
 ];
+
+function ArchiveCardView({ card, selected, onOpen }: { card: ArchiveCard; selected: boolean; onOpen: () => void }) {
+  return <article className={`group relative min-h-[25rem] overflow-hidden border border-white/15 bg-[#161616] transition-all duration-500 hover:-translate-y-2 hover:border-ark-gold ${selected ? "border-ark-gold shadow-[0_0_2rem_rgba(255,215,0,.12)]" : ""}`}>
+    <button type="button" aria-label={`${card.title} - ${card.subtitle}`} onClick={onOpen} className="absolute inset-0 z-20 cursor-pointer" />
+    <div className="absolute inset-0 flex items-center justify-center bg-black">
+      <img src={card.img} alt="" loading="lazy" className="h-3/5 w-3/5 object-contain opacity-45 transition duration-700 group-hover:scale-110 group-hover:opacity-85" />
+    </div>
+    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-transparent" />
+    <div className="absolute left-6 top-6 z-10 flex items-center gap-3 text-[.65rem] tracking-[.25em] text-white/50 font-benderBold">
+      <span className="text-ark-gold">{card.id}</span><span className="h-px w-8 bg-white/30" /><span>{card.eyebrow}</span>
+    </div>
+    <div className="absolute inset-x-6 bottom-6 z-10">
+      <h2 className="text-3xl font-bold text-white">{card.title}</h2>
+      <div className="mt-1 text-xs tracking-[.25em] text-ark-gold font-benderBold">{card.subtitle}</div>
+      <p className="mt-4 max-w-[18rem] text-sm leading-relaxed text-white/65">{card.description}</p>
+      <div className="mt-5 flex items-center gap-2 text-[.65rem] tracking-[.15em] text-white/45 font-benderBold"><span className="h-px w-8 bg-ark-gold transition-all group-hover:w-12" />{card.meta}</div>
+      <div className="mt-4 text-[.65rem] tracking-[.25em] text-white/45 font-benderBold transition-colors group-hover:text-white">VIEW ARCHIVE ↗</div>
+    </div>
+  </article>;
+}
 
 export default function More() {
   const $viewIndex = useStore(viewIndex);
   const $readyToTouch = useStore(readyToTouch);
-  const $isFooterVisible = useStore(isFooterVisible); // 订阅 Footer 状态
+  const $isFooterVisible = useStore(isFooterVisible);
+  const route = useHashRoute();
   const [active, setActive] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
+  const selectedSlug = route.section === "more" ? route.segments[0] : undefined;
+  const selectedCard = useMemo(() => ARCHIVE_CARDS.find(card => card.slug === selectedSlug), [selectedSlug]);
+
+  useEffect(() => {
+    // A deep link should always open at the start of the archive, even if the
+    // previous More-page visit had already revealed the footer.
+    isFooterVisible.set(false);
+    mainRef.current?.scrollTo({ top: 0, behavior: "auto" });
+  }, [selectedSlug]);
 
   useEffect(() => {
     const isActive = $viewIndex === 5 && $readyToTouch;
-    if (isActive) {
-      // 关键：当在 More 页面时，根据 Footer 是否显示来决定底部箭头
-      // 如果 footer 没显示，显示 bottom: true (提示还能往下)
-      // 如果 footer 显示了，显示 bottom: false (到底了)
-      directions.set({
-        top: true,
-        right: false,
-        bottom: !$isFooterVisible, // 动态控制
-        left: false,
-      });
-    }
+    if (isActive) directions.set({ top: true, right: false, bottom: !$isFooterVisible, left: false });
     setActive(isActive);
   }, [$viewIndex, $readyToTouch, $isFooterVisible]);
 
-  // 计算 transform 的值
-  // 假设 Footer 高度固定或自适应，这里我们可以简单地将整个 View 向上移动 Footer 的高度
-  // 或者向上移动例如 40vh / 400px
-  const translateY = $isFooterVisible ? "-400px" : "0px";
+  const handleOpen = (card: ArchiveCard) => {
+    navigateRoute("more", [card.slug]);
+    window.open(card.url, "_blank", "noopener,noreferrer");
+  };
 
-  return (
-    // 外层容器：固定 100% 宽高，隐藏溢出
-    <div
-      className={`relative w-full h-full overflow-hidden bg-black transition-opacity duration-1000 ${active ? "opacity-100" : "opacity-0"}`}
-    >
-      {/* 
-          内容包裹器：包含原来的 MORE 内容 + Footer 
-          使用 transition-transform 实现平滑的上下滑动效果
-      */}
-      <div
-        className="w-full h-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-        style={{ transform: `translateY(${translateY})` }}
-      >
-        {/* --- 原本的 MORE 页面内容 --- */}
-        <div className="relative w-full h-full bg-black">
-          {/* 背景水印 */}
-          <div className="absolute bottom-[-2%] left-[-2%] z-0 select-none font-black text-[14vw] leading-none text-white/[0.04] tracking-tighter whitespace-nowrap pointer-events-none">
-            MORE CONTENT
+  return <div data-more-page className={`relative h-full w-full overflow-hidden bg-[#0c0c0c] transition-opacity duration-1000 ${active ? "opacity-100" : "opacity-0"}`}>
+    <div className="h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" style={{ transform: $isFooterVisible ? "translateY(-400px)" : "translateY(0)" }}>
+      <main ref={mainRef} className="relative h-full w-full overflow-hidden px-[7vw] pb-12 pt-[10rem] portrait:overflow-y-auto portrait:px-6 portrait:pb-16 portrait:pt-[8rem]">
+        <div className="pointer-events-none absolute bottom-[-2%] left-[-2%] select-none text-[14vw] font-black leading-none tracking-tighter text-white/[.04]">ARCHIVE</div>
+        <div className="relative z-10 flex items-start justify-between gap-12 portrait:flex-col portrait:gap-8">
+          <div className="max-w-[45rem]">
+            <div className="flex items-center gap-3 text-xs tracking-[.4em] text-ark-gold font-benderBold"><span className="h-px w-10 bg-ark-gold" />PROJECT ARCHIVE</div>
+            <h1 className="mt-5 text-6xl font-black leading-none tracking-tight text-white portrait:text-5xl">第九边缘：方舟</h1>
+            <p className="mt-5 max-w-[40rem] text-base leading-relaxed text-white/55 portrait:text-sm">SCHNIE:ARK 是第九边缘世界观的快速档案站，记录情报、角色、设定等内容。</p>
           </div>
-
-          {/* 右下角页码
-              <div className="absolute bottom-8 right-10 z-20 flex flex-col items-end pointer-events-none">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-cyan-400 text-6xl font-black tracking-tighter">05</span>
-                  <span className="text-white/40 text-xl font-bold tracking-widest">/ 05</span>
-                </div>
-                <div className="text-white text-xs tracking-[0.4em] font-bold mt-1">MORE</div>
-              </div> */}
-
-          {/* 卡片区域 */}
-          <div className="relative z-10 flex min-w-full h-full">
-            {AK_CARDS.map((card, index) => (
-              <div
-                key={card.id}
-                onClick={card.onClick}
-                className={`
-                      group relative h-full border-r border-white/10 cursor-pointer overflow-hidden
-                      transition-[flex-grow,filter] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
-                      ${active && !$isFooterVisible ? "flex-1 hover:flex-[1]" : "flex-[0]"}
-                      /* 这里加个判断：当 Footer 显示时，禁止 flex 伸缩动画，或者保持原有比例，防止布局跳动 */
-                    `}
-                // 注意：当 Footer 显示时，可能需要调整 flex 样式让它们保持静止
-                style={{ flex: active ? 1 : 0 }}
-              >
-                {/* ... 卡片内部代码保持不变 ... */}
-                <div className="absolute inset-0 z-0">
-                  <div className="min-w-full h-full bg-black flex items-center justify-center">
-                    <img
-                      src={card.img}
-                      alt={card.title}
-                      className="w-3/4 h-3/4 object-contain opacity-50 group-hover:opacity-100 transition-all duration-1000 group-hover:scale-110"
-                    />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-80" />
-                </div>
-                <div className="absolute inset-0 z-10 flex flex-col justify-end p-10 pb-24 md:p-12 md:pb-32">
-                  {/* 简化示例，保持你的原始内容 */}
-                  <h3 className="text-white text-4xl font-black">
-                    {card.title}
-                  </h3>
-                  <div className="text-white/60 text-sm font-bold mb-8">
-                    {card.subtitle}
-                  </div>
-
-                  {/* View More 按钮区 */}
-                  <div className="flex flex-col gap-1 overflow-hidden">
-                    <div className="flex items-center gap-2 text-white/80 text-xs font-bold tracking-widest group-hover:text-white transition-colors">
-                      <span className="h-[2px] w-8 bg-white/50 group-hover:w-12 group-hover:bg-cyan-400 transition-all duration-500" />
-                      <span>VIEW MORE</span>
-                    </div>
-                    {/* 英文描述 (可选) */}
-                    <div className="text-[10px] text-white/30 tracking-wider transform translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-                      CLICK TO NAVIGATE
-                    </div>
-                  </div>
-                </div>
-
-                {/* 顶部序号 (可选装饰) */}
-                <div className="absolute top-10 left-10 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
-                  <span className="text-6xl font-black text-white/5 select-none">
-                    {card.id}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+          <section aria-label="系统状态" className="w-[18rem] shrink-0 border-l border-ark-gold/70 pl-5 portrait:w-full portrait:border-l-0 portrait:border-t portrait:pt-4">
+            <div className="text-xs tracking-[.35em] text-white/45 font-benderBold">SYSTEM STATUS</div>
+            <div className="mt-3 flex items-center gap-2 text-sm font-benderBold text-ark-gold"><span className="h-2 w-2 animate-pulse rounded-full bg-ark-gold" />ONLINE / ARCHIVE ACTIVE</div>
+            <dl className="mt-5 grid grid-cols-2 gap-y-3 text-xs font-benderRegular"><dt className="text-white/40">VERSION</dt><dd className="text-right text-white/75">1.0</dd><dt className="text-white/40">OPERATOR RECORDS</dt><dd className="text-right text-white/75">03</dd><dt className="text-white/40">WORLD ENTRIES</dt><dd className="text-right text-white/75">08</dd><dt className="text-white/40">LAST UPDATE</dt><dd className="text-right text-white/75">2026.09</dd></dl>
+          </section>
         </div>
-
-        {/* --- Footer 组件 (位于 MORE 内容正下方) --- */}
-        <div className="w-full h-[400px]">
-          <Footer />
+        <div className="relative z-10 mt-12 flex items-center gap-4 text-xs tracking-[.35em] text-white/40 font-benderBold"><span className="text-ark-gold">PROJECTS</span><span className="h-px flex-1 bg-white/15" /><span>03 RECORDS</span></div>
+        <div className="relative z-10 mt-5 grid grid-cols-3 gap-5 portrait:grid-cols-1">
+          {ARCHIVE_CARDS.map(card => <ArchiveCardView key={card.slug} card={card} selected={selectedCard?.slug === card.slug} onOpen={() => handleOpen(card)} />)}
         </div>
-      </div>
+        <div className="relative z-10 mt-8 flex items-center justify-between text-[.65rem] tracking-[.25em] text-white/35 font-benderBold"><span>{selectedCard ? `SELECTED // ${selectedCard.subtitle}` : "SELECT A RECORD TO CONTINUE"}</span><span>SCROLL FOR OTHER INFORMATION ↓</span></div>
+      </main>
+      <div className="h-[400px] w-full"><Footer /></div>
     </div>
-  );
+  </div>;
 }

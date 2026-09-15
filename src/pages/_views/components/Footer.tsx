@@ -1,84 +1,30 @@
-// src/pages/_views/components/Footer.tsx
+import { navigateRoute } from "../../../components/useHashRoute";
+
+const links = [
+  ["LICENSE", "https://github.com/Yue-plus/astro-arknights/blob/main/LICENSE"],
+  ["GITHUB REPOSITORY", "https://github.com/schrolemons/arknights.github.io/"],
+  ["LIVE DEMO", "https://arknights.astro.yue.zone/"],
+  ["ASTRO FRAMEWORK", "https://docs.astro.build/zh-cn/getting-started/"],
+];
+
 export default function Footer() {
-  return (
-    <div className="w-full h-[400px] bg-[#181818] text-[#8a8a8a] flex flex-col justify-center items-center relative z-10 border-t border-[#333]">
-      {/* 顶部链接区 */}
-      <div className="flex flex-wrap justify-center gap-4 md:gap-8 text-xs font-bold tracking-wider text-white mb-8">
-        <a
-          href="https://github.com/Yue-plus/astro-arknights/blob/main/LICENSE"
-          className="hover:text-ark-blue transition-colors"
-        >
-          License
-        </a>
-        <span className="text-[#333]">|</span>
-        <a
-          href="https://github.com/schrolemons/arknights.github.io/"
-          className="hover:text-ark-blue transition-colors"
-        >
-          GitHub Repository
-        </a>
-        <span className="text-[#333]">|</span>
-        <a
-          href="https://arknights.astro.yue.zone/"
-          className="hover:text-ark-blue transition-colors"
-        >
-          Live Demo
-        </a>
-        <span className="text-[#333]">|</span>
-        <a
-          href="https://docs.astro.build/zh-cn/getting-started/"
-          className="hover:text-ark-blue transition-colors"
-        >
-          Astro Framework
-        </a>
-        <span className="text-[#333]">|</span>
-        <a
-            href="https://github.com/Schrolemons"
-            className="hover:text-ark-blue transition-colors"
-        >
-          Author: Schrolemons
-        </a>
-        <span className="text-[#333]">|</span>
-        <a
-          href="https://github.com/Yue-plus"
-          className="hover:text-ark-blue transition-colors"
-        >
-          Template Provider: Yue_plus
-        </a>
-        <span className="text-[#333]">|</span>
-        <a
-          href="https://github.com/Zhongye1"
-          className="hover:text-ark-blue transition-colors"
-        >
-          Contributor: Zhongye1
-        </a>
+  return <footer className="relative flex h-[400px] w-full flex-col justify-center overflow-hidden border-t border-white/15 bg-[#151515] px-[8vw] text-white portrait:h-[400px] portrait:px-6">
+    <div className="pointer-events-none absolute right-[7vw] top-1/2 -translate-y-1/2 text-[10rem] font-black leading-none text-white/[.035] portrait:text-[5rem]">END</div>
+    <div className="relative z-10 flex items-start justify-between gap-12 portrait:flex-col portrait:gap-8">
+      <div>
+        <div className="flex items-center gap-3 text-xs tracking-[.4em] text-ark-gold font-benderBold"><span className="h-px w-10 bg-ark-gold" />END OF ARCHIVE</div>
+        <h2 className="mt-5 text-4xl font-black tracking-tight portrait:text-3xl">SCHNIE：ARK</h2>
+        <p className="mt-2 text-sm text-white/45">the ARK from the Ninth Edge</p>
       </div>
-
-      {/* 备案号区域 */}
-      <div className="text-[10px] text-[#666] mb-8 text-center px-4">
-        <p>
-          This website is built with Astro static site generator and is for
-          learning and communication purposes only. Arknights and its related
-          content are owned by Hypergryph Co., Ltd. This project is MIT licensed
-          and does not claim any rights to the original work.
-        </p>
-      </div>
-
-      <div className="w-[80%] h-px bg-[#333] mb-8" />
-
-      {/* 底部 Logo 和版权 */}
-      <div className="flex flex-col md:flex-row items-center justify-between w-[80%] gap-8">
-        <div className="flex items-center gap-4">
-          <div className="text-white font-black text-xl italic">
-            ASTRO ARKNIGHTS
-          </div>
-        </div>
-
-        <div className="text-[10px] text-[#666] flex flex-col md:items-end">
-          <p>Version: 0.0.1 | Based on MIT License</p>
-          <p>Copyright © 2026-present Schrolemons</p>
-        </div>
+      <div className="grid grid-cols-2 gap-x-12 gap-y-4 text-xs tracking-[.16em] text-white/55 font-benderBold portrait:gap-x-8">
+        {links.map(([label, url]) => <a key={label} href={url} target="_blank" rel="noreferrer" className="transition-colors hover:text-ark-gold">{label}</a>)}
+        <button type="button" onClick={() => navigateRoute("more", ["repository"])} className="text-left transition-colors hover:text-ark-gold"> </button>
+        <span className="text-white/25">ASTRO / REACT / TAILWIND</span>
       </div>
     </div>
-  );
+    <div className="relative z-10 mt-10 flex items-end justify-between border-t border-white/10 pt-5 text-[.65rem] tracking-[.12em] text-white/35 font-benderRegular portrait:mt-7 portrait:flex-col portrait:items-start portrait:gap-2">
+      <span> </span>
+      <span>© 2026 SCHRO LEMONS</span>
+    </div>
+  </footer>;
 }
