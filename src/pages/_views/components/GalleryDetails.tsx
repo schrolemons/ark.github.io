@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { navigateRoute, useHashRoute } from "../../../components/useHashRoute";
+import { routeSegment } from "../../../utils/hash-route";
 
 // --- 图标组件 ---
 const IconShare = () => (
@@ -90,28 +92,28 @@ const galleryData = [
 
 interface GalleryProps {
   onBack?: () => void;
+  active?: boolean;
 }
 
-export default function ArknightsGallery({ onBack }: GalleryProps) {
-  const [currentIndex, setCurrentIndex] = useState(0); // 默认选中第1个 (index 0)
+export default function ArknightsGallery({ onBack, active = false }: GalleryProps) {
+  const route = useHashRoute();
+  const currentIndex = Math.max(0, galleryData.findIndex(item => routeSegment(item.title) === route.segments[1]));
+  const setCurrentIndex = (index: number) => navigateRoute('media', ['visual_archive', galleryData[index].title]);
   const activeItem = galleryData[currentIndex];
 
   // 键盘左右切换
   useEffect(() => {
+    if (!active) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
-        setCurrentIndex((prev) =>
-          prev > 0 ? prev - 1 : galleryData.length - 1
-        );
+        setCurrentIndex((currentIndex - 1 + galleryData.length) % galleryData.length);
       } else if (e.key === "ArrowRight") {
-        setCurrentIndex((prev) =>
-          prev < galleryData.length - 1 ? prev + 1 : 0
-        );
+        setCurrentIndex((currentIndex + 1) % galleryData.length);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [active, currentIndex]);
 
   return (
     <div className="relative w-full h-screen bg-[#111] text-white overflow-hidden font-sans select-none">

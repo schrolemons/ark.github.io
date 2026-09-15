@@ -9,6 +9,7 @@ import Operator from "./02-Operator.tsx";
 import World from "./03-World.tsx";
 import Media from "./04-Media.tsx";
 import More from "./05-More.tsx";
+import { parseRoute } from "../../utils/hash-route";
 
 const MAX_INDEX = arknightsConfig.navbar.items.length - 1; // 5
 
@@ -16,7 +17,7 @@ export default function RootPageViews() {
     const [isLoading, setIsLoading] = useState(true);
 
     const [localViewIndex, setLocalViewIndex] = useState(() => {
-        const HASH = location.hash.split("#")[1];
+        const HASH = parseRoute(location.hash).section;
         const INDEX = arknightsConfig.navbar.items.findIndex(item =>
             HASH === item.href.split("#")[1])
         return INDEX === -1 ? 0 : INDEX;
@@ -32,7 +33,7 @@ export default function RootPageViews() {
     // 处理 hash 变化
     useLayoutEffect(() => {
         const handleHashChange = () => {
-            const HASH = location.hash.split("#")[1];
+            const HASH = parseRoute(location.hash).section;
             const INDEX = arknightsConfig.navbar.items.findIndex(item =>
                 HASH === item.href.split("#")[1])
             setLocalViewIndex(INDEX === -1 ? 0 : INDEX);
@@ -43,7 +44,7 @@ export default function RootPageViews() {
     }, []);
 
     useLayoutEffect(() => {
-        const HASH = location.hash.split("#")[1];
+        const HASH = parseRoute(location.hash).section;
         const INDEX = arknightsConfig.navbar.items.findIndex(item =>
             HASH === item.href.split("#")[1])
         viewIndex.set(INDEX === -1 ? 0 : INDEX)

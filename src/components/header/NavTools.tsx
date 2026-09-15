@@ -1,7 +1,8 @@
 import React, {useEffect, useRef, useState} from "react";
 import {IconSocial, IconSound, IconUser} from "../SvgIcons";
 import {useStore} from "@nanostores/react";
-import {isOwnerInfoOpen, isToolBoxOpen} from "../store/rootLayoutStore.ts";
+import {isOwnerInfoOpen} from "../store/rootLayoutStore.ts";
+import {copyCurrentLink} from "../../utils/clipboard";
 import arknightsConfig from "../../../arknights.config";
 
 const ActiveColor = "#ffd700"
@@ -11,9 +12,28 @@ const BoxClassName: React.ComponentProps<"div">["className"] =
 const SvgClassName: React.ComponentProps<"svg">["className"] = "w-auto h-[2.25rem] pointer-events-none"
 
 export function Social() {
-    const $isToolBoxOpen = useStore(isToolBoxOpen)
-    return <div className={BoxClassName} onClick={() => isToolBoxOpen.set(!$isToolBoxOpen)}>
-        <IconSocial className={SvgClassName} style={{color: $isToolBoxOpen ? ActiveColor : InactiveColor}}/>
+    const [message, setMessage] = useState('');
+    const timer = useRef<ReturnType<typeof setTimeout>>();
+    useEffect(() => () => clearTimeout(timer.current), []);
+    const handleCopy = async () => {
+        const copied = await copyCurrentLink();
+        setMessage(copied ? '链接复制成功' : '复制失败，请复制地址栏链接');
+        clearTimeout(timer.current);
+        timer.current = setTimeout(() => setMessage(''), 2400);
+    };
+    return <div className={BoxClassName}>
+        <button type="button" aria-label="复制当前网页链接"
+                className="w-full h-full flex items-center justify-center" onClick={handleCopy}>
+            <IconSocial className={SvgClassName} style={{color: message ? ActiveColor : InactiveColor}}/>
+        </button>
+        {message && <div role="status" aria-live="polite"
+            className="absolute top-[calc(100%+1rem)] right-0 z-[60] flex items-center gap-3 px-5 py-3 border-l-2 border-ark-gold bg-[#171717]/95 text-[#dedede] font-benderRegular text-[clamp(12px,1rem,16px)] tracking-wider whitespace-nowrap pointer-events-none shadow-[0_6px_24px_rgba(0,0,0,0.35)]"
+            style={{ clipPath: 'polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 0 100%)' }}>
+            <svg className="w-[1.1em] h-[1.1em] text-ark-gold" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d={message === '链接复制成功' ? 'M4 10l4 4 8-8' : 'M10 4v7m0 3v2'} stroke="currentColor" strokeWidth="1.5"/>
+            </svg>
+            {message}
+        </div>}
     </div>
 }
 

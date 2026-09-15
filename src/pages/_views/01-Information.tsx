@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useStore } from "@nanostores/react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import type { Swiper as SwiperInstance } from 'swiper';
+import { navigateRoute, useHashRoute } from '../../components/useHashRoute';
+import { parseRoute, routeSegment } from '../../utils/hash-route';
 import { Scrollbar, Autoplay } from "swiper/modules";
 import { motion, AnimatePresence, type Transition } from "framer-motion";
 // 引入 framer-motion 处理复杂动效
@@ -205,9 +208,11 @@ function BreakingNewsList() {
    */
   const [category, setCategory] = useState([] as string[]);
   const [data, setData] = useState(
-    [] as { name: string; list: BreakingNewsItemProps[] }[]
+    [] as { id: string; name: string; list: BreakingNewsItemProps[] }[]
   );
-  const [categoryIndex, setCategoryIndex] = useState(0);
+  const route = useHashRoute();
+  const categoryIndex = Math.max(0, data.findIndex(item => route.section === 'information' && (item.id === route.segments[0] || item.name === route.segments[0])));
+  const setCategoryIndex = (index: number) => navigateRoute('information', [data[index].id], route.section === 'information' ? route.params : {});
 
   useEffect(() => {
     fetch(base + "world/breaking-news.json")
@@ -319,6 +324,16 @@ function SwiperBody({
     () => arknightsConfig.rootPage.INFORMATION.swiper.data,
     []
   );
+  const route = useHashRoute();
+  const [swiper, setSwiper] = useState<SwiperInstance | null>(null);
+  const targetIndex = Math.max(0, data.findIndex(item => routeSegment(item.subtitle ?? item.title) === route.params.slide));
+  useEffect(() => {
+    if (route.section === 'information' && swiper && !swiper.destroyed && swiper.activeIndex !== targetIndex) swiper.slideTo(targetIndex);
+  }, [swiper, targetIndex, route.section]);
+  useEffect(() => {
+    if (!swiper || swiper.destroyed) return;
+    if (active) swiper.autoplay?.start(); else swiper.autoplay?.stop();
+  }, [swiper, active]);
 
   return (
     <div
@@ -326,6 +341,8 @@ function SwiperBody({
             ${active ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"}`}
     >
       <Swiper
+        onSwiper={setSwiper}
+        initialSlide={targetIndex}
         className="w-full h-full"
         modules={[Autoplay, Scrollbar]}
         autoplay={arknightsConfig.rootPage.INFORMATION.swiper.autoplay ?? true}
@@ -334,7 +351,13 @@ function SwiperBody({
           hide: false,
           draggable: true,
         }}
-        onSlideChange={(e) => setSwiperIndex(e.activeIndex)}
+        onSlideChange={(e) => {
+          setSwiperIndex(e.activeIndex);
+          const latest = parseRoute(window.location.hash);
+          if (active && latest.section === 'information') {
+            navigateRoute('information', latest.segments, { ...latest.params, slide: routeSegment(data[e.activeIndex].subtitle ?? data[e.activeIndex].title) }, true);
+          }
+        }}
       >
         {data.map(({ title, subtitle, href, image }, index) => (
           <SwiperSlide key={index}>

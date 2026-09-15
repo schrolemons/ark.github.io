@@ -209,111 +209,54 @@ class Particle {
 
 /** Logo图片类 */
 class LogoImg {
-  src: string;
-  name: string;
-  particleData: Particle[];
-  isLoaded: boolean;
-  constructor(src: string, name: string) {
-    this.src = src;
-    this.name = name;
-    this.particleData = [];
-    this.isLoaded = false;
-
-    if (src.endsWith(".svg")) {
-      this.loadSVG(src);
-    } else {
-      this.loadImage(src);
-    }
-  }
-
-  loadImage(src: string) {
-    let img = new Image();
-    img.crossOrigin = "";
-    img.src = src;
-    img.onload = () => {
-      const tmp_canvas = document.createElement("canvas");
-      const tmp_ctx = tmp_canvas.getContext("2d");
-      const imgW = width * scale;
-      const imgH = ~~(width * (img.height / img.width) * scale);
-      tmp_canvas.width = imgW;
-      tmp_canvas.height = imgH;
-      tmp_ctx?.drawImage(img, 0, 0, imgW, imgH);
-      const imgData = tmp_ctx?.getImageData(0, 0, imgW, imgH).data;
-      tmp_ctx?.clearRect(0, 0, imgW, imgH);
-
-      for (let y = 0; y < imgH; y += ParticleDensity) {
-        for (let x = 0; x < imgW; x += ParticleDensity) {
-          const index = (x + y * imgW) * 4;
-          const r = imgData![index];
-          const g = imgData![index + 1];
-          const b = imgData![index + 2];
-          const a = imgData![index + 3];
-          const brightness = Math.max(r, g, b);
-          if (brightness >= brightnessThreshold && a >= alphaThreshold) {
-            const offsetX = (Math.random() * 2 - 1) / scale;
-            const offsetY = (Math.random() * 2 - 1) / scale;
-            const particle = new Particle(
-              x / scale + offsetX,
-              y / scale + offsetY,
-              animateTime,
-              [r, g, b, a]
-            );
-            this.particleData.push(particle);
-          }
-        }
-      }
-      window.dispatchEvent(
-        new CustomEvent("logoImageLoaded", { detail: { name: this.name } })
-      );
-    };
-  }
-
-  loadSVG(src: string) {
-    fetch(src)
-      .then((response) => response.text())
-      .then((svgText) => {
-        const svg = new Blob([svgText], { type: "image/svg+xml" });
-        const url = URL.createObjectURL(svg);
-        const img = new Image();
-        img.src = url;
-        img.onload = () => {
-          const tmp_canvas = document.createElement("canvas");
-          const tmp_ctx = tmp_canvas.getContext("2d");
-          const imgW = width * scale;
-          const imgH = ~~(width * (img.height / img.width) * scale);
-          tmp_canvas.width = imgW;
-          tmp_canvas.height = imgH;
-          tmp_ctx?.drawImage(img, 0, 0, imgW, imgH);
-          const imgData = tmp_ctx?.getImageData(0, 0, imgW, imgH).data;
-          tmp_ctx?.clearRect(0, 0, imgW, imgH);
-
-          for (let y = 0; y < imgH; y += ParticleDensity) {
-            for (let x = 0; x < imgW; x += ParticleDensity) {
-              const index = (x + y * imgW) * 4;
-              const r = imgData![index];
-              const g = imgData![index + 1];
-              const b = imgData![index + 2];
-              const a = imgData![index + 3];
-              const sum = r + g + b + a;
-              if (sum >= 100) {
-                const offsetX = (Math.random() * 2 - 1) / scale;
-                const offsetY = (Math.random() * 2 - 1) / scale;
-                const particle = new Particle(
-                  x / scale + offsetX,
-                  y / scale + offsetY,
-                  animateTime,
-                  [r, g, b, a]
-                );
-                this.particleData.push(particle);
+  particleData: Particle[] = [];
+  isLoaded = false;
+  ready: Promise<void>;
+  constructor(public src: string, public name: string) {
+    this.ready = new Promise((resolve, reject) => {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        try {
+          // Sample at display resolution; cap the number of particles per shape.
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = Math.min(600, Math.round(width * img.height / img.width));
+          const ctx = canvas.getContext('2d', { willReadFrequently: true })!;
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+          const points: Particle[] = [];
+          for (let y = 0; y < canvas.height; y += 3) {
+            for (let x = 0; x < canvas.width; x += 3) {
+              const i = (x + y * canvas.width) * 4;
+              const color = Array.from(data.slice(i, i + 4));
+              if (Math.max(...color.slice(0, 3)) >= brightnessThreshold && color[3] >= alphaThreshold) {
+                points.push(new Particle(x, y, animateTime, color));
               }
             }
           }
-          window.dispatchEvent(
-            new CustomEvent("logoImageLoaded", { detail: { name: this.name } })
-          );
-        };
-      });
+          const step = Math.max(1, Math.ceil(points.length / 4000));
+          this.particleData = points.filter((_, index) => index % step === 0);
+          this.isLoaded = true;
+          resolve();
+        } catch (error) { reject(error); }
+      };
+      img.onerror = () => reject(new Error('Unable to load particle image: ' + src));
+      img.src = src;
+    });
   }
+}
+
+const logoCache = new Map<string, LogoImg>();
+function getLogo(src: string) {
+  const key = src + ':' + brightnessThreshold + ':' + alphaThreshold;
+  let logo = logoCache.get(key);
+  if (!logo) {
+    logo = new LogoImg(src, src);
+    logoCache.set(key, logo);
+    logo.ready.catch(() => logoCache.delete(key));
+  }
+  return logo;
 }
 
 // 画布类
@@ -339,6 +282,7 @@ class ParticleCanvas {
   private animationFrameId: number | null = null;
   private scale: number;
   private exitAnimationDuration: number = 1000; // 离场动画持续时间
+  private exitTimer?: ReturnType<typeof setTimeout>;
   private newImageDelay: number = 100; // 新图片加载延迟
   private isExiting: boolean = false;
   private nextLogo: LogoImg | null = null;
@@ -408,7 +352,8 @@ class ParticleCanvas {
       particle.exitVy = Math.sin(angle) * speed;
     });
 
-    setTimeout(() => {
+    clearTimeout(this.exitTimer);
+    this.exitTimer = setTimeout(() => {
       if (this.nextLogo) {
         this.loadNewImage(this.nextLogo);
         this.nextLogo = null;
@@ -526,6 +471,7 @@ class ParticleCanvas {
   }
 
   stop() {
+    clearTimeout(this.exitTimer);
     if (this.animationFrameId) {
       window.cancelAnimationFrame(this.animationFrameId);
       this.animationFrameId = null;
@@ -577,151 +523,42 @@ const ParticleFactory: React.FC<ParticleSystemProps> = ({
   alphaThreshold: initialAlphaThreshold,
   debug = false,
 }) => {
-  const [activeLogo, setActiveLogo] = useState<LogoImg | null>(null);
-  const [logoImgs, setLogoImgs] = useState<LogoImg[]>([]);
-  const [particleCanvas, setParticleCanvas] = useState<ParticleCanvas | null>(
-    null
-  );
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particleCanvasRef = useRef<ParticleCanvas | null>(null);
+  const [particleCanvas, setParticleCanvas] = useState<ParticleCanvas | null>(null);
 
-  // 初始化效果
   useEffect(() => {
-    // 如果提供了 imageUrl，则创建一个临时的 LogoImg 对象
-    const newLogoImgs = imageUrl
-      ? [new LogoImg(imageUrl, "dynamic")]
-      : logos.map((item) => new LogoImg(item.url, item.label));
-    setLogoImgs(newLogoImgs);
-
-    if (canvasRef.current) {
-      const particleAreaWidth = width / 3;
-      const particleAreaHeight = height / 2;
-
-      if (particleCanvas) {
-        particleCanvas.stop();
-      }
-
-      const newParticleCanvas = new ParticleCanvas(
-        canvasRef.current,
-        particleAreaWidth,
-        particleAreaHeight,
-        isGrayscale,
-        particleAreaX,
-        particleAreaY,
-        initialScale
-      );
-      setParticleCanvas(newParticleCanvas);
-      particleCanvasRef.current = newParticleCanvas;
-      newParticleCanvas.debug = debug;
-      if (initialBrightnessThreshold !== undefined) {
-        newParticleCanvas.setBrightnessThreshold(initialBrightnessThreshold);
-      }
-      if (initialAlphaThreshold !== undefined) {
-        newParticleCanvas.setAlphaThreshold(initialAlphaThreshold);
-      }
-      newParticleCanvas.drawCanvas();
-
-      // 将 ParticleCanvas 实例暴露到全局对象
-      (window as any).particleCanvas = newParticleCanvas;
-
-      // 添加控制台指令
-      (window as any).changeLogoByLabel = (label: string) => {
-        const selectedLogo = newLogoImgs.find((logo) => logo.name === label);
-        if (selectedLogo) {
-          newParticleCanvas.changeImg(selectedLogo);
-          console.log(`切换到标签: ${label}`);
-        } else {
-          console.log(`未找到标签: ${label}`);
-        }
-      };
-    }
-
+    if (!canvasRef.current) return;
+    const instance = new ParticleCanvas(canvasRef.current, width / 3, height / 2,
+      isGrayscale, particleAreaX, particleAreaY, initialScale);
+    instance.debug = debug;
+    if (initialBrightnessThreshold !== undefined) instance.setBrightnessThreshold(initialBrightnessThreshold);
+    if (initialAlphaThreshold !== undefined) instance.setAlphaThreshold(initialAlphaThreshold);
+    setParticleCanvas(instance);
+    instance.drawCanvas();
+    (window as any).particleCanvas = instance;
     return () => {
-      if (particleCanvas) {
-        particleCanvas.stop();
-      }
-      // 清理全局对象
-      delete (window as any).particleCanvas;
-      delete (window as any).changeLogoByLabel;
+      // Dispose the instance created by THIS effect, never a stale state closure.
+      instance.stop();
+      if ((window as any).particleCanvas === instance) delete (window as any).particleCanvas;
     };
-  }, [
-    width,
-    height,
-    isGrayscale,
-    particleAreaX,
-    particleAreaY,
-    initialScale,
-    initialBrightnessThreshold,
-    initialAlphaThreshold,
-    debug,
-    imageUrl,
-  ]);
+  }, [width, height, particleAreaX, particleAreaY, initialScale, debug, initialBrightnessThreshold, initialAlphaThreshold]);
 
-  // 处理 activeLabel 或 imageUrl 变化
   useEffect(() => {
-    if ((activeLabel || imageUrl) && logoImgs.length > 0 && particleCanvas) {
-      // 如果提供了 imageUrl，优先使用它
-      const targetLabel = imageUrl ? "dynamic" : activeLabel;
-      const selectedLogo = logoImgs.find((logo) => logo.name === targetLabel);
-      if (selectedLogo && selectedLogo.isLoaded) {
-        particleCanvas.changeImg(selectedLogo);
-      } else if (selectedLogo && !selectedLogo.isLoaded) {
-        // 如果图片还没加载完成，等待加载完成后切换
-        const handleImageLoad = (event: Event) => {
-          if ((event as CustomEvent).detail.name === targetLabel) {
-            particleCanvas?.changeImg(selectedLogo);
-          }
-        };
-        window.addEventListener("logoImageLoaded", handleImageLoad);
-        return () =>
-          window.removeEventListener("logoImageLoaded", handleImageLoad);
-      }
-    }
-  }, [activeLabel, imageUrl, logoImgs, particleCanvas]);
+    if (!particleCanvas) return;
+    let cancelled = false;
+    const src = imageUrl ?? logos.find(logo => logo.label === activeLabel)?.url ?? logos[0].url;
+    const logo = getLogo(src);
+    logo.ready.then(() => {
+      if (!cancelled) particleCanvas.changeImg(logo);
+    }).catch(error => { if (!cancelled) console.error(error); });
+    return () => { cancelled = true; };
+  }, [imageUrl, activeLabel, particleCanvas]);
 
-  // 处理 Logo 点击
-  const handleLogoClick = (logoItem: LogoImg) => {
-    setActiveLogo(logoItem);
-    if (particleCanvas) {
-      particleCanvas.changeImg(logoItem);
-    }
-  };
+  useEffect(() => { particleCanvas?.setGrayscale(isGrayscale); }, [isGrayscale, particleCanvas]);
 
-  // 设置 Logo
-  useEffect(() => {
-    if (logoImgs.length > 0 && particleCanvas) {
-      const targetLabel = imageUrl ? "dynamic" : activeLabel;
-      const defaultLogo = logoImgs.find((logo) => logo.name === targetLabel);
-      if (defaultLogo) {
-        handleLogoClick(defaultLogo);
-      } else {
-        console.log(`logo not found`);
-      }
-    }
-  }, [logoImgs, particleCanvas, activeLabel, imageUrl]);
-
-  // 处理灰度模式变化
-  useEffect(() => {
-    if (particleCanvas) {
-      particleCanvas.setGrayscale(isGrayscale);
-    }
-  }, [isGrayscale, particleCanvas]);
-
-  // 切换调试模式
-  const toggleDebug = () => {
-    if (particleCanvas) {
-      particleCanvas.toggleDebug();
-    }
-  };
-
-  return (
-    <div
-      className="particle-system"
-      style={{ width: `${width}px`, height: `${height}px` }}
-    >
-      <canvas ref={canvasRef} width={width} height={height}></canvas>
-    </div>
-  );
+  return <div className="particle-system" style={{ width, height }} aria-hidden="true">
+    <canvas ref={canvasRef} width={width} height={height} />
+  </div>;
 };
 
 export default ParticleFactory;

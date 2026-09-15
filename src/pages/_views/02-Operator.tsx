@@ -12,6 +12,7 @@ import {
   readyToTouch,
 } from "../../components/store/rootLayoutStore.ts";
 import { directions } from "../../components/store/lineDecoratorStore";
+import { navigateRoute, useHashRoute } from "../../components/useHashRoute";
 
 // -scss
 
@@ -22,7 +23,10 @@ export default function Operator() {
   const $viewIndex = useStore(viewIndex);
   const $readyToTouch = useStore(readyToTouch);
   const [active, setActive] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const route = useHashRoute();
+  const currentIndex = Math.max(0, arknightsConfig.rootPage.OPERATOR.data.findIndex(op =>
+    route.section === 'operator' && (op.id === route.segments[0] || op.cnName === route.segments[0])));
+  const setCurrentIndex = (index: number) => navigateRoute('operator', [arknightsConfig.rootPage.OPERATOR.data[index].id]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [logoVisible, setLogoVisible] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -116,6 +120,8 @@ export default function Operator() {
           <motion.img
             key={currentOp.id + "_bg" + active+currentIndex}
             src={currentOp.fullbody}
+            alt=""
+            style={currentOp.id === 'lifeng' ? { height: '110%', top: '12%', right: '0%' } : undefined}
             initial={{
               opacity: 0,
               x: 400,
@@ -146,6 +152,8 @@ export default function Operator() {
           <motion.img
             key={currentOp.id + currentIndex}
             src={currentOp.fullbody}
+            alt={currentOp.cnName}
+            style={currentOp.id === 'lifeng' ? { height: '90%', bottom: '-5rem', right: '20%' } : undefined}
             initial={{ opacity: 0, x: 600, scale: 1 }}
             animate={{ 
               opacity: 1, 

@@ -38,8 +38,8 @@ export async function GET({params, request}: APIContext) {
 
     return new Response(JSON.stringify([
 
-        {name: "世界观", list: getItemsByCategory("世界观")},
-        {name: "事件", list: getItemsByCategory("事件")},
-        {name: "微故事", list: getItemsByCategory("微故事")},
+        {id: "world_view", name: "世界观", list: getItemsByCategory("世界观")},
+        {id: "events", name: "事件", list: getItemsByCategory("事件")},
+        {id: "short_stories", name: "微故事", list: getItemsByCategory("微故事")},
     ]));
 }

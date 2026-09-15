@@ -11,12 +11,12 @@ export const isScrollLocked = atom(false);
 
 export function viewIndexSetNext() {
     const viewIndexNow = viewIndex.get()
-    if (viewIndexNow < arknightsConfig.navbar.items.length - 1) viewIndex.set(viewIndexNow + 1)
+    if (viewIndexNow < arknightsConfig.navbar.items.length - 1) location.hash = arknightsConfig.navbar.items[viewIndexNow + 1].href.split('#')[1]
 }
 
 export function viewIndexSetPrev() {
     const viewIndexNow = viewIndex.get()
-    if (viewIndexNow > 0) viewIndex.set(viewIndexNow - 1)
+    if (viewIndexNow > 0) location.hash = arknightsConfig.navbar.items[viewIndexNow - 1].href.split('#')[1]
 }
 
 export const isNavMenuOpen = atom<boolean>(false)

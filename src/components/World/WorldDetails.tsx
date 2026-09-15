@@ -13,6 +13,7 @@ interface WorldItem {
 }
 
 interface WorldDetailsProps {
+  active?: boolean;
   item?: WorldItem;
   onBack: () => void;
   onPrevious: () => void;
@@ -23,6 +24,7 @@ interface WorldDetailsProps {
 const items = config.rootPage.WORLD!.items;
 
 export default function WorldDetails({
+  active = true,
   item,
   onBack,
   onPrevious,
@@ -51,17 +53,18 @@ export default function WorldDetails({
           关键修改：移除 key={item.imageUrl} 
           这样AshParticles组件将保持挂载状态，可以利用内部的useEffect来处理图片切换和平滑过渡
       */}
-      <AshParticles particleImageUrl={item.imageUrl} count={35} />
+      {active && <AshParticles particleImageUrl={item.imageUrl} count={35} />}
 
       {/* 内容层 */}
       <motion.div className="absolute inset-0 z-[3] pointer-events-none">
-        <div className="absolute top-1/2 -translate-y-1/2 right-[10%] w-[40%] max-w-[600px] flex flex-col pointer-events-auto pl-8 border-l border-white/30">
+        <div className="absolute top-1/2 -translate-y-1/2 right-[10%] w-[40%] max-w-[600px] flex flex-col pointer-events-auto pl-8 border-l border-white/30 portrait:top-[34%] portrait:bottom-[17%] portrait:translate-y-0 portrait:left-[9%] portrait:right-auto portrait:w-[74%] portrait:overflow-y-auto portrait:pr-4 portrait:bg-[#171717]/80"
+          onWheel={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()} onTouchEnd={e => e.stopPropagation()}>
           {/* 装饰线 */}
           <div className="absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-transparent via-white/50 to-transparent" />
 
           <motion.div
             key={`title-${item.title}`}
-            className="text-[4rem] font-bold leading-none text-white drop-shadow-lg w-[60%]"
+            className="text-[4rem] font-bold leading-none text-white drop-shadow-lg w-[60%] portrait:w-full"
             variants={textVariants}
             initial="initial"
             animate="animate"
@@ -72,7 +75,7 @@ export default function WorldDetails({
 
           <motion.div
             key={`subtitle-${item.title}`}
-            className="text-[2rem] font-n15eBold text-ark-blue mt-2 mb-6 w-[60%]"
+            className="text-[2rem] font-n15eBold text-ark-blue mt-2 mb-6 w-[60%] portrait:w-full"
             variants={textVariants}
             initial="initial"
             animate="animate"
@@ -83,7 +86,7 @@ export default function WorldDetails({
 
           <motion.div
             key={`desc-${item.title}`}
-            className="text-[1rem] leading-relaxed text-gray-200 w-[60%]"
+            className="text-[1rem] leading-relaxed text-gray-200 w-[60%] portrait:w-full portrait:text-[1.75rem]"
             variants={textVariants}
             initial="initial"
             animate="animate"
@@ -100,6 +103,8 @@ export default function WorldDetails({
         {/* 导航按钮 (左右箭头) */}
         <div className="pointer-events-auto">
           <motion.a
+            role="button" aria-label="上一条设定" tabIndex={0}
+            onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPrevious(); } }}
             className="absolute left-[5%] top-1/2 -translate-y-1/2 p-4 cursor-pointer hover:bg-white/10 rounded-full transition-colors z-[10] origin-center"
             onClick={(e) => {
               e.preventDefault();
@@ -110,6 +115,8 @@ export default function WorldDetails({
           </motion.a>
 
           <motion.a
+            role="button" aria-label="下一条设定" tabIndex={0}
+            onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNext(); } }}
             className="absolute right-[15%] top-1/2 -translate-y-1/2 p-4 cursor-pointer hover:bg-white/10 rounded-full transition-colors z-[10] origin-center"
             onClick={(e) => {
               e.preventDefault();

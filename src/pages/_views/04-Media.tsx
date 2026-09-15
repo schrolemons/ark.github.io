@@ -8,6 +8,7 @@ import {
 } from "../../components/store/rootLayoutStore.ts";
 import { directions } from "../../components/store/lineDecoratorStore";
 import GalleryDetails from "./components/GalleryDetails.tsx"; // 引入刚才创建的组件
+import { navigateRoute, useHashRoute } from "../../components/useHashRoute";
 
 // 定义子分类类型
 type Category = "books" | "visual_archive" | "web_modules" | "Query_matrix";
@@ -67,15 +68,15 @@ const HIT_AREAS = [
     position: "top-[37%] left-[18%] w-[160px] h-[160px]",
   },
   {
-    id: "gallery" as Category,
+    id: "visual_archive" as Category,
     position: "top-[0%] left-[25%] w-[180px] h-[180px]",
   },
   {
-    id: "operator" as Category,
+    id: "web_modules" as Category,
     position: "top-[17%] left-[65%] w-[180px] h-[180px]",
   },
   {
-    id: "video" as Category,
+    id: "Query_matrix" as Category,
     position: "top-[60%] left-[57%] w-[200px] h-[200px]",
   },
 ];
@@ -84,10 +85,16 @@ export default function Media() {
   const $viewIndex = useStore(viewIndex);
   const $readyToTouch = useStore(readyToTouch);
   const [active, setActive] = useState(false);
-  const [currentCat, setCurrentCat] = useState<Category>("books");
+  const route = useHashRoute();
+  const currentCat = CATEGORIES.find(c => route.section === 'media' && c.id === route.segments[0])?.id ?? 'books';
+  const setCurrentCat = (category: Category) => navigateRoute('media', [category]);
 
   // 控制是否显示图集详情的状态
-  const [showGallery, setShowGallery] = useState(false);
+  const showGallery = currentCat === 'visual_archive' && !!route.segments[1];
+  useEffect(() => {
+    isScrollLocked.set($viewIndex === 4 && showGallery);
+    return () => isScrollLocked.set(false);
+  }, [$viewIndex, showGallery]);
 
   useEffect(() => {
     const isActive = $viewIndex === 4 && $readyToTouch;
@@ -110,10 +117,9 @@ export default function Media() {
   // 处理详情按钮点击
   const handleDetailClick = () => {
     if (currentCat === "visual_archive") {
-      setShowGallery(true);
-      isScrollLocked.set(true); // 锁定主页面滚动
+      navigateRoute('media', ['visual_archive', 'Starry Sky']);
     } else if (currentCat === "books") {
-      window.open("http://zero.sch-nie.com/download/bluesea.pdf", "_blank");
+      window.open("http://zero.sch-nie.com/download/seablue.pdf", "_blank");
     } else if (currentCat === "Query_matrix") {
       window.open("https://zero.sch-nie.com/categories/tests/", "_blank");
     } else if (currentCat === "web_modules") {
@@ -126,8 +132,7 @@ export default function Media() {
 
   // 处理从详情页返回
   const handleBackFromGallery = () => {
-    setShowGallery(false);
-    isScrollLocked.set(false); // 解锁主页面滚动
+    navigateRoute('media', ['visual_archive']);
   };
 
   const activeData = CATEGORIES.find((c) => c.id === currentCat)!;
@@ -352,7 +357,7 @@ export default function Media() {
 
         {/* --- 第二屏：Gallery 详情 (高度 50% = 100vh) --- */}
         <div className="w-full h-[50%] relative">
-          <GalleryDetails onBack={handleBackFromGallery} />
+          <GalleryDetails onBack={handleBackFromGallery} active={active && showGallery} />
         </div>
       </div>
     </div>
