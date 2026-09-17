@@ -10,7 +10,7 @@ fs.mkdirSync('.screens', { recursive: true });
 const base = process.env.TEST_URL || 'http://127.0.0.1:4321/';
 const go = async hash => {
   await page.goto(base + hash);
-  await page.getByRole('button', { name: '复制当前网页链接' }).waitFor();
+  await page.getByRole('button', { name: '打开个人通行证' }).waitFor();
   await page.waitForTimeout(3800);
 };
 try {
@@ -47,14 +47,8 @@ try {
   assert.ok(sprite.count > 0 && sprite.count <= 4000, JSON.stringify(sprite));
   assert.equal(sprite.src, '/images/03-world/civ-db.svg');
   await page.screenshot({ path: '.screens/world-civ-db.png' });
-  await page.getByRole('button', { name: '复制当前网页链接' }).hover();
-  assert.equal(await page.getByRole('button', { name: '复制当前网页链接' }).getAttribute('title'), null);
-  assert.equal(await page.getByRole('status').count(), 0);
-  await page.getByRole('button', { name: '复制当前网页链接' }).click();
-  await page.getByRole('status').filter({ hasText: '链接复制成功' }).waitFor();
-  assert.equal(await page.evaluate(() => navigator.clipboard.readText()), page.url());
-  assert.equal(await page.getByText('TOOLBOX', { exact: true }).filter({ visible: true }).count(), 0);
-  console.log('PASS clipboard contains exact current deep link, no expanded toolbox');
+  assert.equal(await page.getByRole('button', { name: '复制当前网页链接' }).count(), 0);
+  assert.equal(await page.getByText('TOOLBOX', { exact: true }).count(), 0);
 
   for (const [slug, asset] of [['Fictional_CIV','fictional-civ'], ['Cosmic_MVT','cosmic-mvt'], ['CIV_TRANS','civ-trans'], ['AI_Exist','ai-exist'], ['CIV_TWR','civ-twr'], ['LIFE_MCH','life-mch'], ['UNIV_MCH','univ-mch']]) {
     await page.evaluate(hash => { location.hash = hash; }, '#world/' + slug);
@@ -82,13 +76,7 @@ try {
   assert.ok(await page.locator('.swiper-slide-active').filter({ has: page.locator('a[href="/world/"]') }).count() > 0);
   console.log('PASS information category and English slide link');
 
-  await page.evaluate(() => {
-    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async () => { throw new Error('denied'); } } });
-    document.execCommand = () => false;
-  });
-  await page.getByRole('button', { name: '复制当前网页链接' }).click();
-  await page.getByRole('status').filter({ hasText: '复制失败' }).waitFor();
-  console.log('PASS failed clipboard does not report success');
+
   await page.setViewportSize({width:390,height:844});
   await go('#operator/lifeng');
   await page.screenshot({ path: '.screens/operator-mobile.png' });

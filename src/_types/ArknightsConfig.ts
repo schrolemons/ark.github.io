@@ -42,14 +42,6 @@ export type ArknightsConfig = {
       alt: string;
     };
     items: NavbarItem[];
-    toolbox: {
-      Skland?: string;
-      Bilibili?: string;
-      WeChat?: string;
-      Weibo?: string;
-      TapTap?: string;
-      GitHub?: string;
-    };
     ownerInfo: {
       name?: string;
       slogan?: string;

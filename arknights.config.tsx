@@ -39,13 +39,6 @@ export default {
       { title: "MEDIA", subtitle: "万象", href: base + "#media" },
       { title: "MORE", subtitle: "更多信息", href: base + "#more" },
     ],
-    toolbox: {
-      Bilibili: "https://b23.tv/e1vviXs",
-      WeChat: "https://weixin.qq.com/",
-      Weibo: "https://weibo.com/",
-      TapTap: "https://www.taptap.cn/",
-      GitHub: "https://github.com/schrolemons/arknights.github.io",
-    },
     ownerInfo: {
       name: "SCHNIE.",
       slogan: "遇见不一样的你，遇见更好的自己。",

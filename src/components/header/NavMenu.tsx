@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import {useStore} from "@nanostores/react"
 import type {SubNavigationItem} from "../../_types/SubNavigationItem.ts"
-import {IconArrow, IconBiliBili, IconGitHub, IconSkland, IconTapTap, IconWechat, IconWeibo} from "../SvgIcons"
+import {IconArrow} from "../SvgIcons"
 import {isNavMenuOpen, viewIndex} from "../store/rootLayoutStore.ts"
 import arknightsConfig from "../../../arknights.config.tsx"
 
@@ -85,51 +85,6 @@ function SubNavigation({items, setShowSubNavigation}: {
     </div>
 }
 
-function ToolBox() {
-    const {Skland, Bilibili, WeChat, Weibo, TapTap, GitHub} = arknightsConfig.navbar.toolbox
-    const aClassName: string = "text-inherit flex-none cursor-pointer"
-    const iconClassName: string = "h-auto m-auto pointer-events-none"
-
-    return <div className={"mt-auto pr-9 pb-[4.5rem] pl-[3.375rem]"}>
-        <div className={"text-[1.5rem] font-benderBold flex items-center"}>
-            <div className={"w-full min-w-0 h-px mr-4 bg-white bg-opacity-30 flex-auto"}/>
-            TOOLBOX
-        </div>
-        <div className={"mt-4 flex items-center justify-between"}>
-            {
-                GitHub && <a target="_blank" href={GitHub} className={aClassName} aria-label="GitHub">
-                    <IconGitHub className={"w-[3rem] " + iconClassName}/>
-                </a>
-            }
-            {
-                Skland && <a target="_blank" href={Skland} className={aClassName} aria-label="Skland - 森空岛">
-                    <IconSkland className={"w-[4.5rem] " + iconClassName}/>
-                </a>
-            }
-            {
-                Bilibili && <a target="_blank" href={Bilibili} className={aClassName} aria-label="Bilibili - 哔哩哔哩">
-                    <IconBiliBili className={"w-[4.5rem] " + iconClassName}/>
-                </a>
-            }
-            {
-                WeChat && <a target="_blank" href={WeChat} className={aClassName} aria-label="WeChat - 微信">
-                    <IconWechat className={"w-[3rem] " + iconClassName}/>
-                </a>
-            }
-            {
-                Weibo && <a target="_blank" href={Weibo} className={aClassName} aria-label="Weibo - 微博">
-                    <IconWeibo className={"w-[3rem] " + iconClassName}/>
-                </a>
-            }
-            {
-                TapTap && <a target="_blank" href={TapTap} className={aClassName} aria-label="TapTap">
-                    <IconTapTap className={"w-[4.5rem] " + iconClassName}/>
-                </a>
-            }
-        </div>
-    </div>
-}
-
 export function Menu({subNavigationItems}: { subNavigationItems?: SubNavigationItem[] }) {
     const $isNavMenuOpen = useStore(isNavMenuOpen)
     const [showSubNavigation, setShowSubNavigation] = useState(false)
@@ -148,7 +103,6 @@ export function Menu({subNavigationItems}: { subNavigationItems?: SubNavigationI
                     ? <SubNavigation items={subNavigationItems} {...{setShowSubNavigation}}/>
                     : <Navigation {...{showSubNavigation}}/>
             }
-            <ToolBox/>
         </div>
         <div className="w-px h-full absolute top-0 right-[5.75rem] bg-[#4f4f4f]"/>
     </div>

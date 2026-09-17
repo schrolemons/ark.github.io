@@ -6,7 +6,6 @@ import Scrollbar from "../_styles/Scrollbar.astro"
 import ResponsiveFontSize from "../components/ResponsiveFontSize.astro"
 import Header from "../components/header/Header.astro"
 import {Menu} from "../components/header/NavMenu"
-import ToolBox from "../components/ToolBox"
 import OwnerInfo from "../components/OwnerInfo"
 import {SvgDefs} from "../components/SvgIcons"
 
@@ -41,7 +40,6 @@ const {lang, title, description, subNavigationItems} = Astro.props
         <Header/>
         <slot/>
         <Menu client:only="react" {...{subNavigationItems}}/>
-        <ToolBox client:load/>
         <OwnerInfo client:load/>
     </div>
   </div>

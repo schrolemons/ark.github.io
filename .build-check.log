@@ -1,0 +1,305 @@
+
+> astro-arknights@0.0.1 build
+> astro check && astro build
+
+23:26:40 [types] Generated 404ms
+23:26:40 [check] Getting diagnostics for Astro files in D:\PERSONAL INFORMATION\网站控制\astro-arknights...
+[96marknights.config.tsx[0m:[93m6[0m:[93m3[0m - [93mwarning[0m[90m ts(6133): [0m'TitleArknights' is declared but its value is never read.
+
+[7m6[0m   TitleArknights,
+[7m [0m [93m  ~~~~~~~~~~~~~~[0m
+[96marknights.config.tsx[0m:[93m3[0m:[93m3[0m - [93mwarning[0m[90m ts(6133): [0m'CopyrightMini' is declared but its value is never read.
+
+[7m3[0m   CopyrightMini,
+[7m [0m [93m  ~~~~~~~~~~~~~[0m
+
+[96msrc/_styles/FontFace.astro[0m:[93m7[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'base' is declared but its value is never read.
+
+[7m7[0m const base = import.meta.env.BASE_URL
+[7m [0m [93m      ~~~~[0m
+
+[96msrc/components/DemoSubNavigationItems.ts[0m:[93m4[0m:[93m11[0m - [93mwarning[0m[90m ts(6133): [0m'item' is declared but its value is never read.
+
+[7m4[0m     .map((item, index): SubNavigationItem => ({title: `子导航项 - ${index}`, href: ""}))
+[7m [0m [93m          ~~~~[0m
+
+[96msrc/components/DocsCollectionsUtils.tsx[0m:[93m24[0m:[93m63[0m - [93mwarning[0m[90m ts(6133): [0m'index' is declared but its value is never read.
+
+[7m24[0m     return allDocs.map(({ id, slug, body, collection, data }, index) => ({
+[7m  [0m [93m                                                              ~~~~~[0m
+[96msrc/components/DocsCollectionsUtils.tsx[0m:[93m24[0m:[93m43[0m - [93mwarning[0m[90m ts(6133): [0m'collection' is declared but its value is never read.
+
+[7m24[0m     return allDocs.map(({ id, slug, body, collection, data }, index) => ({
+[7m  [0m [93m                                          ~~~~~~~~~~[0m
+[96msrc/components/DocsCollectionsUtils.tsx[0m:[93m24[0m:[93m37[0m - [93mwarning[0m[90m ts(6133): [0m'body' is declared but its value is never read.
+
+[7m24[0m     return allDocs.map(({ id, slug, body, collection, data }, index) => ({
+[7m  [0m [93m                                    ~~~~[0m
+[96msrc/components/DocsCollectionsUtils.tsx[0m:[93m14[0m:[93m46[0m - [93mwarning[0m[90m ts(6133): [0m'array' is declared but its value is never read.
+
+[7m14[0m     return slug.split("/").map((item, index, array) => {
+[7m  [0m [93m                                             ~~~~~[0m
+[96msrc/components/DocsCollectionsUtils.tsx[0m:[93m14[0m:[93m39[0m - [93mwarning[0m[90m ts(6133): [0m'index' is declared but its value is never read.
+
+[7m14[0m     return slug.split("/").map((item, index, array) => {
+[7m  [0m [93m                                      ~~~~~[0m
+
+[96msrc/components/DocsLeftAside.astro[0m:[93m15[0m:[93m92[0m - [93mwarning[0m[90m ts(6133): [0m'array' is declared but its value is never read.
+
+[7m15[0m                 <a target="_self" href={base + "docs/" + slug.split("/").map((item, index, array) => {
+[7m  [0m [93m                                                                                           ~~~~~[0m
+[96msrc/components/DocsLeftAside.astro[0m:[93m15[0m:[93m85[0m - [93mwarning[0m[90m ts(6133): [0m'index' is declared but its value is never read.
+
+[7m15[0m                 <a target="_self" href={base + "docs/" + slug.split("/").map((item, index, array) => {
+[7m  [0m [93m                                                                                    ~~~~~[0m
+[96msrc/components/DocsLeftAside.astro[0m:[93m12[0m:[93m55[0m - [93mwarning[0m[90m ts(6133): [0m'index' is declared but its value is never read.
+
+[7m12[0m     {allDocs.map(({id, slug, body, collection, data}, index) =>
+[7m  [0m [93m                                                      ~~~~~[0m
+[96msrc/components/DocsLeftAside.astro[0m:[93m12[0m:[93m36[0m - [93mwarning[0m[90m ts(6133): [0m'collection' is declared but its value is never read.
+
+[7m12[0m     {allDocs.map(({id, slug, body, collection, data}, index) =>
+[7m  [0m [93m                                   ~~~~~~~~~~[0m
+[96msrc/components/DocsLeftAside.astro[0m:[93m12[0m:[93m30[0m - [93mwarning[0m[90m ts(6133): [0m'body' is declared but its value is never read.
+
+[7m12[0m     {allDocs.map(({id, slug, body, collection, data}, index) =>
+[7m  [0m [93m                             ~~~~[0m
+
+[96msrc/components/Init.tsx[0m:[93m17[0m:[93m30[0m - [93mwarning[0m[90m ts(6133): [0m'setLoadingResources' is declared but its value is never read.
+
+[7m17[0m     const [loadingResources, setLoadingResources] = useState<Set<string>>(new Set());
+[7m  [0m [93m                             ~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/Init.tsx[0m:[93m17[0m:[93m12[0m - [93mwarning[0m[90m ts(6133): [0m'loadingResources' is declared but its value is never read.
+
+[7m17[0m     const [loadingResources, setLoadingResources] = useState<Set<string>>(new Set());
+[7m  [0m [93m           ~~~~~~~~~~~~~~~~[0m
+[96msrc/components/Init.tsx[0m:[93m11[0m:[93m24[0m - [93mwarning[0m[90m ts(6133): [0m'setIsPortrait' is declared but its value is never read.
+
+[7m11[0m     const [isPortrait, setIsPortrait] = useState(false);
+[7m  [0m [93m                       ~~~~~~~~~~~~~[0m
+[96msrc/components/Init.tsx[0m:[93m8[0m:[93m11[0m - [93mwarning[0m[90m ts(6133): [0m'$readyToTouch' is declared but its value is never read.
+
+[7m8[0m     const $readyToTouch = useStore(readyToTouch);
+[7m [0m [93m          ~~~~~~~~~~~~~[0m
+[96msrc/components/Init.tsx[0m:[93m1[0m:[93m8[0m - [93mwarning[0m[90m ts(6133): [0m'React' is declared but its value is never read.
+
+[7m1[0m import React, { useEffect, useState, useCallback, useRef } from "react";
+[7m [0m [93m       ~~~~~[0m
+
+[96msrc/components/ParticleFactory.tsx[0m:[93m283[0m:[93m11[0m - [93mwarning[0m[90m ts(6133): [0m'scale' is declared but its value is never read.
+
+[7m283[0m   private scale: number;
+[7m   [0m [93m          ~~~~~[0m
+[96msrc/components/ParticleFactory.tsx[0m:[93m16[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'ParticleDensity' is declared but its value is never read.
+
+[7m16[0m const ParticleDensity = 6;
+[7m  [0m [93m      ~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/ScrollTip.tsx[0m:[93m3[0m:[93m20[0m - [93mwarning[0m[90m ts(6133): [0m'LogoRhodesIsland' is declared but its value is never read.
+
+[7m3[0m import {IconArrow, LogoRhodesIsland} from "./SvgIcons";
+[7m [0m [93m                   ~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/World/WorldDetails.tsx[0m:[93m1[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'React' is declared but its value is never read.
+
+[7m1[0m import React from "react";
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/World/WorldOverview.tsx[0m:[93m1[0m:[93m8[0m - [93mwarning[0m[90m ts(6133): [0m'React' is declared but its value is never read.
+
+[7m1[0m import React, { useState } from 'react';
+[7m [0m [93m       ~~~~~[0m
+
+[96msrc/components/header/NavTools.tsx[0m:[93m15[0m:[93m12[0m - [93mwarning[0m[90m ts(6133): [0m'volume' is declared but its value is never read.
+
+[7m15[0m     const [volume, setVolume] = useState(active ? 1 : 0)
+[7m  [0m [93m           ~~~~~~[0m
+
+[96msrc/layouts/DocsLayout.astro[0m:[93m3[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'SubNavigationItem' is declared but its value is never read.
+
+[7m3[0m import type {SubNavigationItem} from "../_types/SubNavigationItem"
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/pages/_views/00-Index.tsx[0m:[93m1[0m:[93m8[0m - [93mwarning[0m[90m ts(6133): [0m'React' is declared but its value is never read.
+
+[7m1[0m import React, {useEffect, useState, useRef} from "react";
+[7m [0m [93m       ~~~~~[0m
+
+[96msrc/pages/_views/01-Information.tsx[0m:[93m1[0m:[93m17[0m - [93mwarning[0m[90m ts(6133): [0m'useCallback' is declared but its value is never read.
+
+[7m1[0m import React, { useCallback, useEffect, useMemo, useState } from "react";
+[7m [0m [93m                ~~~~~~~~~~~[0m
+
+[96msrc/pages/_views/02-Operator.tsx[0m:[93m39[0m:[93m9[0m - [93mwarning[0m[90m ts(6133): [0m'handlePlayVoice' is declared but its value is never read.
+
+[7m39[0m   const handlePlayVoice = async () => {
+[7m  [0m [93m        ~~~~~~~~~~~~~~~[0m
+[96msrc/pages/_views/02-Operator.tsx[0m:[93m24[0m:[93m9[0m - [93mwarning[0m[90m ts(6133): [0m'$readyToTouch' is declared but its value is never read.
+
+[7m24[0m   const $readyToTouch = useStore(readyToTouch);
+[7m  [0m [93m        ~~~~~~~~~~~~~[0m
+[96msrc/pages/_views/02-Operator.tsx[0m:[93m20[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'IconArrow' is declared but its value is never read.
+
+[7m20[0m import {IconArrow} from "../../components/SvgIcons.tsx";
+[7m  [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/pages/_views/02-Operator.tsx[0m:[93m1[0m:[93m8[0m - [93mwarning[0m[90m ts(6133): [0m'React' is declared but its value is never read.
+
+[7m1[0m import React, { useEffect, useState, useMemo, useRef } from "react";
+[7m [0m [93m       ~~~~~[0m
+
+[96msrc/pages/_views/03-World.tsx[0m:[93m15[0m:[93m10[0m - [93mwarning[0m[90m ts(6133): [0m'motion' is declared but its value is never read.
+
+[7m15[0m import { motion, AnimatePresence } from "framer-motion";
+[7m  [0m [93m         ~~~~~~[0m
+[96msrc/pages/_views/03-World.tsx[0m:[93m1[0m:[93m8[0m - [93mwarning[0m[90m ts(6133): [0m'React' is declared but its value is never read.
+
+[7m1[0m import React, { useEffect, useRef, useState, useCallback } from "react";
+[7m [0m [93m       ~~~~~[0m
+
+[96msrc/pages/_views/04-Media.tsx[0m:[93m1[0m:[93m8[0m - [93mwarning[0m[90m ts(6133): [0m'React' is declared but its value is never read.
+
+[7m1[0m import React, { useEffect, useState } from "react";
+[7m [0m [93m       ~~~~~[0m
+
+[96msrc/pages/_views/05-More.tsx[0m:[93m1[0m:[93m8[0m - [93mwarning[0m[90m ts(6133): [0m'React' is declared but its value is never read.
+
+[7m1[0m import React, { useEffect, useMemo, useRef, useState } from "react";
+[7m [0m [93m       ~~~~~[0m
+
+[96msrc/pages/_views/components/GalleryDetails.tsx[0m:[93m38[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'IconUser' is declared but its value is never read.
+
+[7m38[0m const IconUser = () => (
+[7m  [0m [93m      ~~~~~~~~[0m
+[96msrc/pages/_views/components/GalleryDetails.tsx[0m:[93m24[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'IconAudio' is declared but its value is never read.
+
+[7m24[0m const IconAudio = () => (
+[7m  [0m [93m      ~~~~~~~~~[0m
+[96msrc/pages/_views/components/GalleryDetails.tsx[0m:[93m7[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'IconShare' is declared but its value is never read.
+
+[7m7[0m const IconShare = () => (
+[7m [0m [93m      ~~~~~~~~~[0m
+[96msrc/pages/_views/components/GalleryDetails.tsx[0m:[93m1[0m:[93m17[0m - [93mwarning[0m[90m ts(6133): [0m'useState' is declared but its value is never read.
+
+[7m1[0m import React, { useState, useEffect } from "react";
+[7m [0m [93m                ~~~~~~~~[0m
+[96msrc/pages/_views/components/GalleryDetails.tsx[0m:[93m1[0m:[93m8[0m - [93mwarning[0m[90m ts(6133): [0m'React' is declared but its value is never read.
+
+[7m1[0m import React, { useState, useEffect } from "react";
+[7m [0m [93m       ~~~~~[0m
+
+[96msrc/pages/world/breaking-news.json.ts[0m:[93m12[0m:[93m27[0m - [93mwarning[0m[90m ts(6198): [0mAll destructured elements are unused.
+
+[7m12[0m export async function GET({params, request}: APIContext) {
+[7m  [0m [93m                          ~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/utils/clipboard.ts[0m:[93m15[0m:[93m29[0m - [93mwarning[0m[90m ts(6387): [0mThe signature '(commandId: string, showUI?: boolean | undefined, value?: string | undefined): boolean' of 'document.execCommand' is deprecated.
+
+[7m15[0m     try { copied = document.execCommand('copy'); } catch { /* Report failure to the user. */ }
+[7m  [0m [93m                            ~~~~~~~~~~~[0m
+
+Result (70 files): 
+- 0 errors
+- 0 warnings
+- 43 hints
+
+23:26:49 [types] Generated 317ms
+23:26:49 [build] output: "static"
+23:26:49 [build] directory: D:\PERSONAL INFORMATION\网站控制\astro-arknights\dist\
+23:26:49 [build] Collecting build info...
+23:26:49 [build] ✓ Completed in 392ms.
+23:26:49 [build] Building static entrypoints...
+The CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.
+23:26:53 [vite] ✓ built in 3.39s
+23:26:53 [build] ✓ Completed in 3.43s.
+
+ building client (vite) 
+23:26:53 [vite] transforming...
+23:26:55 [vite] ✓ 532 modules transformed.
+23:26:55 [vite] rendering chunks...
+23:26:56 [vite] computing gzip size...
+23:26:56 [vite] dist/_astro/DocsLayoutSlot.BxDo0kv-.css        4.09 kB │ gzip:   1.44 kB
+23:26:56 [vite] dist/_astro/RootPageViews.QMt6kzt9.css        14.34 kB │ gzip:   4.65 kB
+23:26:56 [vite] dist/_astro/hoisted.Bl3RIJY5.js                0.28 kB │ gzip:   0.18 kB
+23:26:56 [vite] dist/_astro/index.BeDIIPIi.js                  0.29 kB │ gzip:   0.23 kB
+23:26:56 [vite] dist/_astro/lineDecoratorStore.CThE1UIQ.js     0.32 kB │ gzip:   0.23 kB
+23:26:56 [vite] dist/_astro/hoisted.BxeQ4LIj.js                0.44 kB │ gzip:   0.28 kB
+23:26:56 [vite] dist/_astro/index.BSdFiPHn.js                  0.52 kB │ gzip:   0.32 kB
+23:26:56 [vite] dist/_astro/DocsToolPanel.D8Fd1ZDz.js          0.64 kB │ gzip:   0.47 kB
+23:26:56 [vite] dist/_astro/DocsLeftAsideSwitch.BlczeGkY.js    0.68 kB │ gzip:   0.48 kB
+23:26:56 [vite] dist/_astro/NavItem.svK64eLK.js                0.69 kB │ gzip:   0.43 kB
+23:26:56 [vite] dist/_astro/jsx-runtime.C9eWo9jt.js            0.92 kB │ gzip:   0.58 kB
+23:26:56 [vite] dist/_astro/ScrollTip.ETkGb4WS.js              0.96 kB │ gzip:   0.51 kB
+23:26:56 [vite] dist/_astro/SvgIcons.BbVm51uz.js               0.98 kB │ gzip:   0.37 kB
+23:26:56 [vite] dist/_astro/LineDecorator.C6-biknD.js          1.06 kB │ gzip:   0.53 kB
+23:26:56 [vite] dist/_astro/GoBackTool.BacYE72r.js             1.16 kB │ gzip:   0.54 kB
+23:26:56 [vite] dist/_astro/NavTools.dShWFGtm.js               1.67 kB │ gzip:   0.93 kB
+23:26:56 [vite] dist/_astro/PageTracker.DRAqHxxG.js            2.30 kB │ gzip:   0.94 kB
+23:26:56 [vite] dist/_astro/OwnerInfo.FOwIGobk.js              3.23 kB │ gzip:   1.30 kB
+23:26:56 [vite] dist/_astro/NavMenu.Dks46pPB.js                3.24 kB │ gzip:   1.36 kB
+23:26:56 [vite] dist/_astro/Init.CUm3FkqG.js                   3.93 kB │ gzip:   1.49 kB
+23:26:56 [vite] dist/_astro/index.B52nOzfP.js                  6.84 kB │ gzip:   2.73 kB
+23:26:56 [vite] dist/_astro/rootLayoutStore.CU29hIeQ.js        7.58 kB │ gzip:   6.64 kB
+23:26:56 [vite] dist/_astro/client.C4rGbYxV.js               135.60 kB │ gzip:  43.80 kB
+23:26:56 [vite] dist/_astro/RootPageViews.B2eJaYV2.js        874.85 kB │ gzip: 273.90 kB
+23:26:56 [WARN] [vite] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+23:26:56 [vite] ✓ built in 2.84s
+
+ generating static routes 
+23:26:56 ▶ src/pages/404.astro
+23:26:56   └─ /404.html (+15ms)
+23:26:56 ▶ src/pages/demo/DocsLayoutSlot.astro
+23:26:56   └─ /demo/DocsLayoutSlot/index.html (+9ms)
+23:26:56 ▶ src/pages/demo/InfoLayoutSlot.astro
+23:26:56   └─ /demo/InfoLayoutSlot/index.html (+7ms)
+23:26:56 ▶ src/pages/demo/RootLayoutSlot.astro
+23:26:56   └─ /demo/RootLayoutSlot/index.html (+6ms)
+23:26:56 ▶ src/pages/docs/[...slug].astro
+23:26:56   ├─ /docs/bulletins/公告/index.html (+13ms)
+23:26:56   ├─ /docs/用户文档/前端初探/index.html (+5ms)
+23:26:56   ├─ /docs/用户文档/项目介绍/index.html (+5ms)
+23:26:56   ├─ /docs/用户文档/快速启动/index.html (+8ms)
+23:26:56   ├─ /docs/用户文档/部署站点/index.html (+7ms)
+23:26:56   ├─ /docs/用户文档/项目结构/index.html (+8ms)
+23:26:56   ├─ /docs/用户文档/开始写作/index.html (+8ms)
+23:26:56   ├─ /docs/开发者文档/gallery组件管理指南/index.html (+9ms)
+23:26:56   └─ /docs/开发者文档/布局/index.html (+8ms)
+23:26:56 ▶ src/pages/docs/index.astro
+23:26:56   └─ /docs/index.html (+6ms)
+23:26:56 ▶ src/pages/index.astro
+23:26:56   └─ /index.html (+6ms)
+23:26:56 ▶ src/pages/operator/[...slug].astro
+23:26:56   ├─ /operator/lifeng/index.html (+10ms)
+23:26:56   ├─ /operator/moxue/index.html (+7ms)
+23:26:56   ├─ /operator/moxue_info/index.html (+6ms)
+23:26:56   └─ /operator/ruifox/index.html (+6ms)
+23:26:56 ▶ src/pages/operator/index.astro
+23:26:56   └─ /operator/index.html (+6ms)
+23:26:56 ▶ src/pages/world/[...slug].astro
+23:26:56   ├─ /world/云末王冕/index.html (+11ms)
+23:26:56   ├─ /world/借以神名/index.html (+6ms)
+23:26:56   ├─ /world/初醒之刻/index.html (+6ms)
+23:26:56   ├─ /world/土奏琴璃/index.html (+7ms)
+23:26:56   ├─ /world/旧神荒圃/index.html (+8ms)
+23:26:56   ├─ /world/昏昼合棋/index.html (+8ms)
+23:26:56   ├─ /world/星源绘逢/index.html (+8ms)
+23:26:56   ├─ /world/烬择浮影/index.html (+8ms)
+23:26:56   ├─ /world/神子之树/index.html (+12ms)
+23:26:56   ├─ /world/终态行旅/index.html (+10ms)
+23:26:56   ├─ /world/草引囚徒/index.html (+10ms)
+23:26:56   ├─ /world/虹九重构/index.html (+13ms)
+23:26:56   ├─ /world/逝时宏鳞/index.html (+7ms)
+23:26:56   ├─ /world/重返故都/index.html (+6ms)
+23:26:56   ├─ /world/雷云之梦/index.html (+8ms)
+23:26:56   └─ /world/风落和鸣/index.html (+13ms)
+23:26:56 λ src/pages/world/breaking-news.json.ts
+23:26:56   └─ /world/breaking-news.json (+2ms)
+23:26:56 ▶ src/pages/world/index.astro
+23:26:56   └─ /world/index.html (+7ms)
+23:26:56 ✓ Completed in 415ms.
+
+23:26:56 [build] 37 page(s) built in 7.30s
+23:26:56 [build] Complete!
