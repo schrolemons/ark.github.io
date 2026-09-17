@@ -2,7 +2,7 @@
 import type {NavbarItem} from "../../_types/ArknightsConfig";
 import arknightsConfig from "../../../arknights.config";
 import NavItem from "./NavItem"
-import {Sound, OwnerInfo} from "./NavTools"
+import {Share, Sound, OwnerInfo} from "./NavTools"
 import NavMenu from "./NavMenu"
 
 // TODO: 通过 arknightsConfig.title 文本生成默认 Logo
@@ -20,7 +20,8 @@ const Logo = arknightsConfig?.navbar?.logo?.element
                     <NavItem client:only="react" {...{index, info}}/>)
         }</ul>
     </nav>
-    <div class="w-[10rem] h-full flex pl-[.75rem]">
+    <div class="w-[14.75rem] h-full flex pl-[.75rem]">
+        <Share client:only="react"/>
         <Sound client:only="react"/>
         <OwnerInfo client:only="react"/>
     </div>

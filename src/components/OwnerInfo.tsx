@@ -14,8 +14,8 @@ export default function OwnerInfo() {
     useEffect(() => {
         if (!open) return;
         const previousFocus = document.activeElement as HTMLElement | null;
-        // Wait until the newly visible dialog participates in layout before focusing it.
-        const focusFrame = requestAnimationFrame(() => closeButton.current?.focus());
+        // Focus after the opening transition, when the previously hidden panel is visible.
+        const focusTimer = window.setTimeout(() => closeButton.current?.focus(), 300);
         const handleKey = (event: KeyboardEvent) => {
             if (event.key === "Escape") {
                 event.preventDefault();
@@ -25,7 +25,9 @@ export default function OwnerInfo() {
                 const controls = Array.from(panel.current?.querySelectorAll<HTMLElement>('button, a[href]') ?? [])
                     .filter(element => element.getClientRects().length > 0);
                 const first = controls[0], last = controls[controls.length - 1];
-                if (event.shiftKey && document.activeElement === first) {
+                if (!panel.current?.contains(document.activeElement)) {
+                    event.preventDefault(); first?.focus();
+                } else if (event.shiftKey && document.activeElement === first) {
                     event.preventDefault(); last?.focus();
                 } else if (!event.shiftKey && document.activeElement === last) {
                     event.preventDefault(); first?.focus();
@@ -34,7 +36,7 @@ export default function OwnerInfo() {
         };
         document.addEventListener("keydown", handleKey);
         return () => {
-            cancelAnimationFrame(focusFrame);
+            window.clearTimeout(focusTimer);
             document.removeEventListener("keydown", handleKey);
             previousFocus?.focus();
         };
