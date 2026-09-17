@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { navigateRoute, useHashRoute } from "../../../components/useHashRoute";
 import { routeSegment } from "../../../utils/hash-route";
@@ -101,22 +101,66 @@ export default function ArknightsGallery({ onBack, active = false }: GalleryProp
   const setCurrentIndex = (index: number) => navigateRoute('media', ['visual_archive', galleryData[index].title]);
   const activeItem = galleryData[currentIndex];
 
+  const nextItem = () => setCurrentIndex((currentIndex + 1) % galleryData.length);
+  const prevItem = () => setCurrentIndex((currentIndex - 1 + galleryData.length) % galleryData.length);
+
+  // 触摸/滚轮滑动翻页状态（上下滑动在图片间切换，而不是返回其他页面）
+  const touchStartY = useRef(0);
+  const touchStartX = useRef(0);
+  const lastWheelTime = useRef(0);
+
   // 键盘左右切换
   useEffect(() => {
     if (!active) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        setCurrentIndex((currentIndex - 1 + galleryData.length) % galleryData.length);
-      } else if (e.key === "ArrowRight") {
-        setCurrentIndex((currentIndex + 1) % galleryData.length);
-      }
+      if (e.key === "ArrowLeft") prevItem();
+      else if (e.key === "ArrowRight") nextItem();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [active, currentIndex]);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY;
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!active) return;
+    const diffY = touchStartY.current - e.changedTouches[0].clientY;
+    const diffX = touchStartX.current - e.changedTouches[0].clientX;
+    // 仅当纵向位移明显且大于横向时翻页，避免与缩略图横向滚动冲突
+    if (Math.abs(diffY) < 80 || Math.abs(diffY) <= Math.abs(diffX)) return;
+    if (diffY > 0) nextItem();
+    else prevItem();
+  };
+
+  const handleWheel = (e: React.WheelEvent) => {
+    if (!active) return;
+    const now = performance.now();
+    if (now - lastWheelTime.current < 500 || Math.abs(e.deltaY) < 15) return;
+    lastWheelTime.current = now;
+    if (e.deltaY > 0) nextItem();
+    else prevItem();
+  };
+
   return (
-    <div className="relative w-full h-screen bg-[#111] text-white overflow-hidden font-sans select-none">
+    <div
+      className="relative w-full h-screen bg-[#111] text-white overflow-hidden font-sans select-none touch-pan-x"
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onWheel={handleWheel}
+    >
+      {/* 移动端：顶部返回按钮 */}
+      <button
+        onClick={onBack}
+        aria-label="返回"
+        className="absolute top-4 left-4 z-30 flex items-center gap-2 h-12 pr-4 pl-2 bg-black/60 backdrop-blur-sm border border-white/20 text-white transition-transform active:scale-95 md:hidden"
+      >
+        <IconArrowLeft />
+        <span className="text-sm font-bold tracking-widest">返回</span>
+      </button>
+
       {/* --- 1. 背景层 (带淡入淡出切换) --- */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -256,8 +300,8 @@ export default function ArknightsGallery({ onBack, active = false }: GalleryProp
           </div>
         </div>
 
-        {/* 右下：返回按钮 */}
-        <div className="flex-shrink-0 mr-0 md:mr-8">
+        {/* 右下：返回按钮（移动端隐藏，改为顶部返回按钮） */}
+        <div className="hidden md:block flex-shrink-0 mr-0 md:mr-8">
           <button
             onClick={onBack}
             className="group relative flex items-center justify-between h-14 w-48 bg-[#333] hover:bg-[#444] text-white transition-colors"
