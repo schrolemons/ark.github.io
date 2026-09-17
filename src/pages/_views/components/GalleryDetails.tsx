@@ -168,8 +168,8 @@ export default function ArknightsGallery({ onBack, active = false }: GalleryProp
       onTouchEnd={handleTouchEnd}
       onWheel={handleWheel}
     >
-      {/* 移动端：返回按钮（置于顶部右侧，避开左上角 logo 与左侧时间轴） */}
-      <div className="absolute top-40 right-4 z-30 md:hidden">
+      {/* 移动端：返回按钮（置于左下角） */}
+      <div className="absolute bottom-4 left-4 z-30 md:hidden">
         {backButton}
       </div>
 
