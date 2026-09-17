@@ -300,8 +300,8 @@ export default function ArknightsGallery({ onBack, active = false }: GalleryProp
           </div>
         </div>
 
-        {/* 右下：返回按钮 */}
-        <div className="flex-shrink-0 mr-0 md:mr-8">
+        {/* 右下：返回按钮（移动端隐藏，改为顶部返回按钮） */}
+        <div className="hidden md:block flex-shrink-0 mr-0 md:mr-8">
           <button
             onClick={onBack}
             className="group relative flex items-center justify-between h-14 w-48 bg-[#333] hover:bg-[#444] text-white transition-colors"
