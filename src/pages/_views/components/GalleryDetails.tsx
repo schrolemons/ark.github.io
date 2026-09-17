@@ -144,6 +144,23 @@ export default function ArknightsGallery({ onBack, active = false }: GalleryProp
     else prevItem();
   };
 
+  // 与原有右下角返回按钮保持一致的 UI
+  const backButton = (
+    <button
+      onClick={onBack}
+      className="group relative flex items-center justify-between h-14 w-48 bg-[#333] hover:bg-[#444] text-white transition-colors"
+    >
+      <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#ffd700] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      <div className="pl-4 pr-2">
+        <IconArrowLeft />
+      </div>
+      <div className="flex-1 flex flex-col items-end pr-4 border-l border-white/10 h-3/4 justify-center">
+        <span className="text-sm font-bold">返回</span>
+        <span className="text-[9px] tracking-[0.1em] opacity-60">GO BACK</span>
+      </div>
+    </button>
+  );
+
   return (
     <div
       className="relative w-full h-screen bg-[#111] text-white overflow-hidden font-sans select-none touch-pan-x"
@@ -151,15 +168,10 @@ export default function ArknightsGallery({ onBack, active = false }: GalleryProp
       onTouchEnd={handleTouchEnd}
       onWheel={handleWheel}
     >
-      {/* 移动端：顶部返回按钮 */}
-      <button
-        onClick={onBack}
-        aria-label="返回"
-        className="absolute top-4 left-4 z-30 flex items-center gap-2 h-12 pr-4 pl-2 bg-black/60 backdrop-blur-sm border border-white/20 text-white transition-transform active:scale-95 md:hidden"
-      >
-        <IconArrowLeft />
-        <span className="text-sm font-bold tracking-widest">返回</span>
-      </button>
+      {/* 移动端：返回按钮（置于顶部右侧，避开左上角 logo 与左侧时间轴） */}
+      <div className="absolute top-40 right-4 z-30 md:hidden">
+        {backButton}
+      </div>
 
       {/* --- 1. 背景层 (带淡入淡出切换) --- */}
       <AnimatePresence mode="wait">
@@ -300,28 +312,9 @@ export default function ArknightsGallery({ onBack, active = false }: GalleryProp
           </div>
         </div>
 
-        {/* 右下：返回按钮（移动端隐藏，改为顶部返回按钮） */}
+        {/* 右下：返回按钮（桌面端） */}
         <div className="hidden md:block flex-shrink-0 mr-0 md:mr-8">
-          <button
-            onClick={onBack}
-            className="group relative flex items-center justify-between h-14 w-48 bg-[#333] hover:bg-[#444] text-white transition-colors"
-          >
-            {/* 装饰性左边框 (高亮条) */}
-            <div className="absolute left-0 top-0 bottom-0 w-1 bg-[#ffd700] opacity-0 group-hover:opacity-100 transition-opacity"></div>
-
-            {/* 图标区域 */}
-            <div className="pl-4 pr-2">
-              <IconArrowLeft />
-            </div>
-
-            {/* 文字区域 */}
-            <div className="flex-1 flex flex-col items-end pr-4 border-l border-white/10 h-3/4 justify-center">
-              <span className="text-sm font-bold">返回</span>
-              <span className="text-[9px] tracking-[0.1em] opacity-60">
-                GO BACK
-              </span>
-            </div>
-          </button>
+          {backButton}
         </div>
       </div>
 
