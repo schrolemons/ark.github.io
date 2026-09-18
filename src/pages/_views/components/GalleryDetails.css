@@ -1,0 +1,45 @@
+.gallery-view { position: relative; width: 100%; height: 100%; background: #111416; color: #e5e8e8; overflow: hidden; display: grid; grid-template-columns: 120px 1fr; grid-template-rows: 38px minmax(0, 1fr) auto; gap: 22px 28px; padding: max(110px, 9.5rem) 5vw 32px; touch-action: pan-y; }
+.gallery-backdrop { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .09; filter: blur(30px) grayscale(.6); pointer-events: none; }
+.gallery-topline { z-index: 1; grid-column: 1 / -1; display: flex; justify-content: space-between; border-bottom: 1px solid #ffffff26; padding-bottom: 14px; font: 10px/1.5 monospace; letter-spacing: 2px; color: #8d969a; }
+.gallery-topline b { color: #e1e5e5; font-weight: 400; margin-left: 10px; }
+.gallery-timeline { position: relative; align-self: center; display: flex; flex-direction: column; gap: 6px; }
+.gallery-index-label { font: 9px monospace; letter-spacing: 2px; color: #717d83; margin-bottom: 18px; }
+.gallery-timeline button { display: flex; align-items: center; gap: 12px; min-height: 44px; color: #849095; font: 11px monospace; text-align: left; }
+.gallery-index-tick { display: block; width: 12px; height: 1px; background: #ffffff3b; transition: width .2s; }
+.gallery-timeline button[aria-current] { color: #dac789; }
+.gallery-timeline button[aria-current] .gallery-index-tick { width: 24px; background: #dac789; }
+.gallery-timeline button:hover { color: white; }
+.gallery-stage { position: relative; min-height: 0; min-width: 0; display: flex; align-items: center; justify-content: center; }
+.gallery-stage img { display: block; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 20px 35px #0005); }
+.gallery-bottom { grid-column: 1 / -1; z-index: 1; display: flex; align-items: end; justify-content: space-between; gap: 24px; border-top: 1px solid #ffffff24; padding-top: 20px; }
+.gallery-caption { min-width: 0; }
+.gallery-caption > span { font: 9px monospace; letter-spacing: 2px; color: #879295; }
+.gallery-caption h1 { font-size: clamp(28px, 3vw, 48px); font-weight: 500; letter-spacing: -.03em; line-height: 1.2; margin: 8px 0; }
+.gallery-caption p { font-size: 12px; color: #9aa3a6; }
+.gallery-thumbnails { display: flex; gap: 10px; }
+.gallery-thumbnails button { position: relative; width: 100px; height: 64px; border: 1px solid #ffffff26; padding: 4px; opacity: .5; }
+.gallery-thumbnails button[aria-pressed="true"] { opacity: 1; border-color: #dac789; }
+.gallery-thumbnails img { width: 100%; height: 100%; object-fit: cover; }
+.gallery-thumbnails span { position: absolute; left: 7px; top: 5px; font: 9px monospace; text-shadow: 0 1px 4px black; }
+.gallery-controls { display: flex; gap: 8px; flex: none; }
+.gallery-controls button { height: 44px; min-width: 44px; border: 1px solid #ffffff2a; font-size: 16px; }
+.gallery-controls button:hover { background: #ffffff12; }
+.gallery-controls .gallery-back { padding: 0 16px; margin-left: 8px; font-size: 13px; }
+.gallery-back span { margin-left: 10px; color: #929da1; font: 9px monospace; }
+@media (max-width: 1024px), (orientation: portrait) {
+ .gallery-view { padding: 92px 20px 24px; grid-template-columns: 1fr; grid-template-rows: 28px 40px minmax(160px, 1fr) auto; gap: 12px; overflow-y: auto; }
+ .gallery-topline { font-size: 9px; letter-spacing: 1px; }
+ .gallery-timeline { flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; }
+ .gallery-index-label { display: none; }
+ .gallery-timeline button { gap: 8px; font-size: 10px; }
+ .gallery-bottom { display: grid; grid-template-columns: 1fr; gap: 14px; padding-top: 14px; }
+ .gallery-caption h1 { font-size: 28px; margin: 5px 0; }
+ .gallery-caption p { font-size: 11px; }
+ .gallery-thumbnails { justify-content: flex-start; }
+ .gallery-thumbnails button { width: 72px; height: 48px; }
+ .gallery-controls { position: absolute; right: 20px; bottom: 24px; gap: 4px; }
+ .gallery-controls .gallery-back { margin-left: 0; padding: 0 12px; }
+ .gallery-back span { display: none; }
+}
+@media (max-width: 430px) { .gallery-thumbnails { padding-right: 66px; } .gallery-thumbnails button { width: clamp(48px, 16vw, 66px); height: 44px; } .gallery-controls { position: static; justify-content: flex-end; margin-top: -58px; pointer-events: none; } .gallery-controls button { pointer-events: auto; } .gallery-controls > button:not(.gallery-back) { display: none; } }
+@media (max-height: 600px) and (min-width: 431px) { .gallery-view { grid-template-rows: 28px 40px 250px auto; } .gallery-controls { position: static; } }

@@ -55,7 +55,7 @@ export default function RootPageViews() {
     // --- 修改触摸逻辑 ---
     const handleTouchEnd = useCallback((event: TouchEvent) => {
         // [新增] 如果滚动被锁定（例如正在查看图集），则不执行主页面切换
-        if (isScrollLocked.get()) return;
+        if (isScrollLocked.get() || window.matchMedia('(max-width: 1024px), (orientation: portrait)').matches) return;
 
         const diffY = startTouchY.current - event.changedTouches[0].clientY
         if (Math.abs(diffY) > 100) { // 稍微降低一点触发阈值
@@ -100,7 +100,7 @@ export default function RootPageViews() {
     useEffect(() => {
         const handleScroll = (event: WheelEvent) => {
             // [新增] 如果滚动被锁定（例如正在查看图集），则不执行主页面切换
-            if (isScrollLocked.get()) return; 
+            if (isScrollLocked.get() || window.matchMedia('(max-width: 1024px), (orientation: portrait)').matches) return;
 
             if (performance.now() - lastScrollTime.current > 800) { // 稍微缩短一点冷却时间以获得更跟手的体验
                 

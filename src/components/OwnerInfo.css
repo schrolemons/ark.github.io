@@ -2,7 +2,7 @@
     position: fixed; inset: 0; z-index: 40;
     visibility: hidden; opacity: 0;
     transition: opacity .25s, visibility .25s;
-    color: #eee9dc; font-size: 14px;
+    color: #e5e8e9; font-size: 14px;
 }
 .owner-overlay[data-open="true"] { visibility: visible; opacity: 1; }
 .owner-backdrop { position: absolute; inset: 0; background: #0009; backdrop-filter: blur(5px); }
@@ -11,24 +11,24 @@
     width: min(400px, calc(100% - 32px));
     max-height: calc(100dvh - 40px);
     overflow-y: auto; overscroll-behavior: contain;
-    border: 1px solid #d5bd684d; background: #1a1a18;
+    border: 1px solid #ffffff30; background: #15191b;
     box-shadow: 0 24px 80px #0009;
     transform: translate(24px, -50%); transition: transform .3s ease;
 }
 .owner-overlay[data-open="true"] .owner-passport { transform: translate(0, -50%); }
-.passport-stripe { height: 8px; background: repeating-linear-gradient(125deg, #dac572 0 9px, #24241e 9px 14px); }
+.passport-stripe { height: 2px; background: linear-gradient(90deg, #d8bd70 0 24%, #ffffff20 24%); }
 .passport-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 24px 26px 20px; }
 .passport-label { display: block; color: #aaa897; font: 10px/1.5 monospace; letter-spacing: 1.7px; }
 .passport-header h2 { margin: 8px 0 0; font-size: 22px; font-weight: 700; letter-spacing: 2px; }
 .passport-header h2 span { display: block; margin-top: 5px; color: #d9c578; font: 10px/1.5 monospace; letter-spacing: 3px; }
 .passport-close { flex: none; width: 40px; height: 40px; border: 1px solid #d5bd684d; color: #dac572; font: 28px/1 monospace; transition: background .2s, color .2s; }
 .passport-close:hover { background: #dac572; color: #171715; }
-.passport-identity-band { display: flex; justify-content: space-between; gap: 10px; padding: 10px 26px; background: #d9c578; color: #222219; font: 10px/1.5 monospace; letter-spacing: 1px; }
+.passport-identity-band { display: flex; justify-content: space-between; gap: 10px; padding: 10px 26px; border-block: 1px solid #ffffff20; background: #ffffff04; color: #abb6bb; font: 10px/1.5 monospace; letter-spacing: 1px; }
 .passport-body { padding: 22px 26px 24px; }
 .passport-emblem { position: relative; overflow: hidden; min-height: 130px; padding: 14px 16px; border: 1px solid #e8ddbc26; background: repeating-linear-gradient(0deg, transparent 0 5px, #d9c57806 5px 6px), #11120f; }
 .passport-emblem img { display: block; width: 190px; max-width: 75%; height: 62px; object-fit: contain; object-position: left center; margin: 5px 0; }
 .passport-emblem-caption { color: #aaa897; font: 9px/1.5 monospace; letter-spacing: 3px; }
-.passport-stamp { position: absolute; bottom: 14px; right: 16px; display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid #d9c57855; border-radius: 50%; color: #d9c57899; font: 23px/1 Georgia, serif; transform: rotate(-12deg); }
+.passport-stamp { position: absolute; bottom: 14px; right: 16px; color: #ffffff15; font: 54px/1 monospace; }
 .passport-holder { border-left: 3px solid #d9c578; margin: 24px 0; padding-left: 14px; }
 .passport-holder h3 { margin: 6px 0 8px; font: bold 30px/1.15 monospace; letter-spacing: 1px; overflow-wrap: anywhere; }
 .passport-holder p { margin: 0; color: #bcbbae; font-size: 12px; line-height: 1.9; }
@@ -38,7 +38,7 @@
 .passport-link-index { font-size: 9px; color: #aaa897; }
 .passport-link:hover { background: #d9c57812; color: #d9c578; }
 .passport-close:focus-visible, .passport-link:focus-visible { outline: 2px solid #dac572; outline-offset: 3px; }
-.passport-footer { padding: 18px 26px; border-top: 1px dashed #d9c57855; background: #121310; }
+.passport-footer { padding: 18px 26px; border-top: 1px solid #ffffff20; background: #111416; }
 .passport-barcode { height: 26px; opacity: .65; background: repeating-linear-gradient(90deg, #dbd2b3 0 2px, transparent 2px 4px, #dbd2b3 4px 5px, transparent 5px 8px, #dbd2b3 8px 12px, transparent 12px 14px, #dbd2b3 14px 15px, transparent 15px 19px); }
 .passport-footer-meta { display: flex; justify-content: space-between; gap: 12px; margin-top: 10px; color: #aaa897; font: 9px/1.5 monospace; letter-spacing: 1px; }
 .passport-stripe-bottom { height: 4px; }

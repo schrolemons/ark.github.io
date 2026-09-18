@@ -8,6 +8,11 @@
 
 ## 链接示例
 
+身份与移动布局检查：`node --test tests/identity.test.mjs` 验证存储解析和特殊值；`node tests/identity-browser-smoke.mjs` 验证首次遮罩、游客/称呼记忆、切换身份、长昵称、画册交互，以及 320/390/768/844px 布局。浏览器脚本使用同一个 `PLAYWRIGHT_MODULE` 和 `TEST_URL` 配置。
+
+特殊称呼在 `src/utils/identity.ts` 的 `SPECIAL_IDENTITIES` 中添加：`aliases` 是匹配值，`name` 与 `english` 是双语展示。仅影响本地显示，不承担账号认证。
+
+
 - `#operator/lifeng`
 - `#world/CIV_DB`
 - `#world?page=2`

@@ -44,6 +44,10 @@ function getDisplayDate(item: any): { year: string, month: string, day: string }
 
 <InfoLayout title="World" subTitle="世界" tabTitle="世界">
     <div id="world-container" class="h-full flex-auto mr-[-16px] overflow-x-hidden overflow-y-scroll">
+        <details class="archive-filter-mobile hidden"><summary>分类筛选</summary><div>
+            <button class="category-btn active" data-category="all">全部</button>
+            {Object.keys(CATEGORY_LABELS).map(category => <button class="category-btn" data-category={category}>{category}</button>)}
+        </div></details>
         <div id="world-scroll-wrapper">
             <nav id="world-content" class="max-w-[80.75rem] mx-auto">
                 {
@@ -150,7 +154,7 @@ function getDisplayDate(item: any): { year: string, month: string, day: string }
             });
 
             function autoScroll() {
-                if (isScrolling) {
+                if (isScrolling && !window.matchMedia('(max-width: 1024px), (orientation: portrait)').matches && document.documentElement.dataset.identityPending === 'false') {
                     container.scrollTop += scrollSpeed;
                     const wrapperHeight = wrapper.offsetHeight;
                     if (container.scrollTop >= wrapperHeight) {
@@ -188,11 +192,10 @@ function getDisplayDate(item: any): { year: string, month: string, day: string }
                 b.classList.add('bg-[#5a5a5a]');
             });
 
-            const activeBtn = document.querySelector(`.category-btn[data-category="${selectedCategory}"]`);
-            if (activeBtn) {
+            document.querySelectorAll(`.category-btn[data-category="${selectedCategory}"]`).forEach(activeBtn => {
                 activeBtn.classList.add('active', 'bg-ark-blue');
                 activeBtn.classList.remove('bg-[#5a5a5a]');
-            }
+            });
 
             worldItems.forEach(item => {
                 if (selectedCategory === 'all' || item.dataset.category === selectedCategory) {

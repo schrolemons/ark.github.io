@@ -8,6 +8,8 @@ import Header from "../components/header/Header.astro"
 import {Menu} from "../components/header/NavMenu"
 import OwnerInfo from "../components/OwnerInfo"
 import {SvgDefs} from "../components/SvgIcons"
+import IdentityDialog from "../components/Identity"
+import "../_styles/responsive.css"
 
 interface Props {
     lang?: string
@@ -21,7 +23,7 @@ const {lang, title, description, subNavigationItems} = Astro.props
 ---
 
 <!DOCTYPE html>
-<html lang={lang} class="h-full bg-black" style="font-size: 16px">
+<html lang={lang} class="h-full bg-black" style="font-size: 16px" data-identity-pending="true">
 <head>
     <meta charset="UTF-8"/>
     <meta name="description" content={description}/>
@@ -35,14 +37,16 @@ const {lang, title, description, subNavigationItems} = Astro.props
     <ResponsiveFontSize/>
 </head>
 <body class="w-full h-full text-white bg-black m-0 overflow-hidden">
-  <div class="w-full h-full relative bg-layout bg-center bg-cover bg-no-repeat">
+  <div id="site-shell" class="w-full h-full relative bg-layout bg-center bg-cover bg-no-repeat">
     <div class="relative w-full h-full m-auto max-w-[180rem]">
         <Header/>
         <slot/>
         <Menu client:only="react" {...{subNavigationItems}}/>
-        <OwnerInfo client:load/>
+        <OwnerInfo client:only="react"/>
     </div>
   </div>
+  <IdentityDialog client:only="react"/>
+  <noscript><style>html[data-identity-pending="true"] body::before { display: none; }</style><p>请启用 JavaScript 以使用互动页面及身份入口。</p></noscript>
   <SvgDefs/>
 </body>
 </html>

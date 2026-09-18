@@ -17,7 +17,9 @@ export default function RootPageViewTemplate({selfIndex, children}: { selfIndex:
     }, [selfIndex, $viewIndex])
 
     return <div
-        className="w-0 h-full absolute top-0 right-0 bottom-0 left-0 overflow-hidden transition-[width] duration-1000"
+        ref={element => { if (element) element.inert = selfIndex !== $viewIndex; }}
+        data-active={selfIndex === $viewIndex} data-section={selfIndex} aria-hidden={selfIndex !== $viewIndex}
+        className="root-view w-0 h-full absolute top-0 right-0 bottom-0 left-0 overflow-hidden transition-[width] duration-1000"
         style={{width, left}}>
         {children}
     </div>

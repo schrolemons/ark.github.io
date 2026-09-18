@@ -3,6 +3,7 @@ import fs from 'node:fs';
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const browser = await chromium.launch({ channel: 'msedge', headless: true });
 const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, permissions: ['clipboard-read', 'clipboard-write'] });
+await context.addInitScript(() => localStorage.setItem('schnie.identity.v1', '{"version":1,"kind":"guest"}'));
 const page = await context.newPage();
 const errors = [];
 page.on('pageerror', error => errors.push(error.message));
@@ -16,8 +17,8 @@ const go = async hash => {
 try {
   await go('#operator/lifeng');
   await page.locator('.cn-name-display').filter({ hasText: '璃风' }).waitFor();
-  assert.equal(await page.locator('.thumbnail').count(), 3);
-  assert.equal(await page.locator('.thumbnail.active').innerText(), '璃风');
+  assert.equal(await page.locator('.thumbnail').count(), 4);
+  assert.equal(await page.locator('.thumbnail.active .name-label').innerText(), '璃风');
   assert.ok(await page.locator('img[alt="璃风"]').first().evaluate(img => img.complete && img.naturalWidth > 0));
   await page.screenshot({ path: '.screens/operator-lifeng.png' });
   await page.locator('.thumbnail').filter({ hasText: '瑞' }).click();

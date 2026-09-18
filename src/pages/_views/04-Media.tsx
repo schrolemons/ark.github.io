@@ -157,7 +157,7 @@ export default function Media() {
       >
         {/* --- 第一屏：Media 主页面 (高度 50% = 100vh) --- */}
         <div
-          className="w-full h-[50%] relative bg-black overflow-hidden"
+          className="media-overview w-full h-[50%] relative bg-black overflow-hidden"
           style={{
             backgroundImage: `radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0)`,
             backgroundSize: "40px 40px",
@@ -179,7 +179,7 @@ export default function Media() {
 
 
           {/* 左侧侧边导航 */}
-          <div className="absolute top-1/4 left-16 z-20">
+          <div className="media-categories absolute top-1/4 left-16 z-20">
             <h2 className="text-white text-xl font-bold mb-6 tracking-tighter">
               ABOUT SCHNIE
             </h2>
@@ -208,7 +208,7 @@ export default function Media() {
           </div>
 
           {/* 视觉区 */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="media-visual absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="relative min-w-[1000px] h-[600px]">
               {/* 用于接收点击事件 */}
               <div className="absolute inset-0 z-50 w-full h-full">
@@ -285,7 +285,7 @@ export default function Media() {
           </div>
 
           {/* 左下角详情介绍 */}
-          <div className="absolute bottom-24 left-16 z-40 max-w-md pointer-events-auto">
+          <div className="media-description absolute bottom-24 left-16 z-40 max-w-md pointer-events-auto">
             {/* 
                 关键点：key={activeData.id}
                 当 id 改变时，React 会重新挂载这个 div，从而触发内部子元素的 CSS animation 

@@ -3,19 +3,23 @@ import {useStore} from "@nanostores/react";
 import arknightsConfig from "../../arknights.config";
 import {isOwnerInfoOpen} from "./store/rootLayoutStore";
 import "./OwnerInfo.css";
+import {identity, identityDialogOpen} from './store/identityStore';
+import {specialIdentity} from '../utils/identity';
 
 export default function OwnerInfo() {
     const open = useStore(isOwnerInfoOpen);
+    const user = useStore(identity);
+    const special = user?.kind === 'member' ? specialIdentity(user.name) : undefined;
     const panel = useRef<HTMLElement>(null);
     const closeButton = useRef<HTMLButtonElement>(null);
     const owner = arknightsConfig.navbar.ownerInfo;
-    const name = owner.name || arknightsConfig.title;
+    const name = user?.kind === 'member' ? user.name : '游客';
 
     useEffect(() => {
         if (!open) return;
         const previousFocus = document.activeElement as HTMLElement | null;
         // Focus after the opening transition, when the previously hidden panel is visible.
-        const focusTimer = window.setTimeout(() => closeButton.current?.focus(), 300);
+        const focusTimer = window.setTimeout(() => closeButton.current?.focus({preventScroll: true}), 300);
         const handleKey = (event: KeyboardEvent) => {
             if (event.key === "Escape") {
                 event.preventDefault();
@@ -38,7 +42,7 @@ export default function OwnerInfo() {
         return () => {
             window.clearTimeout(focusTimer);
             document.removeEventListener("keydown", handleKey);
-            previousFocus?.focus();
+            previousFocus?.focus({preventScroll: true});
         };
     }, [open]);
 
@@ -65,8 +69,12 @@ export default function OwnerInfo() {
                 </div>
                 <div className="passport-holder">
                     <span className="passport-label">PASS HOLDER / 持有人</span>
-                    <h3>{name}</h3>
+                    <h3 style={{color: special ? '#d8bd70' : undefined}}>{special?.name ?? name}</h3>
+                    <span className="passport-label">{special?.english ?? (user?.kind === 'member' ? 'EXPLORER' : 'GUEST')}</span>
                     {owner.slogan && <p>{owner.slogan}</p>}
+                    <button type="button" className="identity-switch" onClick={() => { isOwnerInfoOpen.set(false); identityDialogOpen.set(true); }}>
+                        {user?.kind === 'member' ? '切换身份' : '登录'}<span aria-hidden="true">↗</span>
+                    </button>
                 </div>
                 <nav className="passport-links" aria-label="个人链接">
                     {owner.footerLinks?.map(({label, url, portraitHidden}, index) =>
