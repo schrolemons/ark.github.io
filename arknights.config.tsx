@@ -170,6 +170,16 @@ export default {
           portrait: "/images/02-operator/lifeng.png",
           fullbody: "/images/02-operator/lifeng_full.png",
         },
+        {
+          id: "fanxin",
+          name: "FAN XIN",
+          cnName: "樊昕",
+          logo: "/images/logo.png",
+          url: base + "operator/?id=樊昕",
+          desc: "灰白色毛发与蓝色眼眸，白衬衫外搭米色背心，系着黑色领带。\n怀中抱着一束白花，向你伸出手。",
+          portrait: "/images/02-operator/fanxin_full.png",
+          fullbody: "/images/02-operator/fanxin_full.png",
+        },
       ],
     },
     WORLD: {

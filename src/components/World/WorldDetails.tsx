@@ -43,7 +43,7 @@ export default function WorldDetails({
 
   return (
     <motion.div
-      className="absolute inset-0 w-full h-full overflow-hidden"
+      className="world-detail absolute inset-0 w-full h-full overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -57,7 +57,7 @@ export default function WorldDetails({
 
       {/* 内容层 */}
       <motion.div className="absolute inset-0 z-[3] pointer-events-none">
-        <div className="absolute top-1/2 -translate-y-1/2 right-[10%] w-[40%] max-w-[600px] flex flex-col pointer-events-auto pl-8 border-l border-white/30 portrait:top-[34%] portrait:bottom-[17%] portrait:translate-y-0 portrait:left-[9%] portrait:right-auto portrait:w-[74%] portrait:overflow-y-auto portrait:pr-4 portrait:bg-[#171717]/80"
+        <div className="world-copy absolute top-1/2 -translate-y-1/2 right-[10%] w-[40%] max-w-[600px] flex flex-col pointer-events-auto pl-8 border-l border-white/30 portrait:top-[34%] portrait:bottom-[17%] portrait:translate-y-0 portrait:left-[9%] portrait:right-auto portrait:w-[74%] portrait:overflow-y-auto portrait:pr-4 portrait:bg-[#171717]/80"
           onWheel={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()} onTouchEnd={e => e.stopPropagation()}>
           {/* 装饰线 */}
           <div className="absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-transparent via-white/50 to-transparent" />

@@ -2,8 +2,10 @@ import {type RefObject, useCallback, useEffect, useMemo, useRef, useState} from 
 import {useStore} from "@nanostores/react"
 import {viewIndex} from "./store/rootLayoutStore.ts"
 import arknightsConfig from "../../arknights.config"
+import {useHashRoute} from './useHashRoute';
 
 export default function PageTracker() {
+    const route = useHashRoute();
     const labels = arknightsConfig.pageTracker.labels
     const $viewIndex = useStore(viewIndex)
     const [showIndex, setShowIndex] = useState($viewIndex)
@@ -47,8 +49,9 @@ export default function PageTracker() {
         }, Math.max(nowIndexDuration, tinyIndexDuration))
     }, [$viewIndex])
 
+    if (route.section === 'media' && route.segments[0] === 'visual_archive' && route.segments[1]) return null;
     return <div
-        className="w-[10rem] portrait:w-[4rem] absolute top-[44.4444444444%] portrait:top-[auto] right-[7.375rem] portrait:right-[2.875rem] portrait:bottom-[12.5rem] translate-x-1/2 z-[6] whitespace-nowrap leading-[normal] select-none">
+        className="page-tracker w-[10rem] portrait:w-[4rem] absolute top-[44.4444444444%] portrait:top-[auto] right-[7.375rem] portrait:right-[2.875rem] portrait:bottom-[12.5rem] translate-x-1/2 z-[6] whitespace-nowrap leading-[normal] select-none">
         <div ref={nowIndexElement} style={{transitionDuration: nowIndexDuration + "ms"}}
              className="text-ark-blue text-[5.4rem] portrait:text-[3.6rem] portrait:text-center font-n15eDemiBold leading-[.55] overflow-hidden transition-[opacity,transform]">
             {nowIndex}

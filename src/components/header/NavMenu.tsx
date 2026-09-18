@@ -9,7 +9,7 @@ export default function NavMenu() {
     const LineClassName: React.ComponentProps<"div">["className"] =
         "w-full h-[2px] bg-white absolute left-1/2 transition duration-300 ease-in-out"
     const $isNavMenuOpen = useStore(isNavMenuOpen)
-    return <div className="w-[5.75rem] h-full landscape:hidden portrait:flex"
+    return <button type="button" aria-label={$isNavMenuOpen ? '关闭目录' : '打开目录'} aria-expanded={$isNavMenuOpen} data-open={$isNavMenuOpen} className="nav-toggle w-[5.75rem] h-full landscape:hidden portrait:flex"
                 onClick={() => isNavMenuOpen.set(!$isNavMenuOpen)}>
         <div className="w-[2.625rem] h-[2.375rem] m-auto relative">
             <div className={LineClassName} style={{
@@ -25,7 +25,7 @@ export default function NavMenu() {
                 transform: `translate(-50%, 50%) ${$isNavMenuOpen ? "rotate(-45deg) scaleX(1.2)" : ""}`,
             }}></div>
         </div>
-    </div>
+    </button>
 }
 
 function Navigation({showSubNavigation}: { showSubNavigation: boolean }) {
@@ -38,7 +38,7 @@ function Navigation({showSubNavigation}: { showSubNavigation: boolean }) {
     }, [$isNavMenuOpen, showSubNavigation])
 
     let delay = -70
-    return <div className="pt-[1.25rem] pr-[2.25rem] pb-0 pl-[3.375rem]">{
+    return <nav aria-label="主目录" className="pt-[1.25rem] pr-[2.25rem] pb-0 pl-[3.375rem]">{
         // TODO: 此处可以服务端渲染
         arknightsConfig.navbar.items.map((item, index) => {
             delay += 70
@@ -62,14 +62,14 @@ function Navigation({showSubNavigation}: { showSubNavigation: boolean }) {
                 </div>
             </a>
         })
-    }</div>
+    }</nav>
 }
 
 function SubNavigation({items, setShowSubNavigation}: {
     items: SubNavigationItem[]
     setShowSubNavigation: React.Dispatch<React.SetStateAction<boolean>>
 }) {
-    return <div className="text-4xl font-benderBold overflow-y-auto">
+    return <div className="sub-navigation text-4xl font-benderBold overflow-y-auto">
         <button className="w-full h-[4.5rem] text-left bg-[#5a5a5a] bg-opacity-80 block pl-[3.375rem]"
                 onClick={() => setShowSubNavigation(false)}>
             <IconArrow className="h-[2.25rem] rotate-180 inline-block pl-9"/>
@@ -78,7 +78,7 @@ function SubNavigation({items, setShowSubNavigation}: {
         <ul className="pt-[1.25rem] pr-[2.25rem] pb-0 pl-[3.375rem]">
             {
                 items.map(({title, href}, index) => <li key={index} className="h-[4.5rem]">
-                    <a target="_self" {...{href}}>{title}</a>
+                    <a target="_self" {...{href}} onClick={() => isNavMenuOpen.set(false)}>{title}</a>
                 </li>)
             }
         </ul>
@@ -93,7 +93,7 @@ export function Menu({subNavigationItems}: { subNavigationItems?: SubNavigationI
         subNavigationItems && subNavigationItems.length > 0 && $isNavMenuOpen && setShowSubNavigation(true)
     }, [$isNavMenuOpen]);
 
-    return <div className={"w-full h-full absolute top-0 left-0 z-[22] overflow-hidden bg-black bg-opacity-90"
+    return <div className={"site-menu w-full h-full absolute top-0 left-0 z-[22] overflow-hidden bg-black bg-opacity-90"
         + " transition-[opacity,visibility] ease-in-out duration-[600ms]"}
                 style={{opacity: $isNavMenuOpen ? 1 : 0, visibility: $isNavMenuOpen ? "visible" : "hidden"}}>
         <div className="w-full h-px absolute left-0 top-[9.375rem] bg-[#4f4f4f]"/>

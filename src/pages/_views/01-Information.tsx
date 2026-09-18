@@ -37,7 +37,7 @@ function SwiperInfo({ swiperIndex }: { swiperIndex: number }) {
   const current = swiperData[swiperIndex];
 
   return (
-    <div className="w-[26.5rem] portrait:w-[unset] portrait:static absolute left-[3.875rem] bottom-[-1.875rem] overflow-hidden">
+    <div className="information-summary w-[26.5rem] portrait:w-[unset] portrait:static absolute left-[3.875rem] bottom-[-1.875rem] overflow-hidden">
       {/* 使用 AnimatePresence 处理切换时的退出和进入 */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -227,7 +227,7 @@ function BreakingNewsList() {
     <>
       <div
         className={
-          "flex portrait:mt-8 portrait:pt-8 portrait:pb-8 portrait:border-y" +
+          "information-tags flex portrait:mt-8 portrait:pt-8 portrait:pb-8 portrait:border-y" +
           " portrait:border-solid portrait:border-t-[#565656] portrait:border-b-[#403c3b]"
         }
       >
@@ -337,7 +337,7 @@ function SwiperBody({
 
   return (
     <div
-      className={`w-[83.125rem] portrait:w-[unset] h-[46.875rem] portrait:h-[24.125rem] portrait:static absolute top-[9.5rem] right-[14.75rem] portrait:mt-[9.375rem] portrait:pr-[5.75rem] flex items-center justify-center overflow-hidden mask-gradient-90-transparent-to-white portrait:mask-unset transition-all duration-1000 delay-300
+      className={`information-swiper w-[83.125rem] portrait:w-[unset] h-[46.875rem] portrait:h-[24.125rem] portrait:static absolute top-[9.5rem] right-[14.75rem] portrait:mt-[9.375rem] portrait:pr-[5.75rem] flex items-center justify-center overflow-hidden mask-gradient-90-transparent-to-white portrait:mask-unset transition-all duration-1000 delay-300
             ${active ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"}`}
     >
       <Swiper
@@ -394,7 +394,7 @@ export default function Information() {
 
   return (
     <div
-      className={`w-[100vw] max-w-[180rem] h-full absolute top-0 right-0 bottom-0 left-auto transition-opacity duration-500
+      className={`information-view w-[100vw] max-w-[180rem] h-full absolute top-0 right-0 bottom-0 left-auto transition-opacity duration-500
             ${active ? "opacity-100" : "opacity-0 pointer-events-none"}`}
     >
       <PortraitBottomGradientMask />
@@ -402,7 +402,7 @@ export default function Information() {
       <SwiperBody {...{ setSwiperIndex, active }} />
 
       <div
-        className={`w-[61rem] portrait:w-full h-[.5rem] portrait:h-[.375rem] portrait:pr-[5.75rem] absolute portrait:flex top-[56.375rem] portrait:top-[33.125rem] right-0 z-[4] transition-all duration-1000 delay-500
+        className={`information-scrollbar w-[61rem] portrait:w-full h-[.5rem] portrait:h-[.375rem] portrait:pr-[5.75rem] absolute portrait:flex top-[56.375rem] portrait:top-[33.125rem] right-0 z-[4] transition-all duration-1000 delay-500
                 ${active ? "opacity-100" : "opacity-0"}`}
       >
         <div
@@ -432,7 +432,7 @@ export default function Information() {
 
       {/* 左侧内容区整体动效 */}
       <div
-        className={`w-[34.375rem] portrait:w-[unset] h-[46.75rem] portrait:h-[unset] portrait:pr-[5.75rem] absolute top-[9.5rem] left-0 portrait:static transition-all duration-700 delay-100
+        className={`information-panel w-[34.375rem] portrait:w-[unset] h-[46.75rem] portrait:h-[unset] portrait:pr-[5.75rem] absolute top-[9.5rem] left-0 portrait:static transition-all duration-700 delay-100
                 ${active ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"}`}
       >
         <div className="w-full h-full absolute top-0 left-0 bg-black bg-opacity-30 mix-blend-overlay portrait:hidden" />

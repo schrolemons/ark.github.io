@@ -12,6 +12,10 @@ const uniqueIds = [...new Set(allOperator.map(item => item.data.id))];
 
 <InfoLayout title="OPERATOR" subTitle="人物信息" tabTitle="人物">
     <div id="operator-container" class="h-full flex-auto mr-[-16px] overflow-x-hidden overflow-y-scroll">
+        <details class="archive-filter-mobile hidden"><summary>人物筛选</summary><div>
+            <button class="id-btn active" data-id="all">全部</button>
+            {uniqueIds.map(id => <button class="id-btn" data-id={id}>{id}</button>)}
+        </div></details>
         <div id="operator-scroll-wrapper">
             <nav id="operator-content" class="max-w-[80.75rem] mx-auto pt-4 pb-8">
                 {allOperator.length > 0 ? (
@@ -105,11 +109,10 @@ const uniqueIds = [...new Set(allOperator.map(item => item.data.id))];
             });
             
             // 添加当前按钮的 active 类
-            const activeBtn = document.querySelector(`.id-btn[data-id="${selectedId}"]`);
-            if (activeBtn) {
+            document.querySelectorAll(`.id-btn[data-id="${selectedId}"]`).forEach(activeBtn => {
                 activeBtn.classList.add('active', 'bg-ark-blue');
                 activeBtn.classList.remove('bg-[#5a5a5a]');
-            }
+            });
             
             // 筛选人物
             operatorItems.forEach(item => {

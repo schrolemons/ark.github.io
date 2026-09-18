@@ -115,7 +115,7 @@ export default function Index() {
         };
     }, [$viewIndex, $readyToTouch])
     // TODO: 使用m3u8
-    return <div className={"w-[100vw] max-w-[180rem] h-full absolute top-0 right-0 bottom-0 left-0 z-[2]"
+    return <div className={"home-view w-[100vw] max-w-[180rem] h-full absolute top-0 right-0 bottom-0 left-0 z-[2]"
         + " transition-opacity duration-100"}>
         <div className={"w-full h-full absolute top-0 left-0 bg-index bg-center bg-cover bg-no-repeat"
             + " transition-opacity duration-1000"}/>
@@ -139,7 +139,7 @@ export default function Index() {
         <PortraitBottomGradientMask/>
         <div className={"absolute left-[4.5rem] portrait:left-[2rem] bottom-[2.75rem] portrait:bottom-[3rem]"
             + " transition-transform duration-1000"}/>
-        <div className={"absolute left-[4.5rem] portrait:left-[2rem] bottom-[2.75rem] portrait:bottom-[3rem] transition-transform duration-1000 "
+        <div className={"home-title absolute left-[4.5rem] portrait:left-[2rem] bottom-[2.75rem] portrait:bottom-[3rem] transition-transform duration-1000 "
             + (active ? "translate-y-0" : "translate-y-[11.5rem]")}>
             <div className={"flex"}>
                 <div className={"leading-[.75] text-[5.5rem] portrait:text-[2.375rem] font-n15eUltraBold"
@@ -153,7 +153,7 @@ export default function Index() {
             <div className="w-[7.875rem] portrait:w-[7.25rem] mt-[2.5rem] portrait:mt-[9.375rem]">{copyright}</div>
         </div>
         <div
-            className="absolute right-[3rem] portrait:left-[2rem] bottom-[12.75rem] portrait:bottom-[19.5rem] space-y-3 portrait:space-y-5">{
+            className="hero-actions absolute right-[3rem] portrait:left-[2rem] bottom-[12.75rem] portrait:bottom-[19.5rem] space-y-3 portrait:space-y-5">{
             arknightsConfig?.rootPage?.INDEX?.heroActions.map((props, index) =>
                 <HeroActionButton key={index} {...props} />)
         }</div>
