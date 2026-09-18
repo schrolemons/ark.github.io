@@ -4,6 +4,9 @@ export type Identity = { version: 1; kind: 'guest' } | { version: 1; kind: 'memb
 // Add aliases here to extend the special-name display. This is a local preference, not authentication.
 export const SPECIAL_IDENTITIES = [
   { aliases: ['MOXUE', '墨薛'], name: '墨薛', english: 'MO XUE' },
+  { aliases: ['RUI', '瑞'], name: '瑞', english: 'RUI' },
+  { aliases: ['LI FENG', '璃风'], name: '璃风', english: 'LI FENG' },
+  { aliases: ['FAN XING', '樊昕'], name: '樊昕', english: 'FAN XING' },
 ];
 
 export function specialIdentity(name: string) {
