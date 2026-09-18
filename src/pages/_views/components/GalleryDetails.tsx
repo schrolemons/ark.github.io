@@ -168,11 +168,6 @@ export default function ArknightsGallery({ onBack, active = false }: GalleryProp
       onTouchEnd={handleTouchEnd}
       onWheel={handleWheel}
     >
-      {/* 移动端：返回按钮（置于左下角） */}
-      <div className="absolute bottom-4 left-4 z-30 md:hidden">
-        {backButton}
-      </div>
-
       {/* --- 1. 背景层 (带淡入淡出切换) --- */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -269,10 +264,15 @@ export default function ArknightsGallery({ onBack, active = false }: GalleryProp
           </motion.div>
         </div>
 
-        {/* 中间：缩略图 Swiper 列表 */}
-        <div className="flex-1 w-full overflow-hidden relative group/swiper">
-          {/* 可滚动列表容器 */}
-          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide items-end relative z-10 pl-4">
+        {/* 中间：缩略图 Swiper 列表（含移动端返回按钮） */}
+        <div className="flex-1 w-full flex items-end gap-4">
+          {/* 移动端返回按钮：位于缩略图左侧，底部对齐 */}
+          <div className="md:hidden flex-shrink-0">
+            {backButton}
+          </div>
+          <div className="flex-1 min-w-0 overflow-hidden relative group/swiper">
+            {/* 可滚动列表容器 */}
+            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide items-end relative z-10 pl-4">
             {galleryData.map((item, idx) => {
               const isActive = idx === currentIndex;
               return (
@@ -309,6 +309,7 @@ export default function ArknightsGallery({ onBack, active = false }: GalleryProp
                 </div>
               );
             })}
+          </div>
           </div>
         </div>
 
