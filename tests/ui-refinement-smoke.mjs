@@ -69,8 +69,11 @@ try {
   await check('article returns to selected character', async () => {
     await page.getByRole('link',{name:/查看人物档案/}).click();
     await page.waitForURL(/\/operator\/moxue\/?$/);
+    await page.waitForFunction(() => document.querySelector('.go-back-tool')?.getAttribute('href')?.includes('#operator/moxue'));
     await page.evaluate(() => { location.hash = 'reading-position'; });
+    await page.waitForFunction(() => Boolean(history.state?.archiveReturn));
     await page.reload();
+    await page.waitForFunction(() => document.querySelector('.go-back-tool')?.getAttribute('href')?.includes('#operator/moxue'));
     await page.getByRole('link',{name:/返回上一级/}).click({timeout:2500});
     await page.waitForURL('**/#operator/moxue',{timeout:4000});
     await page.waitForFunction(() => document.querySelector('.operator-view')?.scrollTop > 0);

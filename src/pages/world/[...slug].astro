@@ -3,7 +3,7 @@ import {getCollection} from "astro:content";
 // import {Debug} from 'astro:components'
 import InfoLayout from "../../layouts/InfoLayout.astro";
 import GoBackTool from "../../components/GoBackTool";
-import DocumentIndexUL from "../../components/DocumentIndexUL.astro";
+
 
 export async function getStaticPaths() {
     const allworld = await getCollection("world")
@@ -19,31 +19,10 @@ const {Content, headings} = await entry.render();
 const goBackHref = import.meta.env.BASE_URL + "world"
 const tabTitle = entry?.data?.title ?? "无标题"
 ---
-
-<InfoLayout title="world" subTitle="世界" {...{tabTitle}}>
-    <div class="max-w-[80.75rem] h-full mx-auto overflow-y-auto transition-[height] duration-300">
-        {headings && headings.length > 0 && (
-            <details class="pb-8 landscape:hidden">
-                <summary class="text-ark-blue text-[18px] font-bold px-3 py-1 font-oswaldMedium border-l-4 border-ark-blue cursor-pointer">
-                    DOCUMENT INDEX
-                </summary>
-                <DocumentIndexUL {...{headings}}/>
-            </details>
-        )}
-        <article>
-            <Content/>
-        </article>
+<InfoLayout title="ARCHIVE" subTitle="文章档案" {...{tabTitle, headings}} articleTitle={tabTitle} overviewHref={goBackHref}>
+    <div id="reader-body" class="reader-body max-w-[80.75rem] mx-auto">
+        <header class="reader-article-heading"><small>SCHNIE / ARCHIVE</small><h1>{tabTitle}</h1></header>
+        <article><Content/></article>
     </div>
-    <!--<Debug {entry} />-->
-
-    {headings && headings.length > 0 && (
-        <nav slot="aside-header">
-            <h2 class="text-ark-blue text-[1.25rem] font-bold px-3 py-1.5 font-oswaldMedium border-l-4 border-ark-blue">
-                DOCUMENT INDEX
-            </h2>
-            <DocumentIndexUL {...{headings}}/>
-        </nav>
-    )}
-
     <GoBackTool slot="tool-panel" client:load {...{goBackHref}}/>
 </InfoLayout>

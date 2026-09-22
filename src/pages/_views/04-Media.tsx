@@ -140,7 +140,7 @@ export default function Media() {
   return (
     // 外层容器：相对定位，隐藏溢出
     <div
-      className={`relative w-full h-full overflow-hidden transition-opacity duration-1000 ${active ? "opacity-100" : "opacity-0"}`}
+      className={`media-view relative w-full h-full overflow-hidden transition-opacity duration-1000 ${active ? "opacity-100" : "opacity-0"}`}
     >
       {/* 
          滚动容器：

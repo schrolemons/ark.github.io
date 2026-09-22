@@ -23,7 +23,7 @@ try {
    }));
    await page.screenshot({path:`.screens/aligned-${id}-${viewport.width}.png`});
   }
-  console.log(JSON.stringify(rows)); for(const layer of [0,1])for(const edge of ['center','top','bottom']) {
+  for(const layer of [0,1])for(const edge of ['center','top','bottom']) {
    const values=rows.map(row=>row[layer][edge]);
    assert.ok(Math.max(...values)-Math.min(...values)<2,`${viewport.width} ${layer===0?'figure':'silhouette'} ${edge}: ${values}`);
   }
@@ -38,4 +38,3 @@ try {
  });
  assert.ok(animation.distinct>20,JSON.stringify(animation));console.log('PASS moving light strip',animation);
 } finally {await browser.close();}
-

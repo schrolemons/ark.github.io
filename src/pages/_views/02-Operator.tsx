@@ -49,7 +49,7 @@ export default function Operator() {
       </AnimatePresence>
       <nav className="operator-roster" aria-label="选择角色">
         {operators.map((op, index) => <button key={op.id} type="button" aria-label={`选择${op.cnName}`} aria-pressed={index === currentIndex}
-          className={`thumbnail ${index === currentIndex ? 'active' : 'inactive'}`} onClick={() => select(op.id)}>
+          data-portrait={op.id} className={`thumbnail ${index === currentIndex ? 'active' : 'inactive'}`} onClick={() => select(op.id)}>
           <img src={op.portrait} alt="" /><span className="operator-number">0{index + 1}</span><span className="name-label">{op.cnName}</span>
         </button>)}
       </nav>

@@ -4,7 +4,6 @@ import type {SubNavigationItem} from "../_types/SubNavigationItem"
 import InfoLayout from "./InfoLayout.astro"
 import DocsLeftAside from "../components/DocsLeftAside.astro"
 import DocsLeftAsideSwitch from "../components/DocsLeftAsideSwitch"
-import DocumentIndexUL from "../components/DocumentIndexUL.astro"
 import DocsToolPanel from "../components/DocsToolPanel"
 import { getDocsSubNavigationItems } from "../components/DocsCollectionsUtils"
 
@@ -18,7 +17,7 @@ const tabTitle = title ? title + " - 文档" : "文档"
 const subNavigationItems = getDocsSubNavigationItems()
 ---
 
-<InfoLayout title="DOCS" subTitle="文档" {...{tabTitle, subNavigationItems}}>
+<InfoLayout title="DOCS" subTitle="文档" {...{tabTitle, subNavigationItems, headings}} articleTitle={title} overviewHref={import.meta.env.BASE_URL + 'docs/'}>
     <nav slot="left-aside"
          class="h-full mix-blend-difference bg-list-texture bg-cover bg-center bg-opacity-30 flex flex-col">
         <DocsLeftAside/>
@@ -27,28 +26,9 @@ const subNavigationItems = getDocsSubNavigationItems()
 
     <div id="docs-content"
          class="max-w-[80.75rem] h-full mx-auto overflow-y-auto transition-[height] duration-300">
-        {/* TODO: 面包屑导航 */}
-        {
-            headings && headings.length > 0 &&
-                <details class="pb-8 landscape:hidden">
-                    <summary class="text-black bg-white text-[24px] font-bold px-3 font-oswaldMedium">
-                        Document Index - 文档索引
-                    </summary>
-                    <DocumentIndexUL {...{headings}}/>
-                </details>
-        }
+        {title && <header id="reader-body" class="reader-article-heading"><small>SCHNIE / DOCUMENT</small><h1>{title}</h1></header>}
         <slot/>
     </div>
 
-    {
-        headings && headings.length > 0 &&
-            <nav slot="aside-header">
-                <h2 class="text-black bg-white text-[1.75rem] font-bold px-3 font-oswaldMedium">
-                    Document Index - 文档索引
-                </h2>
-                <DocumentIndexUL {...{headings}}/>
-            </nav>
-    }
-
-    <DocsToolPanel slot="tool-panel" client:load/>
+    <DocsToolPanel slot="tool-panel" client:load overviewHref={title ? import.meta.env.BASE_URL + 'docs/' : undefined}/>
 </InfoLayout>

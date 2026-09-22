@@ -29,14 +29,17 @@ function canScroll(target: EventTarget | null, direction: number) {
 }
 
 export default function RootPageViews() {
-    const [index, setIndex] = useState(routeIndex);
+    const [{index, direction}, setRoute] = useState(() => ({index: routeIndex(), direction: 1}));
     useLayoutEffect(() => {
         viewIndex.set(index);
         isFooterVisible.set(false);
         document.querySelector(`.mobile-section-nav a[data-index="${index}"]`)?.scrollIntoView({block:'nearest', inline:'nearest'});
     }, [index]);
     useEffect(() => {
-        const change = () => setIndex(routeIndex());
+        const change = () => {
+            const next = routeIndex();
+            setRoute(previous => next === previous.index ? previous : {index: next, direction: next > previous.index ? 1 : -1});
+        };
         window.addEventListener('hashchange', change);
         return () => window.removeEventListener('hashchange', change);
     }, []);
@@ -47,9 +50,9 @@ export default function RootPageViews() {
         let touch: {x: number; y: number; up: boolean; down: boolean} | null = null;
         const blocked = () => isScrollLocked.get() || identityDialogOpen.get() || isOwnerInfoOpen.get() || isNavMenuOpen.get();
         const turn = (direction: number) => {
-            if (blocked() || performance.now() - lastTurn < 850) return;
-            const current = viewIndex.get();
             const mobile = matchMedia(mobileQuery).matches;
+            if (blocked() || performance.now() - lastTurn < (mobile ? 560 : 850)) return;
+            const current = viewIndex.get();
             if (!mobile && current === config.navbar.items.length - 1) {
                 if (direction > 0 && !isFooterVisible.get()) { isFooterVisible.set(true); lastTurn = performance.now(); return; }
                 if (direction < 0 && isFooterVisible.get()) { isFooterVisible.set(false); lastTurn = performance.now(); return; }
@@ -94,9 +97,9 @@ export default function RootPageViews() {
     }, []);
     return <>
         <nav className="mobile-section-nav" aria-label="页面分区">
-            <div className="mobile-section-current"><span className="mobile-section-number">{String(index + 1).padStart(2, '0')}</span><div><strong>{config.navbar.items[index].subtitle}</strong><small>{config.navbar.items[index].title}</small></div></div>
+            <div key={index} className="mobile-section-current" data-direction={direction}><span className="mobile-section-number">{String(index + 1).padStart(2, '0')}</span><div><strong>{config.navbar.items[index].subtitle}</strong><small>{config.navbar.items[index].title}</small></div></div>
             <div className="mobile-section-steps">{config.navbar.items.map((item, i) => <a key={item.href} href={item.href} target="_self" data-index={i} aria-label={`切换到${item.subtitle}`} aria-current={index === i ? 'page' : undefined}><span /></a>)}</div>
         </nav>
-        {[Index, Information, Operator, World, Media, More].map((Element, i) => <RootPageViewTemplate key={i} selfIndex={i}><Element /></RootPageViewTemplate>)}
+        {[Index, Information, Operator, World, Media, More].map((Element, i) => <RootPageViewTemplate key={i} selfIndex={i} direction={direction}><Element /></RootPageViewTemplate>)}
     </>;
 }

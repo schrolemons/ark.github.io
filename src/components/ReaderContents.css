@@ -1,0 +1,43 @@
+.reader-contents { position: absolute; right: 2.6rem; top: 9.5rem; bottom: 10rem; width: 21rem; display: flex; flex-direction: column; min-height: 0; color: #d8dadd; font-family: 'Bender-Regular', 'Microsoft YaHei', sans-serif; }
+.reader-contents header { position: relative; flex: none; border-top: 2px solid #d8bd70; border-bottom: 1px solid #ffffff24; padding: 18px 0; }
+.reader-toc-eyebrow { color: #8e9799; font: 10px 'Bender-Regular', sans-serif; letter-spacing: 1px; }
+.reader-contents h2 { margin-top: 12px; font-size: clamp(16px, 1.4vw, 21px); line-height: 1.6; font-weight: 500; overflow-wrap: anywhere; }
+.reader-contents header button { display: none; }
+.reader-toc-links { overflow-y: auto; min-height: 0; padding: 12px 0; scrollbar-width: thin; }
+.reader-toc-links a { display: block; padding: 9px 10px; border-left: 2px solid transparent; font-size: 13px; line-height: 1.6; color: #9ea6a8; }
+.reader-toc-links a:hover, .reader-toc-links a[aria-current] { color: #d8bd70; border-left-color: #d8bd70; background: #d8bd7009; }
+.reader-toc-toggle, .reader-toc-backdrop, .reader-article-heading { display: none; }
+.info-layout[data-reader="true"] > aside:last-child { visibility: hidden; }
+.reader-body [id] { scroll-margin-top: 16px; }
+@media (min-width: 1025px) and (orientation: landscape) {
+ .reader-contents { bottom: calc(clamp(32px, 6vh, 72px) + 84px); }
+ .info-layout[data-reader="true"] ~ #info-layout-tool-panel-slot { right: 2.6rem; bottom: clamp(32px, 6vh, 72px); height: 52px; margin-bottom: 0; }
+ .info-layout[data-reader="true"] ~ #info-layout-tool-panel-slot > astro-island { display: flex; gap: 8px; }
+}
+@media (max-width: 1024px), (orientation: portrait) {
+ .reader-toc-toggle { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; position: fixed; z-index: 26; right: 0; top: 43%; width: 28px; min-height: 68px; border: 1px solid #d8bd7045; border-right: 0; background: #1a2023f5; color: #d8bd70; font-size: 11px; writing-mode: vertical-rl; }
+ .reader-toc-toggle small { font: 16px sans-serif; }
+ .reader-toc-backdrop { display: block; position: fixed; inset: 72px 0 0; z-index: 25; background: #0008; }
+ .reader-contents { position: fixed; z-index: 27; top: 72px; right: 0; bottom: 0; width: min(310px, calc(100% - 42px)); padding: 16px 20px 24px; background: #13191cfb; border-left: 1px solid #d8bd7040; transform: translateX(100%); visibility: hidden; transition: transform .28s cubic-bezier(.2,.7,.2,1), visibility .28s; }
+ .reader-contents[data-open="true"] { transform: translateX(0); visibility: visible; }
+ .reader-contents header { padding: 14px 28px 16px 0; }
+ .reader-contents header button { display: block; position: absolute; top: 12px; right: -8px; width: 32px; height: 32px; color: #d8bd70; font-size: 23px; }
+ .reader-contents h2 { font-size: 17px; }
+ .reader-toc-links { flex: 1; }
+ .reader-toc-links a { font-size: 12px; padding-block: 10px; }
+ .reader-article-heading { display: block; padding: 4px 0 18px; margin-bottom: 18px; border-bottom: 1px solid #d8bd7040; }
+ .reader-article-heading small { font: 9px 'Bender-Regular', sans-serif; color: #d8bd70; letter-spacing: 2px; }
+ .reader-article-heading h1 { font-size: 23px; font-weight: 500; line-height: 1.5; margin-top: 10px; }
+ .info-layout[data-reader="true"] #docs-content .reader-article-heading h1 { font-size: 23px; }
+ .info-layout[data-reader="true"] { padding: 88px 24px 68px 18px !important; }
+ .info-layout[data-reader="true"] #docs-content, .info-layout .reader-body { height: auto; min-height: 100%; overflow: visible; }
+ .info-layout[data-reader="true"] article { font-size: 14px; line-height: 1.85; letter-spacing: .015em; }
+ .info-layout[data-reader="true"] article p { margin: .8rem 0; }
+ .info-layout[data-reader="true"] article h2 { font-size: 21px; margin: 1.8rem 0 .9rem; padding-left: 10px; }
+ .info-layout[data-reader="true"] article h3 { font-size: 18px; margin: 1.4rem 0 .75rem; }
+ .info-layout[data-reader="true"] article blockquote { padding: 10px 14px; margin: 1rem 0; }
+ .info-layout[data-reader="true"] article ul, .info-layout[data-reader="true"] article ol { padding-left: 1.6rem; margin-block: .9rem; }
+ .info-layout[data-reader="true"] article table { display: block; overflow-x: auto; font-size: 12px; }
+ .info-layout[data-reader="true"] article th, .info-layout[data-reader="true"] article td { padding: 6px 9px; }
+}
+@media (prefers-reduced-motion: reduce) { .reader-contents { transition: none; } }

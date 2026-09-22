@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import {useStore} from "@nanostores/react";
 import {viewIndex} from "../../components/store/rootLayoutStore.ts";
 
-export default function RootPageViewTemplate({selfIndex, children}: { selfIndex: number, children: React.ReactNode }) {
+export default function RootPageViewTemplate({selfIndex, children, direction}: { selfIndex: number, children: React.ReactNode, direction: number }) {
     const $viewIndex = useStore(viewIndex)
 
     const width = useMemo(() => {
@@ -19,6 +19,7 @@ export default function RootPageViewTemplate({selfIndex, children}: { selfIndex:
     return <div
         ref={element => { if (element) element.inert = selfIndex !== $viewIndex; }}
         data-active={selfIndex === $viewIndex} data-section={selfIndex} aria-hidden={selfIndex !== $viewIndex}
+        data-position={selfIndex < $viewIndex ? 'before' : 'after'} data-direction={direction}
         className="root-view w-0 h-full absolute top-0 right-0 bottom-0 left-0 overflow-hidden transition-[width] duration-1000"
         style={{width, left}}>
         {children}
