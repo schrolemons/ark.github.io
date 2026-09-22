@@ -7,13 +7,14 @@ import {
 import { directions } from "../../components/store/lineDecoratorStore.ts";
 import PortraitBottomGradientMask from "../../components/PortraitBottomGradientMask";
 import config from "../../../arknights.config.tsx";
-import ParticleFactory from "../../components/ParticleFactory.tsx";
 import WorldOverview, { WORLD_PAGE_SIZE } from "../../components/World/WorldOverview";
 import { navigateRoute, useHashRoute } from "../../components/useHashRoute";
 import { routeSegment } from "../../utils/hash-route";
 import WorldDetails from "../../components/World/WorldDetails";
 import { motion, AnimatePresence } from "framer-motion";
 import AshParticles from "../../components/World/AshParticles.tsx";
+import WorldParticleStage from "../../components/World/WorldParticleStage";
+import "../../_styles/World/base.scss";
 
 const items = config.rootPage.WORLD!.items;
 
@@ -32,6 +33,7 @@ export default function World() {
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const [isWorldReady, setIsWorldReady] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
+  const [previewItemIndex, setPreviewItemIndex] = useState(0);
 
   useEffect(() => {
     const handleResize = () => {
@@ -85,6 +87,11 @@ export default function World() {
     }
   }, [active, isLeaving, windowSize]);
 
+  useEffect(() => {
+    if (selectedItemIndex !== null) return;
+    setPreviewItemIndex((currentPage - 1) * WORLD_PAGE_SIZE);
+  }, [currentPage, selectedItemIndex]);
+
   const handleItemSelect = useCallback((index: number) => {
     navigateRoute('world', [items[index].subTitle]);
   }, []);
@@ -106,6 +113,9 @@ export default function World() {
     navigateRoute('world', [items[index].subTitle]);
   }, []);
 
+  const visualItemIndex = selectedItemIndex ?? Math.min(previewItemIndex, items.length - 1);
+  const visualItem = items[visualItemIndex];
+
   return (
     <div
       ref={world}
@@ -121,7 +131,7 @@ export default function World() {
       <div className="bg-layout absolute inset-0 bg-[#101010] opacity-90 z-[0]" />
 
       {/* 背景文字 "WORLD" */}
-      <h1 className="absolute bottom-[5%] left-[10%] text-gray-800 dark:text-gray-900 font-bold text-9xl opacity-20 select-none z-[1] pointer-events-none">
+      <h1 className="world-background-word absolute bottom-[5%] left-[10%] text-gray-800 dark:text-gray-900 font-bold text-9xl opacity-20 select-none z-[1] pointer-events-none">
         WORLD
       </h1>
 
@@ -133,11 +143,23 @@ export default function World() {
           20: 遮罩/UI 装饰
       */}
 
+      {isWorldReady && visualItem && <WorldParticleStage
+        item={visualItem}
+        itemIndex={visualItemIndex}
+        total={items.length}
+        width={windowSize.width}
+        height={windowSize.height}
+        detail={selectedItemIndex !== null}
+        active={active && !isLeaving}
+      />}
+
       {/* 内容区域 */}
       <div className="absolute inset-0 ">
         <AnimatePresence mode="wait">
           {selectedItemIndex === null ? (
             <WorldOverview key="overview" onItemSelect={handleItemSelect} currentPage={currentPage}
+              previewIndex={visualItemIndex}
+              onPreviewItem={setPreviewItemIndex}
               onPageChange={page => navigateRoute('world', [], page > 1 ? { page: String(page) } : {})} />
           ) : (
             <WorldDetails
@@ -152,33 +174,7 @@ export default function World() {
           )}
         </AnimatePresence>
       </div>
-
-      {/* 3D 粒子特效 - 允许点击操作 */}
-      {isWorldReady && (
-        <div
-          className={`absolute ${selectedItemIndex !== null ? "left-0" : "right-0"} top-1/2 transform -translate-y-1/2 opacity-70`}
-        >
-          <ParticleFactory
-            activeLabel={selectedItemIndex !== null ? undefined : "island"}
-            imageUrl={
-              selectedItemIndex !== null
-                ? items[selectedItemIndex].imageUrl
-                : undefined
-            }
-            width={windowSize.width}
-            height={windowSize.height}
-            isGrayscale={false}
-            scale={windowSize.height > windowSize.width ? (selectedItemIndex !== null ? 0.45 : 0.6) : 1.7}
-            particleAreaX={
-              windowSize.height > windowSize.width ? windowSize.width / 2 - 200 : selectedItemIndex !== null
-                ? windowSize.width / 5
-                : windowSize.width / 2 + 60
-            }
-            particleAreaY={windowSize.height > windowSize.width ? (selectedItemIndex !== null ? windowSize.height * 0.2 - 200 : windowSize.height * 0.72 - 200) : windowSize.height / 2 - 150}
-          />
-        </div>
-      )}
-      {active && !isLeaving && selectedItemIndex === null && <AshParticles count={35} />}
+      {active && !isLeaving && <AshParticles count={selectedItemIndex === null ? 24 : 14} />}
       <PortraitBottomGradientMask />
     </div>
   );

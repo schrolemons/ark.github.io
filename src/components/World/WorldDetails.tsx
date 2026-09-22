@@ -3,7 +3,6 @@ import { IconArrow } from "../SvgIcons.tsx";
 import config from "../../../arknights.config.tsx";
 import { motion } from "framer-motion";
 // import LogoParticleCanvas from "./DN_logos.tsx";
-import AshParticles from "./AshParticles.tsx";
 
 interface WorldItem {
   title: string;
@@ -49,22 +48,17 @@ export default function WorldDetails({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {/* 粒子背景层 
-          关键修改：移除 key={item.imageUrl} 
-          这样AshParticles组件将保持挂载状态，可以利用内部的useEffect来处理图片切换和平滑过渡
-      */}
-      {active && <AshParticles particleImageUrl={item.imageUrl} count={35} />}
-
       {/* 内容层 */}
       <motion.div className="absolute inset-0 z-[3] pointer-events-none">
         <div className="world-copy absolute top-1/2 -translate-y-1/2 right-[10%] w-[40%] max-w-[600px] flex flex-col pointer-events-auto pl-8 border-l border-white/30 portrait:top-[34%] portrait:bottom-[17%] portrait:translate-y-0 portrait:left-[9%] portrait:right-auto portrait:w-[74%] portrait:overflow-y-auto portrait:pr-4 portrait:bg-[#171717]/80"
           onWheel={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()} onTouchEnd={e => e.stopPropagation()}>
+          <div className="world-copy-kicker">WORLD ARCHIVE <span>{item.subTitle}</span></div>
           {/* 装饰线 */}
-          <div className="absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-transparent via-white/50 to-transparent" />
+          <div className="world-copy-rule absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-transparent via-white/50 to-transparent" />
 
           <motion.div
             key={`title-${item.title}`}
-            className="text-[4rem] font-bold leading-none text-white drop-shadow-lg w-[60%] portrait:w-full"
+            className="world-copy-title text-[4rem] font-bold leading-none text-white drop-shadow-lg w-[60%] portrait:w-full"
             variants={textVariants}
             initial="initial"
             animate="animate"
@@ -75,7 +69,7 @@ export default function WorldDetails({
 
           <motion.div
             key={`subtitle-${item.title}`}
-            className="text-[2rem] font-n15eBold text-ark-blue mt-2 mb-6 w-[60%] portrait:w-full"
+            className="world-copy-subtitle text-[2rem] font-n15eBold text-ark-blue mt-2 mb-6 w-[60%] portrait:w-full"
             variants={textVariants}
             initial="initial"
             animate="animate"
@@ -86,7 +80,7 @@ export default function WorldDetails({
 
           <motion.div
             key={`desc-${item.title}`}
-            className="text-[1rem] leading-relaxed text-gray-200 w-[60%] portrait:w-full portrait:text-[1.75rem]"
+            className="world-copy-description text-[1rem] leading-relaxed text-gray-200 w-[60%] portrait:w-full portrait:text-[1.75rem]"
             variants={textVariants}
             initial="initial"
             animate="animate"
@@ -101,7 +95,7 @@ export default function WorldDetails({
         </div>
 
         {/* 导航按钮 (左右箭头) */}
-        <div className="pointer-events-auto">
+        <div className="world-detail-nav pointer-events-auto">
           <motion.a
             role="button" aria-label="上一条设定" tabIndex={0}
             onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPrevious(); } }}
@@ -130,7 +124,7 @@ export default function WorldDetails({
 
       {/* 底部进度条/指示器 */}
       <motion.div
-        className="absolute bottom-[10%] left-[10%] right-[30%] h-1 flex gap-2 z-[3]"
+        className="world-detail-progress absolute bottom-[10%] left-[10%] right-[30%] h-1 flex gap-2 z-[3]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8 }}
@@ -150,7 +144,7 @@ export default function WorldDetails({
 
       {/* 返回按钮 */}
       <motion.button
-        className="absolute bottom-[10%] right-[10%] bg-[#333] hover:bg-[#444] text-white px-8 py-3 flex items-center gap-4 z-[10] transition-colors"
+        className="world-detail-back absolute bottom-[10%] right-[10%] bg-[#333] hover:bg-[#444] text-white px-8 py-3 flex items-center gap-4 z-[10] transition-colors"
         onClick={onBack}
         initial={{ x: 50, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}

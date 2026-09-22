@@ -55,4 +55,19 @@
     body::-ms-scrollbar-button {
         display: none;
     }
+
+    /* Mobile keeps scrolling gesture-only. The desktop gold scrollbar is too
+       visually dominant beside the compact right-side section rail. */
+    @media (max-width: 1024px), (orientation: portrait) {
+        * {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        *::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+    }
 </style>

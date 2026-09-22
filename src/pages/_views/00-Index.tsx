@@ -162,5 +162,8 @@ export default function Index() {
             + " flex items-center justify-between portrait:justify-center"}>
             {/* TODO: 扫码下载、适龄提示 */}
         </div>
+        <div className="home-mobile-footer" aria-hidden="true">
+            <span>© SCHNIE</span>
+        </div>
     </div>
 }

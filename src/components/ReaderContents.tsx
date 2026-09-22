@@ -39,10 +39,14 @@ export default function ReaderContents({title, headings}: {title: string; headin
     return () => { cancelAnimationFrame(frame); document.removeEventListener('scroll', track, true); };
   }, [headings]);
   return <>
-    <button ref={toggle} type="button" className="reader-toc-toggle" aria-label={open ? '收起文章目录' : '展开文章目录'} aria-expanded={open} aria-controls="reader-contents" onClick={() => setOpen(!open)}><span>目录</span><small>{open ? '›' : '‹'}</small></button>
+    <button ref={toggle} type="button" className="reader-toc-toggle" aria-label={open ? '收起文章目录' : '展开文章目录'} aria-expanded={open} aria-controls="reader-contents" onClick={() => setOpen(!open)}>
+      <span className="reader-toc-toggle-icon" aria-hidden="true"><i/><i/><i/></span>
+      <span className="reader-toc-toggle-copy"><strong>目录</strong><small>CONTENTS</small></span>
+      <span className="reader-toc-count" aria-hidden="true">{String(entries.length).padStart(2, '0')}</span>
+    </button>
     {open && <button type="button" className="reader-toc-backdrop" aria-label="关闭目录遮罩" onClick={() => setOpen(false)} />}
     <nav ref={panel} id="reader-contents" className="reader-contents" data-open={open} aria-label="文章目录">
-      <header><div className="reader-toc-eyebrow">READING / DOCUMENT INDEX</div><h2>{title}</h2><button ref={close} type="button" aria-label="收起文章目录" onClick={() => {setOpen(false); toggle.current?.focus({preventScroll: true});}}>×</button></header>
+      <header><div className="reader-toc-eyebrow">READING / CONTENTS · {String(entries.length).padStart(2, '0')}</div><h2>{title}</h2><button ref={close} type="button" aria-label="收起文章目录" onClick={() => {setOpen(false); toggle.current?.focus({preventScroll: true});}}><span aria-hidden="true">×</span></button></header>
       <div className="reader-toc-links">{entries.map(item => <a key={item.slug} href={`#${item.slug}`} target="_self" aria-current={current === item.slug ? 'location' : undefined} style={{paddingLeft: `${12 + Math.max(0, item.depth - 1) * 12}px`}} onClick={event => {
         event.preventDefault();
         const target = document.getElementById(item.slug);

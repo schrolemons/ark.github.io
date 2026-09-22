@@ -28,6 +28,10 @@ export default function Operator() {
   useEffect(() => { if (active) directions.set({top: true, right: true, bottom: true, left: false}); }, [active]);
   return <section className="operator-view bg-layout" aria-label="角色档案">
     <span className="operator-watermark" aria-hidden="true">{current.name}</span>
+    <div className="operator-mobile-eyebrow" aria-hidden="true">
+      <span>SCHNIE ARCHIVE //</span>
+      <strong>PROFILE</strong>
+    </div>
     <div className="operator-art" style={artStyle} aria-hidden="true" data-loading={!loaded[current.id]}>
       {!loaded[current.id] && <span className="operator-loading">LOADING / 载入立绘</span>}
       <AnimatePresence mode="wait">

@@ -1,12 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useStore } from "@nanostores/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperInstance } from 'swiper';
 import { navigateRoute, useHashRoute } from '../../components/useHashRoute';
 import { parseRoute, routeSegment } from '../../utils/hash-route';
 import { Scrollbar, Autoplay } from "swiper/modules";
-import { motion, AnimatePresence, type Transition } from "framer-motion";
-// 引入 framer-motion 处理复杂动效
 import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/scrollbar";
@@ -22,13 +20,6 @@ import {
 
 const base = import.meta.env.BASE_URL;
 
-// --- 动画配置常量 ---
-const TRANSITION_SNAP = {
-  type: "spring" as const,
-  stiffness: 300,
-  damping: 30,
-} satisfies Transition;
-
 function SwiperInfo({ swiperIndex }: { swiperIndex: number }) {
   const swiperData = useMemo(
     () => arknightsConfig.rootPage.INFORMATION.swiper.data,
@@ -38,67 +29,33 @@ function SwiperInfo({ swiperIndex }: { swiperIndex: number }) {
 
   return (
     <div className="information-summary w-[26.5rem] portrait:w-[unset] portrait:static absolute left-[3.875rem] bottom-[-1.875rem] overflow-hidden">
-      {/* 使用 AnimatePresence 处理切换时的退出和进入 */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={swiperIndex} // 关键：key 变化触发动画
-          initial={{ opacity: 0, x: 20 }} // 初始状态：透明且向右偏
-          animate={{ opacity: 1, x: 0 }} // 入场状态：不透明且归位
-          exit={{ opacity: 0, x: -20 }} // 退出状态：透明且向左偏
-          transition={{ duration: 0.3, ease: "easeOut" }}
-          className="flex flex-col"
-        >
+      <div key={swiperIndex} className="flex flex-col">
           {/* 标题和日期区 */}
           <div className="flex flex-col portrait:flex-col-reverse">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
-              className="font-benderRegular tracking-[1px] portrait:mt-[1rem]"
-            >
+            <div className="font-benderRegular tracking-[1px] portrait:mt-[1rem]">
               {current.date ?? ""}
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
-              className="max-h-[2.8em] portrait:max-h-[1.4em] overflow-ellipsis text-[2.25rem] portrait:text-[2.5rem] font-bold font-benderBold tracking-[2px] line-clamp-2 portrait:line-clamp-1"
-            >
+            <div className="max-h-[2.8em] portrait:max-h-[1.4em] overflow-ellipsis text-[2.25rem] portrait:text-[2.5rem] font-bold font-benderBold tracking-[2px] line-clamp-2 portrait:line-clamp-1">
               {current.title ?? ""}
-            </motion.div>
+            </div>
           </div>
 
           {/* 副标题 */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="information-subtitle mt-[1rem] text-[1.125rem] font-benderRegular text-[#d2d2d2]"
-          >
+          <div className="information-subtitle mt-[1rem] text-[1.125rem] font-benderRegular text-[#d2d2d2]">
             {current.subtitle ?? ""}
-          </motion.div>
+          </div>
 
           {/* URL */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.25 }}
-            className="text-[.75rem] portrait:text-[.875rem] font-n15eMedium leading-5 tracking-[2px] opacity-70"
-          >
+          <div className="text-[.75rem] portrait:text-[.875rem] font-n15eMedium leading-5 tracking-[2px] opacity-70">
             {current.url ?? ""}
-          </motion.div>
+          </div>
 
           {/* 更多情报按钮 */}
           {current.href && (
-            <motion.a
+            <a
               href={current.href}
               target={current.href.startsWith(base) ? "_self" : "_blank"}
-              initial={{ opacity: 0, y: 0 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0 }}
-              whileHover={{ scale: 1.02, backgroundColor: "#ffffff" }}
-              whileTap={{ scale: 0.98 }}
               className="w-[14.375rem] h-[3.75rem] pr-7 pl-4 mt-12 text-black no-underline whitespace-nowrap bg-ark-blue flex items-center cursor-pointer transition-colors duration-300 portrait:hidden group"
             >
               <div className="transition-transform duration-300 group-hover:translate-x-1">
@@ -108,10 +65,9 @@ function SwiperInfo({ swiperIndex }: { swiperIndex: number }) {
                 <div className="text-[.875rem] font-benderBold">READ MORE</div>
               </div>
               <IconArrow className="w-[.5rem] ml-auto flex-none pointer-events-none transition-transform duration-300 group-hover:translate-x-2" />
-            </motion.a>
+            </a>
           )}
-        </motion.div>
-      </AnimatePresence>
+      </div>
     </div>
   );
 }
@@ -128,21 +84,17 @@ function BreakingNewsTag({
   return (
     <div
       {...{ onClick }}
-      className={`relative w-[5.625rem] h-[1.25em] portrait:text-[1.25rem] font-bold pr-2 pl-[.125rem] mr-4 flex items-center cursor-pointer transition-all duration-300 group
+      className={`relative isolate w-[5.625rem] h-[1.25em] portrait:text-[1.25rem] font-bold pr-2 pl-[.125rem] mr-4 flex items-center cursor-pointer group
                 ${active ? "text-black" : "text-white hover:text-ark-blue"}`}
     >
-      {/* 激活时的背景色块动画 */}
+      {/* 栏目切换保持即时稳定，不使用布局动画，避免移动端闪烁。 */}
       {active && (
-        <motion.div
-          layoutId="activeTag"
-          className="absolute inset-0 bg-ark-blue -z-10"
-          transition={TRANSITION_SNAP}
-        />
+        <div className="absolute inset-0 bg-[#18d1ff] z-0" />
       )}
       <span className="relative z-10">{label}</span>
       <IconArrow
-        className={`w-[.4375rem] ml-auto flex-none pointer-events-none transition-all duration-300 
-                ${active ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"}`}
+        className={`relative z-10 w-[.4375rem] ml-auto flex-none pointer-events-none
+                ${active ? "opacity-100" : "opacity-0"}`}
       />
     </div>
   );
@@ -153,15 +105,11 @@ function BreakingNewsItem({
   title,
   date,
   href,
-  index,
-}: BreakingNewsItemProps & { index: number }) {
+}: BreakingNewsItemProps) {
   return (
-    <motion.a
+    <a
       {...{ href }}
       target={href?.startsWith(base) ? "_self" : "_blank"}
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: index * 0.05 }} // 交错出现
       className={
         "breaking-news-item w-[22.5rem] portrait:w-[unset] h-24 portrait:h-[7.125rem] text-inherit" +
         " border-b-[1px] border-solid border-[#ffffff4d] portrait:border-[#403c3b] no-underline" +
@@ -175,7 +123,7 @@ function BreakingNewsItem({
       </div>
       <div
         className={
-          "w-[17.5rem] portrait:w-[unset] text-[d2d2d2] ml-auto portrait:ml-[2.75rem] portrait:flex-auto" +
+          "w-[17.5rem] portrait:w-[unset] text-[#d2d2d2] ml-auto portrait:ml-[2.75rem] portrait:flex-auto" +
           " portrait:flex portrait:flex-row-reverse portrait:justify-between portrait:items-center"
         }
       >
@@ -195,7 +143,7 @@ function BreakingNewsItem({
           {title}
         </div>
       </div>
-    </motion.a>
+    </a>
   );
 }
 
@@ -241,30 +189,17 @@ function BreakingNewsList() {
         ))}
       </div>
       <div className={"mt-2 portrait:mt-0 overflow-hidden"}>
-        {/* 列表切换动效 */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={categoryIndex}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-          >
-            {data.length > 0 && data[categoryIndex]?.list.length > 0 ? (
-              data[categoryIndex].list.map((item, index) => (
-                <BreakingNewsItem
-                  key={item.title + index}
-                  index={index}
-                  {...item}
-                />
-              ))
-            ) : (
-              <div className="text-4xl font-benderBold p-8">NO DATA</div>
-            )}
-          </motion.div>
-        </AnimatePresence>
+        <div key={categoryIndex}>
+          {data.length > 0 && data[categoryIndex]?.list.length > 0 ? (
+            data[categoryIndex].list.map((item, index) => (
+              <BreakingNewsItem key={item.title + index} {...item} />
+            ))
+          ) : (
+            <div className="text-4xl font-benderBold p-8">NO DATA</div>
+          )}
+        </div>
 
-        {category[categoryIndex] !== null && (
+        {category[categoryIndex] != null && (
           <a
             target="_self"
             href={base + "world/?category=" + category[categoryIndex]}
@@ -285,10 +220,23 @@ function BreakingNewsList() {
   );
 }
 
-function ImageSlide({ title, image }: { title: string; image: string }) {
+function ClickHereHint() {
+  return (
+    <span className="information-click-hint" aria-hidden="true">
+      <span className="information-click-hint-copy">
+        <strong>点击查看</strong>
+        <small>CLICK HERE</small>
+      </span>
+      <span className="information-click-hint-arrow" />
+    </span>
+  );
+}
+
+function ImageSlide({ title, image, showClickHint = false }: { title: string; image: string; showClickHint?: boolean }) {
   return (
     <div className="w-full h-full relative">
       <img src={image} alt={title} className="w-full h-full object-cover" />
+      {showClickHint && <ClickHereHint />}
       <div className="absolute bottom-0 left-0 w-full h-[3.75rem] bg-black bg-opacity-30 mix-blend-overlay" />
       <div className="absolute bottom-0 left-0 w-full h-[3.75rem] flex items-center justify-center">
         <div className="text-[1.25rem] font-bold text-white">{title}</div>
@@ -367,7 +315,7 @@ function SwiperBody({
               className="block w-full h-full overflow-hidden"
             >
               {image ? (
-                <ImageSlide {...{ title, image }} />
+                <ImageSlide {...{ title, image }} showClickHint={index > 0} />
               ) : (
                 <TextSlide {...{ title, subtitle: subtitle ?? "" }} />
               )}

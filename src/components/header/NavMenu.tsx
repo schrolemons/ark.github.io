@@ -43,6 +43,7 @@ function Navigation({showSubNavigation}: { showSubNavigation: boolean }) {
         arknightsConfig.navbar.items.map((item, index) => {
             delay += 70
             return <a key={index} target="_self" href={item.href}
+                      data-current={$viewIndex === index}
                       onClick={_ => isNavMenuOpen.set(!$isNavMenuOpen)}
                       className={"h-[7.5rem] flex items-center justify-between transition ease-in-out duration-200"}
                       aria-label={item.title + " - " + item.subtitle}

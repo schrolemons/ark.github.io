@@ -33,7 +33,6 @@ export default function RootPageViews() {
     useLayoutEffect(() => {
         viewIndex.set(index);
         isFooterVisible.set(false);
-        document.querySelector(`.mobile-section-nav a[data-index="${index}"]`)?.scrollIntoView({block:'nearest', inline:'nearest'});
     }, [index]);
     useEffect(() => {
         const change = () => {
@@ -51,11 +50,21 @@ export default function RootPageViews() {
         const blocked = () => isScrollLocked.get() || identityDialogOpen.get() || isOwnerInfoOpen.get() || isNavMenuOpen.get();
         const turn = (direction: number) => {
             const mobile = matchMedia(mobileQuery).matches;
-            if (blocked() || performance.now() - lastTurn < (mobile ? 560 : 850)) return;
+            if (blocked() || performance.now() - lastTurn < (mobile ? 540 : 850)) return;
             const current = viewIndex.get();
-            if (!mobile && current === config.navbar.items.length - 1) {
-                if (direction > 0 && !isFooterVisible.get()) { isFooterVisible.set(true); lastTurn = performance.now(); return; }
-                if (direction < 0 && isFooterVisible.get()) { isFooterVisible.set(false); lastTurn = performance.now(); return; }
+            if (current === config.navbar.items.length - 1) {
+                if (direction > 0 && !isFooterVisible.get()) {
+                    isFooterVisible.set(true);
+                    // Footer is deliberately separated from the regular page rhythm.
+                    // The extra lock is paired with the visual hold in mobile CSS.
+                    lastTurn = performance.now() + (mobile ? 160 : 0);
+                    return;
+                }
+                if (direction < 0 && isFooterVisible.get()) {
+                    isFooterVisible.set(false);
+                    lastTurn = performance.now() + (mobile ? 80 : 0);
+                    return;
+                }
             }
             const next = current + direction;
             if (next >= 0 && next < config.navbar.items.length) {
@@ -73,7 +82,7 @@ export default function RootPageViews() {
             const {x, y, up, down} = touch;
             touch = null;
             const dx = x - event.changedTouches[0].clientX, dy = y - event.changedTouches[0].clientY;
-            if (Math.abs(dy) < 85 || Math.abs(dy) < Math.abs(dx) * 1.3) return;
+            if (Math.abs(dy) < 72 || Math.abs(dy) < Math.abs(dx) * 1.3) return;
             // Only a new gesture starting at the boundary can turn a section.
             if (dy > 0 ? down : up) return;
             turn(dy > 0 ? 1 : -1);
@@ -96,9 +105,14 @@ export default function RootPageViews() {
         };
     }, []);
     return <>
-        <nav className="mobile-section-nav" aria-label="页面分区">
-            <div key={index} className="mobile-section-current" data-direction={direction}><span className="mobile-section-number">{String(index + 1).padStart(2, '0')}</span><div><strong>{config.navbar.items[index].subtitle}</strong><small>{config.navbar.items[index].title}</small></div></div>
-            <div className="mobile-section-steps">{config.navbar.items.map((item, i) => <a key={item.href} href={item.href} target="_self" data-index={i} aria-label={`切换到${item.subtitle}`} aria-current={index === i ? 'page' : undefined}><span /></a>)}</div>
+        <nav className="mobile-section-nav" aria-label="当前页面分区">
+            <div key={index} className="mobile-section-current" data-direction={direction}>
+                <div className="mobile-section-counter" aria-hidden="true">
+                    <span className="mobile-section-number">{String(index).padStart(2, '0')}</span>
+                    <span className="mobile-section-total">/ {String(config.navbar.items.length - 1).padStart(2, '0')}</span>
+                </div>
+                <span className="mobile-section-label">{config.pageTracker.labels[index] ?? config.navbar.items[index].title}</span>
+            </div>
         </nav>
         {[Index, Information, Operator, World, Media, More].map((Element, i) => <RootPageViewTemplate key={i} selfIndex={i} direction={direction}><Element /></RootPageViewTemplate>)}
     </>;

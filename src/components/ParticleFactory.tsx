@@ -66,7 +66,7 @@ class Particle {
   exitVx?: number;
   exitVy?: number;
 
-  constructor(totalX: number, totalY: number, time: number, color: number[]) {
+  constructor(totalX: number, totalY: number, time: number, color: number[], animationDuration = 3000) {
     this.x = totalX;
     this.y = totalY;
     this.totalX = totalX;
@@ -85,7 +85,7 @@ class Particle {
     this.opacity = this.initialOpacity;
     this.progress = 0;
     this.animationProgress = 0;
-    this.animationDuration = 3000; // 出场动画持续时间
+    this.animationDuration = animationDuration;
     this.offsetX = (Math.random() - 0.5) * 1;
     this.offsetY = (Math.random() - 0.5) * 1;
     this.grayColor = Math.round(
@@ -281,9 +281,10 @@ class ParticleCanvas {
   targetParticles: Particle[];
   private animationFrameId: number | null = null;
   private scale: number;
-  private exitAnimationDuration: number = 1000; // 离场动画持续时间
+  private exitAnimationDuration: number;
   private exitTimer?: ReturnType<typeof setTimeout>;
-  private newImageDelay: number = 100; // 新图片加载延迟
+  private newImageDelay: number;
+  private entryAnimationDuration: number;
   private isExiting: boolean = false;
   private nextLogo: LogoImg | null = null;
 
@@ -294,7 +295,10 @@ class ParticleCanvas {
     isGrayscale: boolean,
     particleAreaX?: number,
     particleAreaY?: number,
-    initialScale: number = 4
+    initialScale: number = 4,
+    entryAnimationDuration: number = 3000,
+    exitAnimationDuration: number = 1000,
+    newImageDelay: number = 100
   ) {
     this.canvasEle = target;
     this.ctx = target.getContext("2d") as CanvasRenderingContext2D;
@@ -315,6 +319,9 @@ class ParticleCanvas {
     this.isTransitioning = false;
     this.targetParticles = [];
     this.scale = initialScale;
+    this.entryAnimationDuration = entryAnimationDuration;
+    this.exitAnimationDuration = exitAnimationDuration;
+    this.newImageDelay = newImageDelay;
     scale = initialScale;
 
     this.canvasEle.addEventListener("mousemove", this.handleMouseMove);
@@ -364,7 +371,7 @@ class ParticleCanvas {
   loadNewImage(img: LogoImg) {
     this.currentLogo = img;
     this.ParticleArr = img.particleData.map(
-      (item) => new Particle(item.totalX, item.totalY, animateTime, item.color)
+      (item) => new Particle(item.totalX, item.totalY, animateTime, item.color, this.entryAnimationDuration)
     );
     this.isExiting = false;
   }
@@ -453,7 +460,7 @@ class ParticleCanvas {
       // 如果当前没有粒子但有新的 logo 数据，则创建新的粒子
       this.ParticleArr = this.currentLogo.particleData.map(
         (item) =>
-          new Particle(item.totalX, item.totalY, animateTime, item.color)
+          new Particle(item.totalX, item.totalY, animateTime, item.color, this.entryAnimationDuration)
       );
     }
 
@@ -507,6 +514,9 @@ interface ParticleSystemProps {
   scale?: number;
   brightnessThreshold?: number;
   alphaThreshold?: number;
+  entryDuration?: number;
+  exitDuration?: number;
+  imageDelay?: number;
   debug?: boolean;
 }
 
@@ -521,6 +531,9 @@ const ParticleFactory: React.FC<ParticleSystemProps> = ({
   scale: initialScale,
   brightnessThreshold: initialBrightnessThreshold,
   alphaThreshold: initialAlphaThreshold,
+  entryDuration = 3000,
+  exitDuration = 1000,
+  imageDelay = 100,
   debug = false,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -529,7 +542,7 @@ const ParticleFactory: React.FC<ParticleSystemProps> = ({
   useEffect(() => {
     if (!canvasRef.current) return;
     const instance = new ParticleCanvas(canvasRef.current, width / 3, height / 2,
-      isGrayscale, particleAreaX, particleAreaY, initialScale);
+      isGrayscale, particleAreaX, particleAreaY, initialScale, entryDuration, exitDuration, imageDelay);
     instance.debug = debug;
     if (initialBrightnessThreshold !== undefined) instance.setBrightnessThreshold(initialBrightnessThreshold);
     if (initialAlphaThreshold !== undefined) instance.setAlphaThreshold(initialAlphaThreshold);
@@ -541,7 +554,7 @@ const ParticleFactory: React.FC<ParticleSystemProps> = ({
       instance.stop();
       if ((window as any).particleCanvas === instance) delete (window as any).particleCanvas;
     };
-  }, [width, height, particleAreaX, particleAreaY, initialScale, debug, initialBrightnessThreshold, initialAlphaThreshold]);
+  }, [width, height, particleAreaX, particleAreaY, initialScale, entryDuration, exitDuration, imageDelay, debug, initialBrightnessThreshold, initialAlphaThreshold]);
 
   useEffect(() => {
     if (!particleCanvas) return;

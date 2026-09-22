@@ -47,16 +47,16 @@ const SITE_STATS = {
 const formatStat = (value: number | null) => value === null ? "--" : String(value).padStart(2, "0");
 
 function ArchiveCardView({ card, selected, onOpen }: { card: ArchiveCard; selected: boolean; onOpen: () => void }) {
-  return <article className={`group relative min-h-[25rem] overflow-hidden border border-white/15 bg-[#161616] transition-all duration-500 hover:-translate-y-2 hover:border-ark-gold ${selected ? "border-ark-gold shadow-[0_0_2rem_rgba(255,215,0,.12)]" : ""}`}>
+  return <article className={`archive-card group relative min-h-[25rem] overflow-hidden border border-white/15 bg-[#161616] transition-all duration-500 hover:-translate-y-2 hover:border-ark-gold ${selected ? "border-ark-gold shadow-[0_0_2rem_rgba(255,215,0,.12)]" : ""}`}>
     <a href={card.url} target="_blank" rel="noreferrer" aria-label={`${card.title} - ${card.subtitle}`} onClick={onOpen} className="absolute inset-0 z-20 cursor-pointer" />
-    <div className="absolute inset-0 flex items-center justify-center bg-black">
+    <div className="archive-card-media absolute inset-0 flex items-center justify-center bg-black">
       <img src={card.img} alt="" loading="lazy" className="h-3/5 w-3/5 object-contain opacity-45 transition duration-700 group-hover:scale-110 group-hover:opacity-85" />
     </div>
-    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-transparent" />
-    <div className="absolute left-6 top-6 z-10 flex items-center gap-3 text-[.65rem] tracking-[.25em] text-white/50 font-benderBold">
+    <div className="archive-card-shade absolute inset-0 bg-gradient-to-t from-black via-black/55 to-transparent" />
+    <div className="archive-card-eyebrow absolute left-6 top-6 z-10 flex items-center gap-3 text-[.65rem] tracking-[.25em] text-white/50 font-benderBold">
       <span className="text-ark-gold">{card.id}</span><span className="h-px w-8 bg-white/30" /><span>{card.eyebrow}</span>
     </div>
-    <div className="absolute inset-x-6 bottom-6 z-10">
+    <div className="archive-card-copy absolute inset-x-6 bottom-6 z-10">
       <h2 className="text-3xl font-bold text-white">{card.title}</h2>
       <div className="mt-1 text-xs tracking-[.25em] text-ark-gold font-benderBold">{card.subtitle}</div>
       <p className="mt-4 max-w-[18rem] text-sm leading-relaxed text-white/65">{card.description}</p>
@@ -129,12 +129,18 @@ export default function More() {
   const archiveStatusLabel = archiveStatus.toUpperCase();
   const connectionLabel = archiveStatus === "unavailable" ? "OFFLINE" : archiveStatus === "checking" ? "CHECKING" : "ONLINE";
 
-  return <div data-more-page className={`relative h-full w-full overflow-hidden bg-[#0c0c0c] transition-opacity duration-1000 ${active ? "opacity-100" : "opacity-0"}`}>
-    <div className="h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" style={{ transform: $isFooterVisible ? "translateY(-400px)" : "translateY(0)" }}>
+  return <div data-more-page data-footer-visible={$isFooterVisible} className={`relative h-full w-full overflow-hidden bg-[#0c0c0c] transition-opacity duration-1000 ${active ? "opacity-100" : "opacity-0"}`}>
+    <div className="more-page-track h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" style={{ transform: $isFooterVisible ? "translateY(-400px)" : "translateY(0)" }}>
       <main ref={mainRef} className="relative h-full w-full overflow-hidden px-[7vw] pb-12 pt-[10rem] portrait:overflow-y-auto portrait:px-6 portrait:pb-16 portrait:pt-[8rem]">
         <div className="pointer-events-none absolute bottom-[-2%] left-[-2%] select-none text-[14vw] font-black leading-none tracking-tighter text-white/[.04]">ARCHIVE</div>
         <div className="relative z-10 flex items-start justify-between gap-12 portrait:flex-col portrait:gap-8">
-          <div className="max-w-[45rem]">
+          <div className="more-mobile-heading" aria-hidden="true">
+            <small>SCHNIE ARCHIVE</small>
+            <h2>MORE CONTENT</h2>
+            <strong>更多内容</strong>
+            <p>继续探索项目、文档与创作者档案。</p>
+          </div>
+          <div className="more-heading-desktop max-w-[45rem]">
             <div className="flex items-center gap-3 text-xs tracking-[.4em] text-ark-gold font-benderBold"><span className="h-px w-10 bg-ark-gold" />PROJECT ARCHIVE</div>
             <h1 className="mt-5 text-6xl font-black leading-none tracking-tight text-white portrait:text-5xl">第九边缘：方舟</h1>
             <p className="mt-5 max-w-[40rem] text-base leading-relaxed text-white/55 portrait:text-sm">SCHNIE:ARK 是第九边缘世界观的快速档案站，记录情报、角色、设定等内容。</p>
@@ -162,7 +168,7 @@ export default function More() {
         </div>
         <div className="relative z-10 mt-8 flex items-center justify-between text-[.65rem] tracking-[.25em] text-white/35 font-benderBold"><span>{selectedCard ? `SELECTED // ${selectedCard.subtitle}` : "SELECT A RECORD TO CONTINUE"}</span><span>SCROLL FOR OTHER INFORMATION ↓</span></div>
       </main>
-      <div className="h-[400px] w-full"><Footer /></div>
+      <div className="more-page-footer h-[400px] w-full"><Footer /></div>
     </div>
   </div>;
 }
