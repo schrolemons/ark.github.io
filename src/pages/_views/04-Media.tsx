@@ -165,9 +165,10 @@ export default function Media() {
             backgroundRepeat: "repeat",
           }}
         >
-          {/* 背景图片 - 使用伪元素实现透明度控制 */}
+          <div className="media-content">
+          {/* 背景随完整内容区域延伸。 */}
           <div
-            className="absolute inset-0 z-0"
+            className="media-background absolute inset-0 z-0"
             style={{
               backgroundImage: `url(${activeData.bg})`,
               backgroundSize: "cover",
@@ -185,7 +186,7 @@ export default function Media() {
             </h2>
             <div className="flex flex-col gap-4">
               {CATEGORIES.map((cat) => (
-                <div
+                <button type="button" aria-pressed={currentCat === cat.id}
                   key={cat.id}
                   className="flex items-center group cursor-pointer pointer-events-auto"
                   onClick={() => setCurrentCat(cat.id)}
@@ -200,13 +201,14 @@ export default function Media() {
                   <span
                     className={`text-xs tracking-widest transition-colors ${currentCat === cat.id ? "text-white" : "text-gray-500 group-hover:text-gray-300"}`}
                   >
-                    {cat.en}
+                    <b className="media-category-cn">{cat.cn}</b>{cat.en}
                   </span>
-                </div>
+                </button>
               ))}
             </div>
           </div>
 
+          <img className="media-artwork" src={activeData.bg} alt={activeData.cn} />
           {/* 视觉区 */}
           <div className="media-visual absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="relative min-w-[1000px] h-[600px]">
@@ -355,6 +357,7 @@ export default function Media() {
           </div>
         </div>
 
+        </div>
         {/* --- 第二屏：Gallery 详情 (高度 50% = 100vh) --- */}
         <div className="w-full h-[50%] relative">
           <GalleryDetails onBack={handleBackFromGallery} active={active && showGallery} />

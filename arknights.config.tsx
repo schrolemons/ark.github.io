@@ -41,6 +41,7 @@ export default {
     ],
     ownerInfo: {
       name: "SCHNIE.",
+      video: { bvid: "BV1QWYi6MEh3", title: "SCHNIE-Launcher：即刻启程" },
       slogan: "遇见不一样的你，遇见更好的自己。",
       footerLinks: [
         { label: "GitHub", url: "https://github.com/schrolemons" },
@@ -141,7 +142,7 @@ export default {
           name: "MO XUE",
           cnName: "墨薛",
           logo: "/images/logo.png",
-          url:"https://ark.sch-nie.com/operator/?id=墨薛",
+          url: base + "operator/moxue",
           desc: "诞生于科技的终末，受邀而汇聚成生命的形态。橘黄色的外表下，是金色生命与黑白技艺的相互对抗。\n" +
               "祂理性，平和，坚毅，在众多文明的事迹中游弋，汇聚着希望与批判，直达第九个边缘的虹光之处。\n" ,
           portrait: "/images/02-operator/moxue.png",
@@ -153,7 +154,7 @@ export default {
           name: "RUIFOX",
           cnName: "瑞",
           logo: "/images/logo.png",
-          url:"https://ark.sch-nie.com/operator/?id=瑞狐",
+          url: base + "operator/ruifox",
           desc: "是一只阳光开朗的橘黄色小\"猫\"。" ,
           portrait: "/images/02-operator/ruifox.png",
           fullbody: "/images/02-operator/ruifox_full.png",
@@ -165,7 +166,7 @@ export default {
           name: "LI FENG",
           cnName: "璃风",
           logo: "/images/logo.png",
-          url: base + "operator/?id=璃风",
+          url: base + "operator/lifeng",
           desc: "白色毛发、金色眼眸，身着白金配色的 ICPC 上衣与黑色短裤。\n抬手之间，一点星光停在指尖。",
           portrait: "/images/02-operator/lifeng.png",
           fullbody: "/images/02-operator/lifeng_full.png",
@@ -175,7 +176,7 @@ export default {
           name: "FAN XIN",
           cnName: "樊昕",
           logo: "/images/logo.png",
-          url: base + "operator/?id=樊昕",
+          url: base + "operator/fanxin",
           desc: "灰白色毛发与蓝色眼眸，白衬衫外搭米色背心，系着黑色领带。\n怀中抱着一束白花，向你伸出手。",
           portrait: "/images/02-operator/fanxin_full.png",
           fullbody: "/images/02-operator/fanxin_full.png",

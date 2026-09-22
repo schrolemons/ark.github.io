@@ -21,7 +21,7 @@ const uniqueIds = [...new Set(allOperator.map(item => item.data.id))];
                 {allOperator.length > 0 ? (
                     allOperator.map((item, index) => (
                         <div class="operator-item w-full" data-id={item.data.id}>
-                            <a target="_blank" href={`${base}operator/${item.slug}`} title={item.data.title ?? item.data.id}
+                            <a target="_self" href={`${base}operator/${item.slug}`} title={item.data.title ?? item.data.id}
                                class="group relative flex items-center w-full max-w-[64rem] mx-auto gap-8 px-2 py-7 border-b border-white/15 hover:bg-white/5 transition-colors duration-300 no-underline text-inherit cursor-pointer">
                                 <div class="shrink-0 w-24 h-24 flex flex-col items-center justify-center border border-white/20 group-hover:border-ark-blue transition-colors duration-300">
                                     <div class="text-ark-blue font-oswaldMedium text-3xl leading-none">{String(index + 1).padStart(2, "0")}</div>

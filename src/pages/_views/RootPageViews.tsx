@@ -1,152 +1,102 @@
-import {useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
-// 引入新状态 isFooterVisible
-import {viewIndex, viewIndexSetNext, viewIndexSetPrev, isFooterVisible, isScrollLocked} from "../../components/store/rootLayoutStore.ts";
-import arknightsConfig from "../../../arknights.config.tsx";
-import RootPageViewTemplate from "./RootPageViewTemplate.tsx";
-import Index from "./00-Index.tsx";
-import Information from "./01-Information.tsx";
-import Operator from "./02-Operator.tsx";
-import World from "./03-World.tsx";
-import Media from "./04-Media.tsx";
-import More from "./05-More.tsx";
-import { parseRoute } from "../../utils/hash-route";
+import {useEffect, useLayoutEffect, useState} from 'react';
+import {viewIndex, isFooterVisible, isScrollLocked, isNavMenuOpen, isOwnerInfoOpen} from '../../components/store/rootLayoutStore';
+import {identityDialogOpen} from '../../components/store/identityStore';
+import config from '../../../arknights.config';
+import RootPageViewTemplate from './RootPageViewTemplate';
+import Index from './00-Index';
+import Information from './01-Information';
+import Operator from './02-Operator';
+import World from './03-World';
+import Media from './04-Media';
+import More from './05-More';
+import {parseRoute} from '../../utils/hash-route';
 
-const MAX_INDEX = arknightsConfig.navbar.items.length - 1; // 5
+const mobileQuery = '(max-width: 1024px), (orientation: portrait)';
+const routeIndex = () => Math.max(0, config.navbar.items.findIndex(item => parseRoute(location.hash).section === item.href.split('#')[1]));
+
+// Honor every scrollable ancestor, including nested articles and horizontal carousels.
+function canScroll(target: EventTarget | null, direction: number) {
+    let element = target instanceof HTMLElement ? target : null;
+    while (element && element.id !== 'root-page-views') {
+        const style = getComputedStyle(element);
+        if (/(auto|scroll)/.test(style.overflowY) && element.scrollHeight > element.clientHeight + 2) {
+            if (direction > 0 && element.scrollTop + element.clientHeight < element.scrollHeight - 3) return true;
+            if (direction < 0 && element.scrollTop > 3) return true;
+        }
+        element = element.parentElement;
+    }
+    return false;
+}
 
 export default function RootPageViews() {
-    const [isLoading, setIsLoading] = useState(true);
-
-    const [localViewIndex, setLocalViewIndex] = useState(() => {
-        const HASH = parseRoute(location.hash).section;
-        const INDEX = arknightsConfig.navbar.items.findIndex(item =>
-            HASH === item.href.split("#")[1])
-        return INDEX === -1 ? 0 : INDEX;
-    });
-
+    const [index, setIndex] = useState(routeIndex);
     useLayoutEffect(() => {
-        viewIndex.set(localViewIndex);
-        // 每次切换大页面时，重置 Footer 状态
+        viewIndex.set(index);
         isFooterVisible.set(false);
-        setIsLoading(false);
-    }, [localViewIndex]);
-
-    // 处理 hash 变化
-    useLayoutEffect(() => {
-        const handleHashChange = () => {
-            const HASH = parseRoute(location.hash).section;
-            const INDEX = arknightsConfig.navbar.items.findIndex(item =>
-                HASH === item.href.split("#")[1])
-            setLocalViewIndex(INDEX === -1 ? 0 : INDEX);
-        }
-
-        window.addEventListener("hashchange", handleHashChange);
-        return () => window.removeEventListener("hashchange", handleHashChange);
+        document.querySelector(`.mobile-section-nav a[data-index="${index}"]`)?.scrollIntoView({block:'nearest', inline:'nearest'});
+    }, [index]);
+    useEffect(() => {
+        const change = () => setIndex(routeIndex());
+        window.addEventListener('hashchange', change);
+        return () => window.removeEventListener('hashchange', change);
     }, []);
-
-    useLayoutEffect(() => {
-        const HASH = parseRoute(location.hash).section;
-        const INDEX = arknightsConfig.navbar.items.findIndex(item =>
-            HASH === item.href.split("#")[1])
-        viewIndex.set(INDEX === -1 ? 0 : INDEX)
-    }, [])
-
-    const startTouchY = useRef(0)
-
-    // --- 修改触摸逻辑 ---
-    const handleTouchEnd = useCallback((event: TouchEvent) => {
-        // [新增] 如果滚动被锁定（例如正在查看图集），则不执行主页面切换
-        if (isScrollLocked.get() || window.matchMedia('(max-width: 1024px), (orientation: portrait)').matches) return;
-
-        const diffY = startTouchY.current - event.changedTouches[0].clientY
-        if (Math.abs(diffY) > 100) { // 稍微降低一点触发阈值
-            // 向上滑 (手指由下往上，试图看下面) -> Next / Show Footer
-            if (diffY > 0) {
-                if (localViewIndex === MAX_INDEX) {
-                    // 如果在最后一页，且还没显示 Footer -> 显示 Footer
-                    if (!isFooterVisible.get()) isFooterVisible.set(true);
-                } else {
-                    viewIndexSetNext();
-                }
-            } 
-            // 向下滑 (手指由上往下，试图看上面) -> Prev / Hide Footer
-            else {
-                if (localViewIndex === MAX_INDEX && isFooterVisible.get()) {
-                    // 如果在最后一页且显示了 Footer -> 隐藏 Footer
-                    isFooterVisible.set(false);
-                } else {
-                    viewIndexSetPrev();
-                }
-            }
-        }
-    }, [localViewIndex])
-
     useEffect(() => {
-        const handleTouchStart = (event: TouchEvent) => {
-            startTouchY.current = event.touches[0].clientY
-        }
-
-        const rootElement = document.getElementById("root-page-views")
-        rootElement!.addEventListener("touchstart", handleTouchStart)
-        rootElement!.addEventListener("touchend", handleTouchEnd)
+        const root = document.getElementById('root-page-views');
+        if (!root) return;
+        let lastTurn = 0;
+        let touch: {x: number; y: number; up: boolean; down: boolean} | null = null;
+        const blocked = () => isScrollLocked.get() || identityDialogOpen.get() || isOwnerInfoOpen.get() || isNavMenuOpen.get();
+        const turn = (direction: number) => {
+            if (blocked() || performance.now() - lastTurn < 850) return;
+            const current = viewIndex.get();
+            const mobile = matchMedia(mobileQuery).matches;
+            if (!mobile && current === config.navbar.items.length - 1) {
+                if (direction > 0 && !isFooterVisible.get()) { isFooterVisible.set(true); lastTurn = performance.now(); return; }
+                if (direction < 0 && isFooterVisible.get()) { isFooterVisible.set(false); lastTurn = performance.now(); return; }
+            }
+            const next = current + direction;
+            if (next >= 0 && next < config.navbar.items.length) {
+                location.hash = config.navbar.items[next].href.split('#')[1];
+                lastTurn = performance.now();
+            }
+        };
+        const start = (event: TouchEvent) => {
+            touch = null;
+            if (blocked() || event.touches.length !== 1 || (event.target as HTMLElement).closest('button, input, iframe, .mobile-section-nav')) return;
+            touch = {x: event.touches[0].clientX, y: event.touches[0].clientY, up: canScroll(event.target, -1), down: canScroll(event.target, 1)};
+        };
+        const end = (event: TouchEvent) => {
+            if (!touch || blocked()) return;
+            const {x, y, up, down} = touch;
+            touch = null;
+            const dx = x - event.changedTouches[0].clientX, dy = y - event.changedTouches[0].clientY;
+            if (Math.abs(dy) < 85 || Math.abs(dy) < Math.abs(dx) * 1.3) return;
+            // Only a new gesture starting at the boundary can turn a section.
+            if (dy > 0 ? down : up) return;
+            turn(dy > 0 ? 1 : -1);
+        };
+        const cancel = () => { touch = null; };
+        const wheel = (event: WheelEvent) => {
+            if (blocked() || Math.abs(event.deltaY) < 25 || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+            const direction = event.deltaY > 0 ? 1 : -1;
+            if (!canScroll(event.target, direction)) turn(direction);
+        };
+        root.addEventListener('touchstart', start, {passive: true});
+        root.addEventListener('touchend', end, {passive: true});
+        root.addEventListener('touchcancel', cancel, {passive: true});
+        root.addEventListener('wheel', wheel, {passive: true});
         return () => {
-            rootElement!.removeEventListener("touchstart", handleTouchStart)
-            rootElement!.removeEventListener("touchend", handleTouchEnd)
-        }
-    }, [handleTouchEnd])
-
-    const lastScrollTime = useRef(0);
-
-    // --- 修改滚轮逻辑 ---
-    useEffect(() => {
-        const handleScroll = (event: WheelEvent) => {
-            // [新增] 如果滚动被锁定（例如正在查看图集），则不执行主页面切换
-            if (isScrollLocked.get() || window.matchMedia('(max-width: 1024px), (orientation: portrait)').matches) return;
-
-            if (performance.now() - lastScrollTime.current > 800) { // 稍微缩短一点冷却时间以获得更跟手的体验
-                
-                // 向下滚动 (看下面内容)
-                if (event.deltaY > 0) {
-                    if (localViewIndex === MAX_INDEX) {
-                        // 在最后一页，显示 Footer
-                        if (!isFooterVisible.get()) {
-                            isFooterVisible.set(true);
-                            lastScrollTime.current = performance.now();
-                        }
-                    } else {
-                        // 正常翻页
-                        const newIndex = localViewIndex + 1;
-                        location.hash = arknightsConfig.navbar.items[newIndex].href.split("#")[1];
-                        lastScrollTime.current = performance.now();
-                    }
-                } 
-                // 向上滚动 (看上面内容)
-                else {
-                    if (localViewIndex === MAX_INDEX && isFooterVisible.get()) {
-                        // 在最后一页，且 Footer 显示中 -> 隐藏 Footer
-                        isFooterVisible.set(false);
-                        lastScrollTime.current = performance.now();
-                    } else {
-                        // 正常翻页
-                        if (localViewIndex > 0) {
-                            const newIndex = localViewIndex - 1;
-                            location.hash = arknightsConfig.navbar.items[newIndex].href.split("#")[1];
-                            lastScrollTime.current = performance.now();
-                        }
-                    }
-                }
-            }
-        }
-
-        const rootElement = document.getElementById("root-page-views")
-        rootElement!.addEventListener("wheel", handleScroll)
-        return () => rootElement!.removeEventListener("wheel", handleScroll);
-    }, [localViewIndex]) // 依赖 localViewIndex，这样每次翻页都会更新闭包里的 index
-
-    if (isLoading) {
-        return null; // 或者返回一个加载指示器
-    }
-
-    return [Index, Information, Operator, World, Media, More].map((Element, index) =>
-        <RootPageViewTemplate key={index} selfIndex={index}><Element /></RootPageViewTemplate>
-    )
+            root.removeEventListener('touchstart', start);
+            root.removeEventListener('touchend', end);
+            root.removeEventListener('touchcancel', cancel);
+            root.removeEventListener('wheel', wheel);
+        };
+    }, []);
+    return <>
+        <nav className="mobile-section-nav" aria-label="页面分区">
+            <div className="mobile-section-current"><span className="mobile-section-number">{String(index + 1).padStart(2, '0')}</span><div><strong>{config.navbar.items[index].subtitle}</strong><small>{config.navbar.items[index].title}</small></div></div>
+            <div className="mobile-section-steps">{config.navbar.items.map((item, i) => <a key={item.href} href={item.href} target="_self" data-index={i} aria-label={`切换到${item.subtitle}`} aria-current={index === i ? 'page' : undefined}><span /></a>)}</div>
+        </nav>
+        {[Index, Information, Operator, World, Media, More].map((Element, i) => <RootPageViewTemplate key={i} selfIndex={i}><Element /></RootPageViewTemplate>)}
+    </>;
 }

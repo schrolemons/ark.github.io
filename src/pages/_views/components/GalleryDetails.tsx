@@ -54,7 +54,8 @@ export default function GalleryDetails({ onBack, active = false }: {onBack?: () 
     <footer className="gallery-bottom">
       <div className="gallery-caption"><span>{item.year} / ART COLLECTION</span><h1>{item.title}</h1><p>{item.desc}</p></div>
       <nav className="gallery-thumbnails" aria-label="选择画作">{galleryData.map((entry, i) => <button key={entry.id} type="button" aria-label={`查看 ${entry.title}`} aria-pressed={i === index} onClick={() => select(i)}><img src={entry.src} alt="" /><span>{entry.id}</span></button>)}</nav>
-      <div className="gallery-controls"><button type="button" aria-label="上一幅画作" onClick={() => select(index - 1)}>←</button><button type="button" aria-label="下一幅画作" onClick={() => select(index + 1)}>→</button><button type="button" className="gallery-back" onClick={onBack}>返回 <span>BACK</span></button></div>
+      <div className="gallery-controls"><button type="button" aria-label="上一幅画作" onClick={() => select(index - 1)}>←</button><button type="button" aria-label="下一幅画作" onClick={() => select(index + 1)}>→</button><button type="button" className="gallery-back" onClick={onBack}>返回上一级 <span>BACK</span></button></div>
     </footer>
   </section>;
 }
+

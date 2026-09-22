@@ -45,6 +45,7 @@ export type ArknightsConfig = {
     ownerInfo: {
       name?: string;
       slogan?: string;
+      video?: { bvid: string; title: string };
       footerLinks?: OwnerInfoFooterLink[];
     };
   };

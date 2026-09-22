@@ -1,75 +1,73 @@
 html[data-identity-pending="true"] body::before { content: ''; position: fixed; inset: 0; z-index: 9998; background: #101112; }
-.identity-overlay { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center; padding: 24px; overflow-y: auto; background: #101112; color: #f4f4f2; font-size: 14px; }
-.identity-dialog { position: relative; z-index: 1; flex: none; width: min(460px, 100%); padding: 32px; margin: auto; border: 1px solid #ffffff29; border-top: 2px solid #d8bd70; background: linear-gradient(130deg, #1b1d1e, #121314); box-shadow: 0 24px 100px #0008; }
-.identity-atmosphere { position: fixed; inset: 0; overflow: hidden; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, #273137 0, #111719 40%, #0c1012 75%); }
-.identity-grid { position: absolute; inset: -10%; background-image: linear-gradient(#9eb8c509 1px, transparent 1px), linear-gradient(90deg, #9eb8c509 1px, transparent 1px); background-size: 64px 64px; transform: perspective(800px) rotateX(15deg); animation: identity-drift 24s linear infinite; }
-.identity-orbit { position: absolute; left: 50%; top: 50%; width: min(76vw, 900px); aspect-ratio: 1; border: 1px solid #d8bd7014; border-radius: 50%; transform: translate(-50%, -50%); }
-.identity-orbit::before { content: ''; position: absolute; inset: 8%; border: 1px dashed #cadde612; border-radius: 50%; animation: identity-rotate 70s linear infinite; }
-.identity-orbit-two { width: min(110vw, 1260px); border-color: #a8cbd00b; }
-.identity-scan { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 49.7%, #bcd4d529 50%, transparent 50.4%); animation: identity-scan 9s ease-in-out infinite; }
-.identity-pulse { position: absolute; width: 100%; height: 130px; top: 49%; opacity: .22; overflow: visible; }
-.identity-pulse path { stroke: #c7b47a; stroke-width: 1; fill: none; stroke-dasharray: 1400; animation: identity-heartbeat 6s ease-in-out infinite; }
-.identity-node { position: absolute; width: 3px; height: 3px; background: #d6cead; box-shadow: 0 0 14px #d8bd70; animation: identity-breathe 4s ease-in-out infinite; }
-.identity-coordinate { position: absolute; bottom: 30px; left: 32px; font: 9px/2 monospace; letter-spacing: 3px; color: #b4c2c344; }
-.identity-signal { position: absolute; z-index: 1; top: 28px; left: 32px; display: flex; align-items: center; gap: 9px; color: #aebfbf; font-size: 11px; letter-spacing: 1px; }
-.identity-signal i { width: 5px; height: 5px; background: #d8bd70; box-shadow: 0 0 10px #d8bd7077; animation: identity-breathe 3s ease-in-out infinite; }
+.identity-overlay { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center; padding: 90px 24px 50px; overflow-y: auto; overscroll-behavior: contain; background: #101112; color: #f4f4f2; font-size: 14px; animation: identity-arrive .55s ease both; }
+.identity-dialog { position: relative; z-index: 1; width: min(440px, 100%); margin: auto; text-align: center; }
+.identity-atmosphere { position: fixed; inset: 0; overflow: hidden; pointer-events: none; background: linear-gradient(#0c1013cc, #0c1013ee), url('/images/layout-bg.jpg') center/cover; }
+.identity-atmosphere::after { content: ''; position: absolute; inset: 24px; border-block: 1px solid #d8bd7026; }
+.identity-grid { position: absolute; inset: -10%; background-image: linear-gradient(#9eb8c506 1px, transparent 1px), linear-gradient(90deg, #9eb8c506 1px, transparent 1px); background-size: 80px 80px; animation: identity-drift 32s linear infinite; }
+.identity-orbit { position: absolute; left: 50%; top: 50%; width: min(80vw, 1000px); aspect-ratio: 1; border: 1px solid #d8bd700d; border-radius: 50%; transform: translate(-50%, -50%); }
+.identity-orbit-two { width: min(110vw, 1400px); }
+.identity-scan { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 49.8%, #bcd4d51a 50%, transparent 50.2%); animation: identity-scan 10s ease-in-out infinite; }
+.identity-pulse { position: absolute; width: 100%; height: 80px; top: 70%; opacity: .1; }
+.identity-pulse path { stroke: #c7b47a; stroke-width: 1; fill: none; stroke-dasharray: 1400; animation: identity-heartbeat 8s ease-in-out infinite; }
+.identity-node { position: absolute; width: 2px; height: 2px; background: #d6cead; animation: identity-breathe 4s ease-in-out infinite; }
+.identity-coordinate { position: absolute; bottom: 38px; left: 40px; font: 9px/2 monospace; letter-spacing: 3px; color: #b4c2c355; }
+.identity-signal { position: absolute; z-index: 1; top: 44px; left: 40px; display: flex; align-items: center; gap: 9px; color: #aebfbf; font-size: 10px; letter-spacing: 1px; }
+.identity-signal i { width: 5px; height: 5px; background: #d8bd70; animation: identity-breathe 3s ease-in-out infinite; }
 .identity-signal span { margin-left: 16px; color: #718486; font: 9px monospace; letter-spacing: 2px; }
-@keyframes identity-drift { to { background-position: 64px 64px; } }
-@keyframes identity-rotate { to { transform: rotate(360deg); } }
+.identity-kicker { display: flex; justify-content: center; gap: 20px; margin-bottom: 44px; color: #c7b47a; font: 10px/1.5 monospace; letter-spacing: 2px; }
+.identity-kicker span:last-child { color: #647174; }
+.identity-heading { display: flex; justify-content: center; gap: 10px; align-items: center; color: #b8b8b4; font-size: 12px; }
+.identity-rule { width: 20px; height: 1px; background: #d8bd70; }
+.identity-dialog h1 { font-size: clamp(27px, 4vw, 38px); font-weight: 500; margin: 14px 0 20px; letter-spacing: .12em; }
+.identity-dialog p { color: #9ca0a3; line-height: 1.9; margin: 0 0 36px; font-size: 12px; }
+.identity-dialog label { display: flex; justify-content: space-between; margin-bottom: 8px; color: #aaa; font-size: 10px; }
+.identity-dialog label span { color: #737a80; font: 9px monospace; letter-spacing: 2px; }
+.identity-dialog input { display: block; width: 100%; height: 52px; border: 0; border-bottom: 1px solid #d8bd7070; background: linear-gradient(transparent,#ffffff04); text-align: center; color: white; padding: 0 14px; font-size: 18px; border-radius: 0; letter-spacing: .08em; }
+.identity-dialog input:focus-visible { outline: none; border-color: #d8bd70; box-shadow: 0 1px #d8bd70; }
+.identity-error { color: #edb19b; font-size: 12px; min-height: 32px; padding-top: 5px; }
+.identity-dialog button { min-height: 44px; transition: background .2s, color .2s; }
+.identity-primary { display: flex; align-items: center; justify-content: space-between; width: min(300px, 100%); margin: 0 auto; padding: 12px 20px; color: #eee7d4; border: 1px solid #d8bd7060; background: #d8bd700b; font-size: 13px; letter-spacing: 2px; }
+.identity-primary:hover { background: #d8bd70; color: #141514; }
+.identity-guest { display: flex; align-items: center; justify-content: center; gap: 14px; width: 100%; color: #abb2b5; margin-top: 12px; font-size: 11px; }
+.identity-guest:hover { color: white; }
+.identity-guest span { font: 8px monospace; letter-spacing: 1px; color: #727d82; }
+.identity-dialog footer { margin-top: 32px; color: #69777d; font-size: 10px; line-height: 1.7; }
+.identity-brand { display: flex; align-items: center; gap: 12px; min-width: 0; max-width: 100%; }
+.identity-brand > img { display: block; width: 110px; height: 44px; object-fit: contain; flex: none; }
+.identity-brand:not([data-special="true"]) > img { width: 140px; max-width: 100%; }
+.identity-brand-name { min-width: 0; color: white; display: flex; align-items: center; gap: 7px; }
+.identity-brand-name strong { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 20px; font-weight: 500; }
+.identity-brand-name small { flex: none; white-space: nowrap; font: 10px/1 monospace; letter-spacing: 1px; }
+.identity-welcome { flex: none; color: #d8bd70; font-size: 15px; white-space: nowrap; }
+.identity-brand[data-special="true"] .identity-brand-name { color: #d8bd70; border-left: 1px solid #d8bd7055; padding-left: 12px; }
+.identity-switch { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 0; margin: 14px 0 0; color: #d8bd70; font-size: 12px; border-block: 1px solid #d8bd7033; text-align: left; }
+.identity-switch:hover { background: #d8bd700b; }
+.identity-switch-icon { font: 20px monospace; transition: transform .4s; }
+.identity-switch:hover .identity-switch-icon { transform: rotate(-90deg); }
+@keyframes identity-drift { to { background-position: 80px 80px; } }
 @keyframes identity-breathe { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
 @keyframes identity-scan { 0%, 100% { transform: translateY(-45%); opacity: 0; } 35%, 70% { opacity: .65; } 90% { transform: translateY(45%); opacity: 0; } }
 @keyframes identity-heartbeat { 0% { stroke-dashoffset: 1400; opacity: 0; } 25% { opacity: 1; } 70%, 100% { stroke-dashoffset: 0; opacity: .2; } }
-@media (max-height: 760px), (max-width: 767px) { .identity-signal { position: relative; top: auto; left: auto; margin: 0 auto 20px; font-size: 10px; } .identity-signal span { display: none; } .identity-overlay { display: flex; flex-direction: column; } .identity-coordinate { display: none; } }
-@media (prefers-reduced-motion: reduce) { .identity-atmosphere *, .identity-atmosphere *::before, .identity-signal i { animation: none !important; } }
-@media (max-height: 500px) and (min-width: 600px) {
-  .identity-overlay { padding: 12px 20px; }
-  .identity-signal { margin-bottom: 12px; }
-  .identity-dialog { width: min(760px, 100%); padding: 20px 24px; display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; }
-  .identity-kicker { grid-column: 1 / -1; margin-bottom: 12px; }
-  .identity-logo { grid-column: 1; grid-row: 2; height: 36px; width: 120px; margin: 0 0 10px; }
-  .identity-heading { grid-column: 1; grid-row: 3; font-size: 11px; }
-  .identity-dialog h1 { grid-column: 1; grid-row: 4; font-size: 26px; margin: 8px 0; }
-  .identity-dialog p { grid-column: 1; grid-row: 5; font-size: 12px; margin: 0; }
-  .identity-dialog form { grid-column: 2; grid-row: 2 / 6; }
-  .identity-dialog label { margin-bottom: 6px; }
-  .identity-dialog input { height: 44px; }
-  .identity-dialog button { min-height: 40px; padding: 8px 12px; }
-  .identity-error { min-height: 22px; }
-  .identity-guest { margin-top: 8px; }
-  .identity-dialog footer { grid-column: 1 / -1; margin-top: 12px; padding-top: 8px; font-size: 10px; }
+@keyframes identity-arrive { from { opacity: 0; filter: blur(5px); } to { opacity: 1; filter: blur(0); } }
+@media (max-width: 1024px), (orientation: portrait) {
+  .identity-brand { gap: 6px; }
+  .identity-brand > img { width: 65px; height: 30px; }
+  .identity-brand-name { gap: 5px; }
+  .identity-brand-name strong { font-size: 15px; }
+  .identity-brand[data-special="true"] .identity-brand-name { padding-left: 6px; }
+  .identity-brand-name small { font-size: 8px; letter-spacing: 0; }
+  .identity-welcome { font-size: 12px; }
 }
-.identity-kicker { display: flex; justify-content: space-between; gap: 12px; color: #868a8d; font: 10px/1.5 monospace; letter-spacing: 1px; }
-.identity-logo { width: 156px; height: 58px; object-fit: contain; object-position: left; margin: 32px 0; }
-.identity-heading { display: flex; gap: 10px; align-items: center; color: #b8b8b4; font-size: 12px; }
-.identity-rule { width: 24px; height: 1px; background: #d8bd70; }
-.identity-dialog h1 { font-size: clamp(25px, 5vw, 32px); font-weight: 700; margin: 12px 0; letter-spacing: 1px; }
-.identity-dialog p { color: #9ca0a3; line-height: 1.9; margin: 0 0 30px; }
-.identity-dialog label { display: flex; justify-content: space-between; margin-bottom: 10px; color: #ddd; font-size: 12px; }
-.identity-dialog label span { color: #737a80; font: 10px monospace; letter-spacing: 2px; }
-.identity-dialog input { display: block; width: 100%; height: 52px; border: 1px solid #ffffff30; background: #0e1011; color: white; padding: 0 14px; font-size: 16px; border-radius: 0; }
-.identity-dialog input:focus-visible { outline: 1px solid #d8bd70; outline-offset: 2px; }
-.identity-error { color: #edb19b; font-size: 12px; min-height: 30px; padding-top: 5px; }
-.identity-dialog button { width: 100%; min-height: 48px; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; transition: background .2s; }
-.identity-primary { color: #141514; background: #d8bd70; font-weight: 700; }
-.identity-primary:hover { background: #edd99d; }
-.identity-guest { color: #c8cbcd; border: 1px solid #ffffff24; margin-top: 12px; }
-.identity-guest:hover { background: #ffffff0a; }
-.identity-guest span { font: 9px monospace; letter-spacing: 1px; color: #959b9e; }
-.identity-dialog footer { border-top: 1px solid #ffffff15; margin-top: 28px; padding-top: 16px; color: #787e82; font-size: 11px; line-height: 1.7; }
-.identity-brand { display: flex; align-items: center; gap: 14px; min-width: 0; max-width: 100%; }
-.identity-brand > img { display: block; width: 140px; max-width: 58%; height: 44px; object-fit: contain; }
-.identity-brand:not([data-special="true"]) > img { max-width: 100%; }
-.identity-brand-name { min-width: 0; color: white; display: flex; flex-direction: column; }
-.identity-brand-name strong { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 22px; font-weight: 600; }
-.identity-brand-name small { font: 9px/1.6 monospace; letter-spacing: 2px; }
-.identity-brand[data-special="true"] .identity-brand-name { color: #d8bd70; border-left: 1px solid #d8bd7055; padding-left: 14px; }
-.identity-switch { display: flex; justify-content: space-between; width: 100%; border: 1px solid #ffffff33; padding: 14px; margin: 20px 0 0; color: white; font-size: 14px; }
-.identity-switch:hover { background: #ffffff12; }
 @media (max-width: 767px) {
-  .identity-dialog { padding: 24px; }
-  .identity-brand { gap: 8px; }
-  .identity-brand > img { width: 82px; height: 34px; }
-  .identity-brand-name strong { font-size: 17px; }
-  .identity-brand[data-special="true"] .identity-brand-name { padding-left: 8px; }
-  .identity-brand-name small { font-size: 8px; letter-spacing: .5px; }
+  .identity-signal { top: 40px; left: 24px; font-size: 9px; }
+  .identity-signal span, .identity-coordinate { display: none; }
+  .identity-kicker { font-size: 9px; gap: 12px; margin-bottom: 30px; }
+  .identity-dialog p { margin-bottom: 28px; }
 }
+@media (max-height: 580px) {
+  .identity-overlay { padding: 65px 24px 32px; }
+  .identity-kicker { margin-bottom: 18px; }
+  .identity-dialog p { margin-bottom: 18px; }
+  .identity-coordinate { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .identity-overlay, .identity-atmosphere *, .identity-signal i { animation: none !important; } }

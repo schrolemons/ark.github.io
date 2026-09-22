@@ -25,7 +25,7 @@ const [year, month, day] = item?.id?.split("-") ?? ["yyyy", "MM", "dd"];
 ---
 
 {
-    item && <a target="_blank" {...{href, title}}
+    item && <a target="_self" {...{href, title}}
                class={"w-[38.25rem] portrait:w-full h-[17rem] text-inherit hover:text-ark-blue no-underline inline-block relative pt-[3.25rem] cursor-pointer"
                    + ((index % 2 === 0) ? " landscape:pr-10" : " landscape:pl-10 landscape:top-12")}>
         <img class="w-full h-[9.875rem] portrait:h-auto object-cover object-center block"
@@ -39,3 +39,4 @@ const [year, month, day] = item?.id?.split("-") ?? ["yyyy", "MM", "dd"];
         </div>
     </a>
 }
+

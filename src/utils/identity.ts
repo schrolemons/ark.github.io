@@ -2,8 +2,8 @@ export const IDENTITY_KEY = 'schnie.identity.v1';
 export type Identity = { version: 1; kind: 'guest' } | { version: 1; kind: 'member'; name: string };
 
 // Add aliases here to extend the special-name display. This is a local preference, not authentication.
-export const SPECIAL_IDENTITIES = [
-  { aliases: ['MOXUE', '墨薛'], name: '墨薛', english: 'MO XUE' },
+export const SPECIAL_IDENTITIES: {aliases: string[]; name: string; english: string; code?: string; signature?: string}[] = [
+  { aliases: ['MOXUE', '墨薛'], name: '墨薛', english: 'MO XUE', code: '009' },
   { aliases: ['RUI', '瑞'], name: '瑞', english: 'RUI' },
   { aliases: ['LI FENG', '璃风'], name: '璃风', english: 'LI FENG' },
   { aliases: ['FAN XING', '樊昕'], name: '樊昕', english: 'FAN XING' },
@@ -11,7 +11,9 @@ export const SPECIAL_IDENTITIES = [
 
 export function specialIdentity(name: string) {
   const entry = SPECIAL_IDENTITIES.find(item => item.aliases.some(alias => alias.toLocaleUpperCase() === name.trim().toLocaleUpperCase()));
-  return entry ? { name: entry.name, english: entry.english } : undefined;
+  if (!entry) return undefined;
+  const {aliases, ...profile} = entry;
+  return profile;
 }
 
 export function createIdentity(name: string | null): Identity | null {

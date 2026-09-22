@@ -10,7 +10,7 @@ export function IdentityBrand() {
   return <span className="identity-brand" data-special={Boolean(special)}>
     {(!user || user.kind === 'guest' || special) && <img src="/images/logo.png" alt="SCHNIE" />}
     {user?.kind === 'member' && <span className="identity-brand-name" title={user.name}>
-      <strong>{special?.name ?? user.name}</strong>
+      {!special && <span className="identity-welcome">欢迎回来：</span>}<strong>{special?.name ?? user.name}</strong>
       {special && <small>{special.english}</small>}
     </span>}
   </span>;
@@ -65,8 +65,7 @@ export default function IdentityDialog() {
     </div>
     <div className="identity-signal"><i />连接已建立，等待你的回应。<span>CONNECTION ESTABLISHED</span></div>
     <div ref={panel} className="identity-dialog" role="dialog" aria-modal="true" aria-labelledby="identity-title" aria-describedby="identity-description">
-      <div className="identity-kicker"><span>SCHNIE :// ACCESS</span><span>01 — IDENTITY</span></div>
-      <img className="identity-logo" src="/images/logo.png" alt="SCHNIE" />
+      <div className="identity-kicker"><span>SCHNIE ARCHIVE</span><span>01 / IDENTITY</span></div>
       <div className="identity-heading"><span className="identity-rule" /><span>很高兴，在这里遇见你。</span></div>
       <h1 id="identity-title">该如何称呼你？</h1>
       <p id="identity-description">远方的信号仍在传来，这段旅程，等你同行。<br />留下称呼，或以游客身份，加入我们。</p>
@@ -74,7 +73,7 @@ export default function IdentityDialog() {
         <label htmlFor="identity-name">称呼 <span>YOUR NAME</span></label>
         <input ref={input} id="identity-name" value={name} maxLength={80} autoComplete="nickname" placeholder="输入你的称呼" aria-invalid={Boolean(error)} aria-describedby="identity-error" onChange={e => { setName(e.target.value); setError(''); }} />
         <div id="identity-error" role="status" className="identity-error">{error}</div>
-        <button type="submit" className="identity-primary">以此称呼进入 <span aria-hidden="true">↗</span></button>
+        <button type="submit" className="identity-primary">以此称呼进入 <span aria-hidden="true">→</span></button>
         <button type="button" className="identity-guest" onClick={() => saveIdentity(null)}>游客登录 <span>CONTINUE AS GUEST</span></button>
       </form>
       <footer>称呼仅保存在当前浏览器，可随时切换身份。</footer>

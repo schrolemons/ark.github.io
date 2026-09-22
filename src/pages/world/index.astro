@@ -62,7 +62,7 @@ function getDisplayDate(item: any): { year: string, month: string, day: string }
                         const thumbnail = `${base}info-thumbnail/${getThumbnailPath(item.data.category, item.data.thumbnail)}`;
                         return (
                             <div class="world-item w-full flex justify-center" data-category={category}>
-                                <a target="_blank" href={`${base}world/${item.slug}`} title={title}
+                                <a target="_self" href={`${base}world/${item.slug}`} title={title}
                                    class="group relative flex items-center w-full max-w-[64rem] gap-8 px-2 py-7 border-b border-white/15 hover:bg-white/5 transition-colors duration-300 no-underline text-inherit cursor-pointer">
                                     <div class="shrink-0 w-44 h-28 overflow-hidden">
                                         <img class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition duration-500"

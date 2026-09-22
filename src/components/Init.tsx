@@ -20,6 +20,19 @@ export function Init() {
     const [isObserving, setIsObserving] = useState(true);
     const listRef = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+        // The video homepage need not request this image itself. Load it explicitly
+        // so entry never depends on a hidden component or an evicted timing entry.
+        const background = new Image();
+        const finish = () => isInitialized.set(true);
+        background.onload = finish;
+        background.onerror = finish;
+        background.src = '/images/index-bg.jpg';
+        if (background.complete) finish();
+        const timeout = window.setTimeout(finish, 8000);
+        return () => { background.onload = null; background.onerror = null; window.clearTimeout(timeout); };
+    }, []);
+
     //TODO: 继续完善init， 目前的做法是等待/images/index-bg.jpg加载完毕
     const incrementProgress = useCallback(() => {
         setProgress(prevProgress => Math.min(prevProgress + 0.5, 80));
@@ -175,7 +188,7 @@ export function Init() {
                                 <div className={`flex items-center text-[0.8vw]`} style={{ color: commonColor }}>
                                     <span>ARK.SCH-NIE.COM</span>
                                     <span className="mx-[0.8vw]">//</span>
-                                    <span>https://github.com/schrolemons/arknights.github.io</span>
+                                    <span>https://github.com/schrolemons/ark.github.io</span>
                                 </div>
                             </div>
                         </div>

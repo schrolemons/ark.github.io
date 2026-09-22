@@ -27,7 +27,7 @@
 .gallery-controls .gallery-back { padding: 0 16px; margin-left: 8px; font-size: 13px; }
 .gallery-back span { margin-left: 10px; color: #929da1; font: 9px monospace; }
 @media (max-width: 1024px), (orientation: portrait) {
- .gallery-view { padding: 92px 20px 24px; grid-template-columns: 1fr; grid-template-rows: 28px 40px minmax(160px, 1fr) auto; gap: 12px; overflow-y: auto; }
+ .gallery-view { padding: 148px 20px 24px; grid-template-columns: 1fr; grid-template-rows: 28px 40px minmax(180px, 1fr) auto; gap: 12px; overflow-y: auto; overscroll-behavior: contain; }
  .gallery-topline { font-size: 9px; letter-spacing: 1px; }
  .gallery-timeline { flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; }
  .gallery-index-label { display: none; }
@@ -37,9 +37,11 @@
  .gallery-caption p { font-size: 11px; }
  .gallery-thumbnails { justify-content: flex-start; }
  .gallery-thumbnails button { width: 72px; height: 48px; }
- .gallery-controls { position: absolute; right: 20px; bottom: 24px; gap: 4px; }
- .gallery-controls .gallery-back { margin-left: 0; padding: 0 12px; }
+ .gallery-controls { position: static; gap: 8px; border-top: 1px solid #ffffff20; padding-top: 12px; }
+ .gallery-controls button { height: 38px; min-width: 38px; font-size: 14px; }
+ .gallery-controls .gallery-back { margin-left: auto; padding: 0 12px; color: #d8bd70; border-color: #d8bd7060; font-size: 12px; }
  .gallery-back span { display: none; }
 }
-@media (max-width: 430px) { .gallery-thumbnails { padding-right: 66px; } .gallery-thumbnails button { width: clamp(48px, 16vw, 66px); height: 44px; } .gallery-controls { position: static; justify-content: flex-end; margin-top: -58px; pointer-events: none; } .gallery-controls button { pointer-events: auto; } .gallery-controls > button:not(.gallery-back) { display: none; } }
+@media (max-width: 430px) { .gallery-thumbnails button { width: 66px; height: 44px; } }
 @media (max-height: 600px) and (min-width: 431px) { .gallery-view { grid-template-rows: 28px 40px 250px auto; } .gallery-controls { position: static; } }
+

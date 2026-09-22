@@ -17,7 +17,7 @@ test('guest and ordinary names survive storage round trips', () => {
 });
 test('special aliases match exactly, case insensitively, with bilingual display', () => {
   for (const name of ['MOXUE', 'moxue', '墨薛', '  MOXUE  ']) {
-    assert.deepEqual(specialIdentity(name), { name: '墨薛', english: 'MO XUE' });
+    assert.deepEqual(specialIdentity(name), { name: '墨薛', english: 'MO XUE', code: '009' });
   }
   assert.equal(specialIdentity('MOXUE123'), undefined);
   assert.equal(specialIdentity('游客'), undefined);

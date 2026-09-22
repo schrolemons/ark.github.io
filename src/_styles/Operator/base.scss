@@ -1,9 +1,12 @@
 .operator-view { position: absolute; inset: 0; overflow: hidden; }
 .operator-watermark { position: absolute; top: 38%; left: 5%; color: #ffffff0b; font: bold 15vw/1 'Oswald-DemiBold', sans-serif; white-space: nowrap; pointer-events: none; }
-.operator-art { position: absolute; right: 0; bottom: 0; width: 75%; height: 100%; pointer-events: none; }
+.operator-art { position: absolute; right: 1%; bottom: 2%; width: 55%; height: 82%; pointer-events: none; }
 .operator-art-frame { position: absolute; inset: 0; }
-.operator-figure { position: absolute; height: 90%; width: auto; max-width: none; bottom: -5rem; right: 20%; object-fit: contain; filter: drop-shadow(-20px 20px 50px #0008); }
-.operator-echo { position: absolute; height: 110%; width: auto; max-width: none; top: 12%; right: 0; transform: scale(1.6); filter: grayscale(1); opacity: .22; mix-blend-mode: color-dodge; }
+.operator-figure, .operator-echo { position: absolute; height: var(--art-height, 100%); width: auto; max-width: none; bottom: var(--art-bottom, 0%); left: 50%; transform: translateX(var(--art-center, -50%)); object-fit: contain; }
+.operator-figure { filter: drop-shadow(-20px 20px 50px #0008); }
+.operator-loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #d8bd70; font: 10px monospace; letter-spacing: 2px; }
+.operator-echo-frame { position: absolute; inset: 0; transform: translate(-16%, -4%) scale(1.25); transform-origin: center bottom; }
+.operator-echo { filter: grayscale(1); opacity: .18; mix-blend-mode: color-dodge; }
 .operator-info { position: absolute; z-index: 2; left: 6rem; top: 50%; transform: translateY(-43%); width: 33.625rem; }
 .operator-eyebrow { display: flex; gap: 14px; align-items: center; margin-bottom: 22px; font: 11px monospace; letter-spacing: 1px; color: #ffffff66; }
 .operator-eyebrow > span:first-child { padding: 3px 8px; color: #111; background: #eee; font-weight: bold; }
@@ -25,19 +28,23 @@
 .operator-number { position: absolute; z-index: 1; top: 6px; left: 8px; color: #ddd; font: 9px monospace; }
 .operator-roster-line { display: flex; justify-content: space-between; margin-top: 14px; color: #ffffff50; font: 9px monospace; letter-spacing: 1px; }
 @media (max-width: 1024px), (orientation: portrait) {
-  .operator-view { overflow-y: auto; padding: 88px 20px 32px; }
+  .operator-view { overflow-y: auto; overscroll-behavior: contain; padding: 148px 20px 32px; }
   .operator-watermark { top: 190px; font-size: 20vw; }
-  .operator-art { position: relative; width: 100%; height: clamp(290px, 48dvh, 520px); overflow: hidden; }
-  .operator-art::after { content: ''; position: absolute; inset: auto -20px -2px; height: 80px; background: linear-gradient(transparent, #272727); }
-  .operator-figure { height: 100%; bottom: 0; right: 50%; transform: translateX(50%); }
-  .operator-echo { height: 100%; top: 6%; right: -8%; transform: scale(1.3); opacity: .13; }
-  .operator-info { position: relative; left: auto; top: auto; transform: none; width: 100%; margin-top: 12px; }
-  .operator-eyebrow { margin-bottom: 12px; font-size: 10px; }
+  .operator-art { position: relative; right: auto; bottom: auto; width: 100%; height: clamp(220px, 36dvh, 400px); overflow: hidden; }
+  .operator-art::after { display: none; }
+  .operator-echo-frame { transform: translate(25%, 0) scale(1.08); }
+  .operator-echo { opacity: .12; }
+  .operator-info { position: relative; left: auto; top: auto; transform: none; width: 100%; margin-top: 12px; display: flex; flex-direction: column; }
+  .operator-biography { order: 3; }
+  .operator-roster { order: 1; }
+  .operator-roster-line { order: 2; margin-bottom: 20px; }
+  .operator-eyebrow { order: 0; margin-bottom: 0; font-size: 9px; }
   .name-display { font-size: 13px; }
   .cn-name-display { font-size: 32px; margin-bottom: 16px; }
   .description-section { min-height: 0; padding: 12px 16px; }
   .desc-text { font-size: 14px; }
-  .operator-roster { gap: 9px; margin-top: 18px; }
-  .operator-roster .thumbnail { height: 105px; }
+  .operator-roster { gap: 8px; margin-top: 12px; }
+  .operator-roster .thumbnail { height: 72px; }
 }
 @media (prefers-reduced-motion: reduce) { .operator-roster * { transition: none; } }
+

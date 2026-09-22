@@ -74,7 +74,7 @@ function SwiperInfo({ swiperIndex }: { swiperIndex: number }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="mt-[1rem] text-[1.125rem] font-benderRegular portrait:hidden text-[#d2d2d2]"
+            className="information-subtitle mt-[1rem] text-[1.125rem] font-benderRegular text-[#d2d2d2]"
           >
             {current.subtitle ?? ""}
           </motion.div>
@@ -93,7 +93,7 @@ function SwiperInfo({ swiperIndex }: { swiperIndex: number }) {
           {current.href && (
             <motion.a
               href={current.href}
-              target="_blank"
+              target={current.href.startsWith(base) ? "_self" : "_blank"}
               initial={{ opacity: 0, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0 }}
@@ -158,12 +158,12 @@ function BreakingNewsItem({
   return (
     <motion.a
       {...{ href }}
-      target="_blank"
+      target={href?.startsWith(base) ? "_self" : "_blank"}
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.05 }} // 交错出现
       className={
-        "w-[22.5rem] portrait:w-[unset] h-24 portrait:h-[7.125rem] text-inherit" +
+        "breaking-news-item w-[22.5rem] portrait:w-[unset] h-24 portrait:h-[7.125rem] text-inherit" +
         " border-b-[1px] border-solid border-[#ffffff4d] portrait:border-[#403c3b] no-underline" +
         " flex items-center cursor-pointer group hover:bg-white/5 transition-colors"
       }
@@ -266,7 +266,7 @@ function BreakingNewsList() {
 
         {category[categoryIndex] !== null && (
           <a
-            target="_blank"
+            target="_self"
             href={base + "world/?category=" + category[categoryIndex]}
             className={
               "w-[7.625rem] portrait:w-[11.125rem]" +
@@ -362,7 +362,7 @@ function SwiperBody({
         {data.map(({ title, subtitle, href, image }, index) => (
           <SwiperSlide key={index}>
             <a
-              target="_blank"
+              target={href?.startsWith(base) ? "_self" : "_blank"}
               {...{ href }}
               className="block w-full h-full overflow-hidden"
             >
@@ -454,3 +454,5 @@ export default function Information() {
     </div>
   );
 }
+
+
