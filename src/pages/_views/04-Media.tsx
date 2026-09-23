@@ -165,7 +165,7 @@ export default function Media() {
             backgroundRepeat: "repeat",
           }}
         >
-          <div className="media-content">
+          <div className="media-content" data-category={currentCat}>
           {/* 背景随完整内容区域延伸。 */}
           <div
             className="media-background absolute inset-0 z-0"
@@ -185,9 +185,10 @@ export default function Media() {
               ABOUT SCHNIE
             </h2>
             <div className="flex flex-col gap-4">
-              {CATEGORIES.map((cat) => (
-                <button type="button" aria-pressed={currentCat === cat.id}
+              {CATEGORIES.map((cat, index) => (
+                <button type="button" aria-pressed={currentCat === cat.id} aria-label={cat.cn}
                   key={cat.id}
+                  data-index={String(index + 1).padStart(2, '0')}
                   className="flex items-center group cursor-pointer pointer-events-auto"
                   onClick={() => setCurrentCat(cat.id)}
                 >
@@ -295,7 +296,7 @@ export default function Media() {
             <div key={activeData.id} className="flex flex-col items-start">
               {/* 1. 英文标题 - 延迟 0ms */}
               <h1
-                className="text-white text-5xl font-bold tracking-tighter uppercase animate-enter"
+                className="media-project-title text-white text-5xl font-bold tracking-tighter uppercase animate-enter"
                 style={{ animationDelay: "0ms" }}
               >
                 {activeData.en}
@@ -303,7 +304,7 @@ export default function Media() {
 
               {/* 2. 中文标题 + 装饰条 - 延迟 100ms */}
               <div
-                className="flex items-end gap-4 mt-2 mb-8 animate-enter"
+                className="media-project-subtitle flex items-end gap-4 mt-2 mb-8 animate-enter"
                 style={{ animationDelay: "100ms" }}
               >
                 <h2 className="text-white min-w-[200px] text-7xl font-bold">
@@ -314,7 +315,7 @@ export default function Media() {
 
               {/* 3. 描述文字 - 延迟 200ms */}
               <p
-                className="text-gray-400 text-xs tracking-widest whitespace-pre-line leading-loose animate-enter"
+                className="media-project-source text-gray-400 text-xs tracking-widest whitespace-pre-line leading-loose animate-enter"
                 style={{ animationDelay: "200ms" }}
               >
                 {activeData.desc}
@@ -322,7 +323,7 @@ export default function Media() {
 
               {/* 4. 按钮 - 延迟 300ms */}
               <div
-                className="relative mt-10 animate-enter"
+                className="media-project-action relative mt-10 animate-enter"
                 style={{ animationDelay: "300ms" }}
               >
                 <button

@@ -15,11 +15,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import AshParticles from "../../components/World/AshParticles.tsx";
 import WorldParticleStage from "../../components/World/WorldParticleStage";
 import "../../_styles/World/base.scss";
+import {useMobileLayout} from '../../components/useMobileLayout';
 
 const items = config.rootPage.WORLD!.items;
 
 // 使用 useCallback 优化回调函数
 export default function World() {
+  const mobile = useMobileLayout();
   const $viewIndex = useStore(viewIndex);
   const $readyToTouch = useStore(readyToTouch);
   const world = useRef<HTMLDivElement>(null);
@@ -119,7 +121,7 @@ export default function World() {
   return (
     <div
       ref={world}
-      className={`w-full h-full absolute top-0 left-0 bg-[#272727] overflow-hidden transition-opacity duration-300 ${
+      className={`world-view w-full h-full absolute top-0 left-0 bg-[#272727] overflow-hidden transition-opacity duration-300 ${
         isLeaving
           ? "opacity-0"
           : active
@@ -143,7 +145,7 @@ export default function World() {
           20: 遮罩/UI 装饰
       */}
 
-      {isWorldReady && visualItem && <WorldParticleStage
+      {!mobile && isWorldReady && visualItem && <WorldParticleStage
         item={visualItem}
         itemIndex={visualItemIndex}
         total={items.length}
@@ -174,7 +176,7 @@ export default function World() {
           )}
         </AnimatePresence>
       </div>
-      {active && !isLeaving && <AshParticles count={selectedItemIndex === null ? 24 : 14} />}
+      {!mobile && active && !isLeaving && <AshParticles count={selectedItemIndex === null ? 24 : 14} />}
       <PortraitBottomGradientMask />
     </div>
   );

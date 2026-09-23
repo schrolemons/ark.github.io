@@ -6,6 +6,8 @@
 
 浏览器脚本默认从 `playwright` 包加载；也可把 `PLAYWRIGHT_MODULE` 设置为已有 Playwright `index.mjs` 的 `file:///` URL。`TEST_URL` 可指定测试服务器，默认 `http://127.0.0.1:4321/`。截图输出到忽略提交的 `.screens/`。
 
+- `node tests/mobile-refresh-smoke.mjs`：检查四名角色的立绘与半透明简介同屏、遮罩无侧缝、SVG 设定目录与返回、触摸滚动边界、About 圆点选择、More 等高校验及独立页脚停顿，并截图验证 320/390/430/768/844px 布局与减少动态效果偏好。
+
 ## 链接示例
 
 身份与移动布局检查：`node --test tests/identity.test.mjs` 验证存储解析和特殊值；`node tests/identity-browser-smoke.mjs` 验证首次遮罩、游客/称呼记忆、切换身份、长昵称、画册交互，以及 320/390/768/844px 布局。浏览器脚本使用同一个 `PLAYWRIGHT_MODULE` 和 `TEST_URL` 配置。

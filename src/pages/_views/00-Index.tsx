@@ -29,7 +29,6 @@ export default function Index() {
     const [showRightMask, setShowRightMask] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
     const [hls, setHls] = useState<Hls | null>(null);
-    const maskIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         if (videoRef.current) {
@@ -64,6 +63,8 @@ export default function Index() {
 
     useEffect(() => {
         const isActive = $viewIndex === 0 && $readyToTouch
+        const timers: ReturnType<typeof setTimeout>[] = [];
+        const schedule = (callback: () => void, delay: number) => timers.push(setTimeout(callback, delay));
         if (isActive) {
             directions.set({top: false, right: true, bottom: true, left: false})
             videoRef.current?.play();
@@ -72,34 +73,27 @@ export default function Index() {
             const maskCycle = () => {
                 // 显示遮罩
                 setShowLeftMask(true);
-                setTimeout(() => {
+                schedule(() => {
                     setShowRightMask(true);
                 }, 150);
                 
                 // 2秒后隐藏遮罩
-                setTimeout(() => {
+                schedule(() => {
                     setShowLeftMask(false);
-                    setTimeout(() => {
+                    schedule(() => {
                         setShowRightMask(false);
                     }, 150);
                     
                     // 5秒后再次显示遮罩，形成循环
-                    setTimeout(maskCycle, 5000);
+                    schedule(maskCycle, 5000);
                 }, 2000);
             };
             
             // 开始循环
             maskCycle();
             
-            // 保存循环引用，以便在需要时清除
-            maskIntervalRef.current = setInterval(() => {}, 1000); // 占位定时器
         } else {
             videoRef.current?.pause();
-            // 清除定时器
-            if (maskIntervalRef.current) {
-                clearInterval(maskIntervalRef.current);
-                maskIntervalRef.current = null;
-            }
             // 重置遮罩状态
             setShowLeftMask(false);
             setShowRightMask(false);
@@ -108,10 +102,7 @@ export default function Index() {
         
         // 清理函数
         return () => {
-            if (maskIntervalRef.current) {
-                clearInterval(maskIntervalRef.current);
-                maskIntervalRef.current = null;
-            }
+            timers.forEach(clearTimeout);
         };
     }, [$viewIndex, $readyToTouch])
     // TODO: 使用m3u8
@@ -137,6 +128,11 @@ export default function Index() {
         <div className={"w-[52.5rem] portrait:w-[5.75rem] h-[60.75rem] portrait:h-[12rem] absolute left-full bottom-0 bg-mask-block portrait:bg-mask-block-m bg-[auto_110%] portrait:bg-[auto_100%] bg-no-repeat translate-x-[-14.75rem] portrait:translate-x-[-3.75rem] transition-opacity duration-[.6s] ease-linear "
             + (active && showRightMask ? "opacity-25" : "opacity-0")}/>
         <PortraitBottomGradientMask/>
+        <div className="home-mobile-heading">
+            <p>THE ARK FROM THE NINTH EDGE</p>
+            <h1><span>{title?.split(':')[0]}</span><span>:{title?.split(':').slice(1).join(':')}</span></h1>
+            <div>第九边缘 · 方舟</div>
+        </div>
         <div className={"absolute left-[4.5rem] portrait:left-[2rem] bottom-[2.75rem] portrait:bottom-[3rem]"
             + " transition-transform duration-1000"}/>
         <div className={"home-title absolute left-[4.5rem] portrait:left-[2rem] bottom-[2.75rem] portrait:bottom-[3rem] transition-transform duration-1000 "
@@ -162,8 +158,9 @@ export default function Index() {
             + " flex items-center justify-between portrait:justify-center"}>
             {/* TODO: 扫码下载、适龄提示 */}
         </div>
-        <div className="home-mobile-footer" aria-hidden="true">
+        <div className="home-mobile-footer">
             <span>© SCHNIE</span>
+            <a href="#information" target="_self">向上滑动探索 <span aria-hidden="true">↓</span></a>
         </div>
     </div>
 }

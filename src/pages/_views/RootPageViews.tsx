@@ -46,18 +46,24 @@ export default function RootPageViews() {
         const root = document.getElementById('root-page-views');
         if (!root) return;
         let lastTurn = 0;
-        let touch: {x: number; y: number; up: boolean; down: boolean} | null = null;
+        let touch: {x: number; y: number; up: boolean; down: boolean; view: HTMLElement | null} | null = null;
+        const clearDrag = () => {
+            root.querySelectorAll<HTMLElement>('[data-dragging]').forEach(element => {
+                delete element.dataset.dragging;
+                element.style.removeProperty('--swipe-y');
+            });
+        };
         const blocked = () => isScrollLocked.get() || identityDialogOpen.get() || isOwnerInfoOpen.get() || isNavMenuOpen.get();
         const turn = (direction: number) => {
             const mobile = matchMedia(mobileQuery).matches;
-            if (blocked() || performance.now() - lastTurn < (mobile ? 540 : 850)) return;
+            if (blocked() || performance.now() - lastTurn < (mobile ? 300 : 850)) return;
             const current = viewIndex.get();
             if (current === config.navbar.items.length - 1) {
                 if (direction > 0 && !isFooterVisible.get()) {
                     isFooterVisible.set(true);
                     // Footer is deliberately separated from the regular page rhythm.
                     // The extra lock is paired with the visual hold in mobile CSS.
-                    lastTurn = performance.now() + (mobile ? 160 : 0);
+                    lastTurn = performance.now() + (mobile ? 400 : 0);
                     return;
                 }
                 if (direction < 0 && isFooterVisible.get()) {
@@ -73,35 +79,51 @@ export default function RootPageViews() {
             }
         };
         const start = (event: TouchEvent) => {
+            clearDrag();
             touch = null;
             if (blocked() || event.touches.length !== 1 || (event.target as HTMLElement).closest('button, input, iframe, .mobile-section-nav')) return;
-            touch = {x: event.touches[0].clientX, y: event.touches[0].clientY, up: canScroll(event.target, -1), down: canScroll(event.target, 1)};
+            touch = {x: event.touches[0].clientX, y: event.touches[0].clientY, up: canScroll(event.target, -1), down: canScroll(event.target, 1), view: (event.target as HTMLElement).closest('.root-view')};
+        };
+        const move = (event: TouchEvent) => {
+            if (!touch || blocked() || !matchMedia(mobileQuery).matches) return;
+            if (event.touches.length !== 1) { cancel(); return; }
+            const dx = touch.x - event.touches[0].clientX;
+            const dy = touch.y - event.touches[0].clientY;
+            if (Math.abs(dy) < 10 || Math.abs(dx) > Math.abs(dy) || (dy > 0 ? touch.down : touch.up)) return;
+            const next = viewIndex.get() + (dy > 0 ? 1 : -1);
+            if (next < 0 || next >= config.navbar.items.length || !touch.view) return;
+            touch.view.dataset.dragging = 'true';
+            touch.view.style.setProperty('--swipe-y', `${Math.max(-56, Math.min(56, -dy * .2))}px`);
         };
         const end = (event: TouchEvent) => {
-            if (!touch || blocked()) return;
+            clearDrag();
+            if (!touch || blocked()) { touch = null; return; }
             const {x, y, up, down} = touch;
             touch = null;
             const dx = x - event.changedTouches[0].clientX, dy = y - event.changedTouches[0].clientY;
-            if (Math.abs(dy) < 72 || Math.abs(dy) < Math.abs(dx) * 1.3) return;
+            if (Math.abs(dy) < 60 || Math.abs(dy) < Math.abs(dx) * 1.3) return;
             // Only a new gesture starting at the boundary can turn a section.
             if (dy > 0 ? down : up) return;
             turn(dy > 0 ? 1 : -1);
         };
-        const cancel = () => { touch = null; };
+        const cancel = () => { clearDrag(); touch = null; };
         const wheel = (event: WheelEvent) => {
             if (blocked() || Math.abs(event.deltaY) < 25 || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
             const direction = event.deltaY > 0 ? 1 : -1;
             if (!canScroll(event.target, direction)) turn(direction);
         };
         root.addEventListener('touchstart', start, {passive: true});
+        root.addEventListener('touchmove', move, {passive: true});
         root.addEventListener('touchend', end, {passive: true});
         root.addEventListener('touchcancel', cancel, {passive: true});
         root.addEventListener('wheel', wheel, {passive: true});
         return () => {
             root.removeEventListener('touchstart', start);
+            root.removeEventListener('touchmove', move);
             root.removeEventListener('touchend', end);
             root.removeEventListener('touchcancel', cancel);
             root.removeEventListener('wheel', wheel);
+            clearDrag();
         };
     }, []);
     return <>

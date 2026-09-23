@@ -134,11 +134,16 @@ export default function More() {
       <main ref={mainRef} className="relative h-full w-full overflow-hidden px-[7vw] pb-12 pt-[10rem] portrait:overflow-y-auto portrait:px-6 portrait:pb-16 portrait:pt-[8rem]">
         <div className="pointer-events-none absolute bottom-[-2%] left-[-2%] select-none text-[14vw] font-black leading-none tracking-tighter text-white/[.04]">ARCHIVE</div>
         <div className="relative z-10 flex items-start justify-between gap-12 portrait:flex-col portrait:gap-8">
-          <div className="more-mobile-heading" aria-hidden="true">
+          <div className="more-mobile-heading">
             <small>SCHNIE ARCHIVE</small>
             <h2>MORE CONTENT</h2>
             <strong>更多内容</strong>
             <p>继续探索项目、文档与创作者档案。</p>
+            <div className="more-mobile-stats">
+              <span><b>{formatStat(SITE_STATS.operatorRecords)}</b> 角色</span>
+              <span><b>{formatStat(SITE_STATS.worldEntries)}</b> 设定</span>
+              <span><b>{formatStat(informationRecords)}</b> 情报</span>
+            </div>
           </div>
           <div className="more-heading-desktop max-w-[45rem]">
             <div className="flex items-center gap-3 text-xs tracking-[.4em] text-ark-gold font-benderBold"><span className="h-px w-10 bg-ark-gold" />PROJECT ARCHIVE</div>
