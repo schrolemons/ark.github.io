@@ -35,7 +35,6 @@ function Item({ title, subTitle, imageUrl, index, previewed, onClick, onPreview 
       style={{ textShadow: '0 0 1em #000', transform: hovered ? 'translateX(2rem)' : undefined, color: hovered ? '#fff' : '#ababab' }}>{title}</div>
     <div className="world-overview-item-subtitle text-[1.25rem] font-n15eBold ml-[1.5rem] relative transition-[color,transform] duration-200"
       style={{ textShadow: '0 0 1em #000', transform: hovered ? 'translateX(2rem)' : undefined, color: hovered ? '#fff' : '#ababab' }}>{subTitle}</div>
-    <img className="world-overview-item-symbol" src={imageUrl} alt="" aria-hidden="true" />
   </a>;
 }
 
