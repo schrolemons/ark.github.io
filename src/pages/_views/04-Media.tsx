@@ -9,7 +9,6 @@ import {
 import { directions } from "../../components/store/lineDecoratorStore";
 import GalleryDetails from "./components/GalleryDetails.tsx"; // 引入刚才创建的组件
 import { navigateRoute, useHashRoute } from "../../components/useHashRoute";
-import MediaTiltBackground from '../../components/MediaTiltBackground';
 
 // 定义子分类类型
 type Category = "books" | "visual_archive" | "web_modules" | "Query_matrix";
@@ -168,7 +167,8 @@ export default function Media() {
         >
           <div className="media-content" data-category={currentCat}>
           {/* 背景随完整内容区域延伸。 */}
-          <MediaTiltBackground imageUrl={activeData.bg} active={active && !showGallery} />
+          <div className="media-background absolute inset-0 z-0" aria-hidden="true"
+            style={{ backgroundImage: `url(${activeData.bg})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', opacity: .3 }} />
 
 
           {/* 左侧侧边导航 */}
