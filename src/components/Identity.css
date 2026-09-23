@@ -38,7 +38,8 @@ html[data-identity-pending="true"] body::before { content: ''; position: fixed; 
 .identity-brand-name { min-width: 0; color: white; display: flex; align-items: center; gap: 6px; font-family: 'Bender-Regular', 'Microsoft YaHei', sans-serif; }
 .identity-brand-name strong { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 16px; font-weight: 400; }
 .identity-brand-name small { flex: none; white-space: nowrap; font: 9px/1 'Novecentosanswide-Medium', sans-serif; letter-spacing: .5px; }
-.identity-welcome { flex: none; color: #d8bd70; font-size: 13px; white-space: nowrap; }
+.identity-welcome { flex: none;font: 9px/1 'Novecentosanswide-Medium', sans-serif; color: #d8bd70; font-size: 18px; white-space: nowrap; }
+.identity-welcome strong { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 16px; font-weight: 400; }
 .identity-brand[data-special="true"] .identity-brand-name { color: #d8bd70; border-left: 1px solid #d8bd7055; padding-left: 12px; }
 .identity-switch { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 0; margin: 14px 0 0; color: #d8bd70; font-size: 12px; border-block: 1px solid #d8bd7033; text-align: left; }
 .identity-switch:hover { background: #d8bd700b; }

@@ -220,23 +220,13 @@ function BreakingNewsList() {
   );
 }
 
-function ClickHereHint() {
-  return (
-    <span className="information-click-hint" aria-hidden="true">
-      <span className="information-click-hint-copy">
-        <strong>点击查看</strong>
-        <small>CLICK HERE</small>
-      </span>
-      <span className="information-click-hint-arrow" />
-    </span>
-  );
-}
+
 
 function ImageSlide({ title, image, showClickHint = false }: { title: string; image: string; showClickHint?: boolean }) {
   return (
     <div className="w-full h-full relative">
       <img src={image} alt={title} className="w-full h-full object-cover" />
-      {showClickHint && <ClickHereHint />}
+
       <div className="absolute bottom-0 left-0 w-full h-[3.75rem] bg-black bg-opacity-30 mix-blend-overlay" />
       <div className="absolute bottom-0 left-0 w-full h-[3.75rem] flex items-center justify-center">
         <div className="text-[1.25rem] font-bold text-white">{title}</div>
