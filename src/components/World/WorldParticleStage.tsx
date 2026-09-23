@@ -51,8 +51,6 @@ export default function WorldParticleStage({
       "--world-particle-half-size": `${Math.round(visualSize / 2)}px`,
     } as CSSProperties}
   >
-    <div className="world-particle-grid" />
-    <div className="world-particle-halo" />
     <div className="world-particle-ghost-frame">
       <AnimatePresence mode="sync" initial={false}>
         <motion.img

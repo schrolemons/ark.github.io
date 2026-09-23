@@ -43,12 +43,12 @@ export default function WorldOverview({ onItemSelect, currentPage, onPageChange,
   const totalPages = Math.ceil(items.length / WORLD_PAGE_SIZE);
   const start = (currentPage - 1) * WORLD_PAGE_SIZE;
   return <div className="w-[39.875rem] absolute top-[20.3703703704%] left-[9rem] z-10" data-world-overview>
-    <div className="world-overview-intro">
-      <span>WORLD / SCHNIE</span>
-      <h1>世界设定</h1>
-      <p>记录文明的结构、技术与仍在延续的历史。</p>
-      <div className="world-mobile-index"><span>CONTENTS</span><span>{String(items.length).padStart(2, '0')} ENTRIES</span></div>
-    </div>
+    {/*<div className="world-overview-intro">*/}
+    {/*  <span>WORLD / SCHNIE</span>*/}
+    {/*  <h1>世界设定</h1>*/}
+    {/*  <p>记录文明的结构、技术与仍在延续的历史。</p>*/}
+    {/*  <div className="world-mobile-index"><span>CONTENTS</span><span>{String(items.length).padStart(2, '0')} ENTRIES</span></div>*/}
+    {/*</div>*/}
     {/* All six rows enter together, including rows remounted after the short last page. */}
     <motion.div className="world-overview-list" key={currentPage} initial={{ opacity: 0, x: -18 }} animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.22, ease: 'easeOut' }}>
