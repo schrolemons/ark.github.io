@@ -9,6 +9,7 @@ import {
 import { directions } from "../../components/store/lineDecoratorStore";
 import GalleryDetails from "./components/GalleryDetails.tsx"; // 引入刚才创建的组件
 import { navigateRoute, useHashRoute } from "../../components/useHashRoute";
+import MediaTiltBackground from '../../components/MediaTiltBackground';
 
 // 定义子分类类型
 type Category = "books" | "visual_archive" | "web_modules" | "Query_matrix";
@@ -167,16 +168,7 @@ export default function Media() {
         >
           <div className="media-content" data-category={currentCat}>
           {/* 背景随完整内容区域延伸。 */}
-          <div
-            className="media-background absolute inset-0 z-0"
-            style={{
-              backgroundImage: `url(${activeData.bg})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              opacity: 0.3,
-            }}
-          />
+          <MediaTiltBackground imageUrl={activeData.bg} active={active && !showGallery} />
 
 
           {/* 左侧侧边导航 */}
@@ -253,7 +245,7 @@ export default function Media() {
                       transition={{ delay: 0.2, duration: 0.5 }}
                       className="mb-6"
                     >
-                      <div className="w-24 h-1 bg-cyan-400 mx-auto"></div>
+                      <div className="w-24 h-1 bg-ark-gold mx-auto"></div>
                     </motion.div>
                     
                     {/* 文字内容 */}
@@ -278,7 +270,7 @@ export default function Media() {
                       transition={{ delay: 0.4, duration: 0.5 }}
                       className="mt-6"
                     >
-                      <div className="w-24 h-1 bg-cyan-400 mx-auto"></div>
+                      <div className="w-24 h-1 bg-ark-gold mx-auto"></div>
                     </motion.div>
                   </motion.div>
                 </AnimatePresence>
@@ -310,7 +302,7 @@ export default function Media() {
                 <h2 className="text-white min-w-[200px] text-7xl font-bold">
                   {activeData.cn}
                 </h2>
-                <div className="h-1 w-24 bg-cyan-400 mb-4" />
+                <div className="h-1 w-24 bg-ark-gold mb-4" />
               </div>
 
               {/* 3. 描述文字 - 延迟 200ms */}

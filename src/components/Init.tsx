@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import { IconDblArrow, TitleArknights } from "../components/SvgIcons";
 import { useStore } from "@nanostores/react";
 import { isInitialized, readyToTouch } from "../components/store/rootLayoutStore";
+import './Init.css';
 
 export function Init() {
     const $isInitialized = useStore(isInitialized);
@@ -137,13 +138,13 @@ export function Init() {
     if (isHidden) return null;
 
     return (
-        <div className={`fixed inset-0 bg-[#272727] flex flex-col items-center justify-center z-50 font-benderBold transition-opacity duration-1000 ${isFadingOut ? 'opacity-0' : 'opacity-100'}`}>
+        <div className={`boot-screen fixed inset-0 bg-[#272727] flex flex-col items-center justify-center z-50 font-benderBold transition-opacity duration-1000 ${isFadingOut ? 'opacity-0' : 'opacity-100'}`}>
             {/* 上边线 */}
-            <div className={`absolute left-0 right-0 h-[0.05vw] bg-[#686767] transition-all duration-1000 ease-in-out ${
+            <div className={`boot-top-rule absolute left-0 right-0 h-[0.05vw] bg-[#686767] transition-all duration-1000 ease-in-out ${
                 isFadingOut ? 'top-[-5vw]' : 'top-[5vw]'
             }`} />
             {/* 右边线 */}
-            <div className={`absolute top-0 bottom-0 w-[0.05vw] bg-[#686767] transition-all duration-1000 ease-in-out ${
+            <div className={`boot-side-rule absolute top-0 bottom-0 w-[0.05vw] bg-[#686767] transition-all duration-1000 ease-in-out ${
                 isFadingOut ? 'right-[-5vw]' : 'right-[5vw]'
             }`} />
 
@@ -152,16 +153,16 @@ export function Init() {
 
                 <div className="flex items-center justify-center mb-[2vw]">
                     <TitleArknights
-                        className={`w-[13vw] h-[17vw] max-w-full`}
+                        className={`boot-mark w-[13vw] h-[17vw] max-w-full`}
                     />
                 </div>
 
                 <div className="flex-grow" />
 
-                <div className="w-full max-w-[90vw] px-[2vw] absolute" style={{ top: '75%' }}>
-                    <div className={`flex items-start ${isPortrait ? 'flex-col' : ''}`}>
+                <div className="boot-panel w-full max-w-[90vw] px-[2vw] absolute" style={{ top: '75%' }}>
+                    <div className={`boot-details flex items-start ${isPortrait ? 'flex-col' : ''}`}>
                         <div
-                            className={`whitespace-nowrap ${
+                            className={`boot-copyright whitespace-nowrap ${
                                 isPortrait 
                                     ? 'fixed bottom-[1%] left-[1%] text-[10px]' ////idk,反正就是text-[1vw]
                                     : 'mr-[15vw] text-[1.2vw]'
@@ -170,8 +171,8 @@ export function Init() {
                         >
                             <span>© Schrolemons </span>
                         </div>
-                        <div className={`flex-grow ${isPortrait ? 'w-full' : ''} pl-[5vw] pr-[5.5vw]`}>
-                            <div className="relative h-[0.3vw] flex items-center" style={{ backgroundColor: 'transparent' }}>
+                        <div className={`boot-progress flex-grow ${isPortrait ? 'w-full' : ''} pl-[5vw] pr-[5.5vw]`}>
+                            <div className="boot-track relative h-[0.3vw] flex items-center" role="progressbar" aria-label="页面加载进度" aria-valuenow={Math.round(progress)} aria-valuemin={0} aria-valuemax={100} style={{ backgroundColor: 'transparent' }}>
                                 <div className="absolute left-0 w-[0.3vw] h-[0.3vw]" style={{ backgroundColor: commonColor }}></div>
                                 <div className="absolute right-0 w-[0.3vw] h-[0.3vw]" style={{ backgroundColor: commonColor }}></div>
                                 <div className="absolute top-[0.1vw] left-0 right-0 h-[0.1vw]" style={{ backgroundColor: commonColor }}></div>
@@ -180,12 +181,12 @@ export function Init() {
                                     style={{ width: `${progress}%`, backgroundColor: loadingColor }}
                                 />
                             </div>
-                            <div className="flex justify-between items-center mt-[0.8vw]">
-                                <div className="flex items-center text-[0.8vw]" style={{ color: loadingColorText }}>
+                            <div className="boot-progress-meta flex justify-between items-center mt-[0.8vw]">
+                                <div className="boot-progress-label flex items-center text-[0.8vw]" style={{ color: loadingColorText }}>
                                     <IconDblArrow className="w-[0.8vw] h-[0.8vw] mr-[0.4vw]"/>
                                     <span>{`LOADING - ${Math.round(progress)}%`}</span>
                                 </div>
-                                <div className={`flex items-center text-[0.8vw]`} style={{ color: commonColor }}>
+                                <div className={`boot-links flex items-center text-[0.8vw]`} style={{ color: commonColor }}>
                                     <span>ARK.SCH-NIE.COM</span>
                                     <span className="mx-[0.8vw]">//</span>
                                     <span>https://github.com/schrolemons/ark.github.io</span>

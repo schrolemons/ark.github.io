@@ -1,5 +1,5 @@
 .world-particle-stage {
-  --world-stage-accent: #18d1ff;
+  --world-stage-accent: #ffd700;
   position: absolute;
   inset: 0;
   z-index: 2;
@@ -13,7 +13,7 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at var(--world-particle-x) var(--world-particle-y), rgba(24, 209, 255, .08), transparent 21rem),
+    radial-gradient(circle at var(--world-particle-x) var(--world-particle-y), rgba(255, 215, 0, .08), transparent 21rem),
     linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, .018) 42.2%, transparent 42.5%);
   opacity: .9;
 }
@@ -90,7 +90,7 @@
   z-index: 1;
   width: 18px;
   height: 18px;
-  border-color: rgba(24, 209, 255, .72);
+  border-color: rgba(255, 215, 0, .72);
 }
 
 .world-particle-reticle > span:nth-child(1) { left: -1px; top: -1px; border-left: 2px solid; border-top: 2px solid; }
@@ -135,8 +135,8 @@
   display: flex;
   align-items: center;
   padding-left: 15px;
-  border-left: 1px solid rgba(24, 209, 255, .55);
-  color: #18d1ff;
+  border-left: 1px solid rgba(255, 215, 0, .55);
+  color: #ffd700;
   font: 600 10px/1 'Bender-Bold', sans-serif;
   letter-spacing: .08em;
 }
@@ -159,16 +159,16 @@
   top: 18%;
   bottom: 18%;
   width: 2px;
-  background: #18d1ff;
-  box-shadow: 0 0 14px rgba(24, 209, 255, .45);
+  background: #ffd700;
+  box-shadow: 0 0 14px rgba(255, 215, 0, .45);
   opacity: 0;
   transform: scaleY(.35);
   transition: opacity .2s ease, transform .2s ease;
 }
 
 .world-overview-item.is-previewed {
-  border-color: rgba(24, 209, 255, .58) !important;
-  background: linear-gradient(90deg, rgba(24, 209, 255, .055), transparent 56%);
+  border-color: rgba(255, 215, 0, .58) !important;
+  background: linear-gradient(90deg, rgba(255, 215, 0, .055), transparent 56%);
 }
 
 .world-overview-item.is-previewed::before {
@@ -186,7 +186,7 @@
 }
 
 .world-overview-item.is-previewed .world-overview-item-index {
-  color: #18d1ff;
+  color: #ffd700;
 }
 
 .world-overview-item-symbol {
@@ -217,7 +217,7 @@
 
 .world-copy-kicker > span {
   margin-left: 10px;
-  color: #18d1ff;
+  color: #ffd700;
 }
 
 @media (min-width: 1025px) and (orientation: landscape) {

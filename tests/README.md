@@ -6,7 +6,11 @@
 
 浏览器脚本默认从 `playwright` 包加载；也可把 `PLAYWRIGHT_MODULE` 设置为已有 Playwright `index.mjs` 的 `file:///` URL。`TEST_URL` 可指定测试服务器，默认 `http://127.0.0.1:4321/`。截图输出到忽略提交的 `.screens/`。
 
-- `node tests/mobile-refresh-smoke.mjs`：检查四名角色的立绘与半透明简介同屏、遮罩无侧缝、SVG 设定目录与返回、触摸滚动边界、About 圆点选择、More 等高校验及独立页脚停顿，并截图验证 320/390/430/768/844px 布局与减少动态效果偏好。
+- `node tests/mobile-refresh-smoke.mjs`：检查四名角色的立绘与半透明简介同屏、遮罩无侧缝、SVG 设定目录与返回、触摸滚动边界、About 分类切换条、More 等高校验及独立页脚停顿，并截图验证 320/390/430/768/844px 布局与减少动态效果偏好。
+- `node tests/world-pointer-smoke.mjs`：真实鼠标移动验证桌面概览和详情粒子排斥、移出复位与离页清理。
+- `node tests/identity-entry-smoke.mjs`：验证输入框内金色提交箭头、空白与中文输入法状态、键盘焦点和提交。
+- `node tests/mobile-transition-smoke.mjs`：验证手机整页上下滑动、探索提示、完整轮播图、减少动态效果偏好。
+- `node tests/media-tilt-smoke.mjs`：模拟方向传感器和授权结果，验证 About 背景双轴随动、限幅、关闭复位与静态降级；真实手机传感器手感仍需在 HTTPS 页面上验收。
 
 ## 链接示例
 

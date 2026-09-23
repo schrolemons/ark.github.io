@@ -1,0 +1,24 @@
+@media (max-width: 1024px), (orientation: portrait) {
+  .boot-screen .boot-top-rule { top: 24px; height: 1px; }
+  .boot-screen .boot-side-rule { right: 24px; width: 1px; }
+  .boot-screen .boot-mark { width: clamp(180px, 50vw, 260px) !important; height: auto; }
+  .boot-panel { top: auto !important; bottom: max(48px, 10dvh); width: calc(100% - 48px); max-width: none; padding: 0; }
+  .boot-details { flex-direction: column; gap: 18px; }
+  .boot-copyright { order: 2; position: static; margin: 0; font-size: 11px; }
+  .boot-progress { width: 100%; min-width: 0; padding: 0; }
+  .boot-track { height: 4px; }
+  .boot-track > div { width: 4px; height: 4px; }
+  .boot-track > div:nth-child(3) { top: 1px; width: auto; height: 1px; }
+  .boot-track > div:last-child { top: 0; height: 4px; }
+  .boot-progress-meta { flex-direction: column; align-items: flex-start; gap: 12px; margin-top: 14px; }
+  .boot-progress-label { font-size: 15px; line-height: 1.4; letter-spacing: .05em; }
+  .boot-progress-label svg { width: 14px; height: 14px; margin-right: 8px; }
+  .boot-links { flex-wrap: wrap; gap: 4px; width: 100%; font-size: 11px; line-height: 1.5; }
+  .boot-links > span:nth-child(2) { display: none; }
+  .boot-links > span:last-child { flex-basis: 100%; overflow-wrap: anywhere; }
+}
+
+@media (max-width: 1024px) and (max-height: 550px) and (orientation: landscape) {
+  .boot-screen .boot-mark { position: absolute; left: 10%; top: 50%; transform: translateY(-50%); width: 150px !important; height: auto; }
+  .boot-panel { left: 38%; right: 32px; width: auto; bottom: 18%; }
+}

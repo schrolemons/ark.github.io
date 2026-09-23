@@ -22,7 +22,8 @@ try {
   assert.equal(await page.locator('#site-shell').evaluate(el => el.inert), true);
   assert.equal(await page.locator('.identity-overlay').evaluate(el => getComputedStyle(el).backgroundColor), 'rgb(16, 17, 18)');
   await page.keyboard.press('Escape'); assert.equal(await dialog.isVisible(), true);
-  await enter.click(); assert.match(await page.locator('#identity-error').innerText(), /请输入/);
+  assert.equal(await enter.isVisible(), false);
+  await input.press('Enter'); assert.match(await page.locator('#identity-error').innerText(), /请输入/);
   await input.focus(); await page.keyboard.press('Shift+Tab');
   assert.equal(await page.getByRole('button', {name: /游客登录/}).evaluate(el => el === document.activeElement), true);
   await page.screenshot({path: '.screens/identity-final-desktop.png'});

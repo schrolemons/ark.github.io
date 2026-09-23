@@ -56,7 +56,7 @@ export default function RootPageViews() {
         const blocked = () => isScrollLocked.get() || identityDialogOpen.get() || isOwnerInfoOpen.get() || isNavMenuOpen.get();
         const turn = (direction: number) => {
             const mobile = matchMedia(mobileQuery).matches;
-            if (blocked() || performance.now() - lastTurn < (mobile ? 300 : 850)) return;
+            if (blocked() || performance.now() - lastTurn < (mobile ? 560 : 850)) return;
             const current = viewIndex.get();
             if (current === config.navbar.items.length - 1) {
                 if (direction > 0 && !isFooterVisible.get()) {

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '@nanostores/react';
 import { identity, identityDialogOpen, readIdentity, saveIdentity } from './store/identityStore';
-import { IDENTITY_KEY, specialIdentity } from '../utils/identity';
+import { createIdentity, IDENTITY_KEY, specialIdentity } from '../utils/identity';
 import './Identity.css';
 
 export function IdentityBrand() {
@@ -21,6 +21,7 @@ export default function IdentityDialog() {
   const open = useStore(identityDialogOpen);
   const [name, setName] = useState('');
   const [error, setError] = useState('');
+  const [composing, setComposing] = useState(false);
   const panel = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -41,7 +42,7 @@ export default function IdentityDialog() {
     const previous = document.activeElement as HTMLElement | null;
     const shell = document.getElementById('site-shell');
     if (shell) shell.inert = true;
-    setName(''); setError('');
+    setName(''); setError(''); setComposing(false);
     input.current?.focus({preventScroll: true});
     const trap = (event: KeyboardEvent) => {
       if (event.key === 'Escape') { event.preventDefault(); event.stopImmediatePropagation(); }
@@ -65,16 +66,21 @@ export default function IdentityDialog() {
       <span className="identity-coordinate">NINTH EDGE<br />SIGNAL</span>
     </div>
     {/*<div className="identity-signal"><i />连接已建立，等待你的回应。<span>CONNECTION ESTABLISHED</span></div>*/}
-    <div ref={panel} className="identity-dialog" role="dialog" aria-modal="true" aria-labelledby="identity-title" aria-describedby="identity-description">
+    <div ref={panel} className="identity-dialog" role="dialog" aria-modal="true" aria-labelledby="identity-title">
       <div className="identity-kicker"><span>SCHNIE ARCHIVE</span><span>0X / IDENTITY</span></div>
       {/*<div className="identity-heading"><span className="identity-rule" /><span>很高兴，在这里遇见你。</span></div>*/}
       <h1 id="identity-title">该如何称呼你？</h1>
       {/*<p id="identity-description">远方的信号仍在传来，这段旅程，等你同行。<br />留下称呼，或以游客身份，加入我们。</p>*/}
-      <form onSubmit={e => { e.preventDefault(); if (!saveIdentity(name)) setError('请输入称呼，或选择游客登录。'); }}>
+      <form onSubmit={e => { e.preventDefault(); if (composing) return; if (!saveIdentity(name)) setError('请输入称呼，或选择游客登录。'); }}>
         {/*<label htmlFor="identity-name">称呼 <span>YOUR NAME</span></label>*/}
-        <input ref={input} id="identity-name" value={name} maxLength={80} autoComplete="nickname" placeholder="输入你的称呼" aria-invalid={Boolean(error)} aria-describedby="identity-error" onChange={e => { setName(e.target.value); setError(''); }} />
+        <div className="identity-name-field">
+          <input ref={input} id="identity-name" value={name} maxLength={80} autoComplete="nickname" placeholder="输入你的称呼" aria-label="称呼 YOUR NAME" aria-invalid={Boolean(error)} aria-describedby="identity-error"
+            onCompositionStart={() => setComposing(true)} onCompositionEnd={() => setComposing(false)}
+            onKeyDown={e => { if (e.key === 'Enter' && e.nativeEvent.isComposing) e.preventDefault(); }}
+            onChange={e => { setName(e.target.value); setError(''); }} />
+          {!composing && createIdentity(name) && <button type="submit" className="identity-primary" aria-label="以此称呼进入" title="以此称呼进入"><span aria-hidden="true">→</span></button>}
+        </div>
         <div id="identity-error" role="status" className="identity-error">{error}</div>
-        <button type="submit" className="identity-primary">以此称呼进入 <span aria-hidden="true">→</span></button>
         <button type="button" className="identity-guest" onClick={() => saveIdentity(null)}>游客登录：CONTINUE AS GUEST</button>
       </form>
       <footer>称呼仅保存在当前浏览器，可随时切换身份。</footer>

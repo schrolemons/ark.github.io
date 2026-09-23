@@ -89,7 +89,7 @@ function BreakingNewsTag({
     >
       {/* 栏目切换保持即时稳定，不使用布局动画，避免移动端闪烁。 */}
       {active && (
-        <div className="absolute inset-0 bg-[#18d1ff] z-0" />
+        <div className="absolute inset-0 bg-[#ffd700] z-0" />
       )}
       <span className="relative z-10">{label}</span>
       <IconArrow

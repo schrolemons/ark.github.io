@@ -53,11 +53,11 @@
     margin-bottom: 0;
 }
 
-/* Info note - blue */
+/* Info note - gold */
 .note-info {
-    border-left-color: #3b82f6;
-    background-color: rgba(59, 130, 246, 0.1);
-    color: #bfdbfe;
+    border-left-color: #ffd700;
+    background-color: rgba(255, 215, 0, 0.1);
+    color: #f5e6b3;
 }
 
 .note-info::before {
@@ -67,7 +67,7 @@
     font-size: 0.875rem;
     text-transform: uppercase;
     margin-bottom: 0.5rem;
-    color: #60a5fa;
+    color: #e6c86e;
 }
 
 /* Primary note - teal/green */

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { IconArrow } from "../SvgIcons.tsx";
 import config from "../../../arknights.config.tsx";
 import { motion } from "framer-motion";
+import WorldMobileSymbol from './WorldMobileSymbol';
 // import LogoParticleCanvas from "./DN_logos.tsx";
 
 interface WorldItem {
@@ -61,7 +62,7 @@ export default function WorldDetails({
         <div ref={contentRef} className="world-copy absolute top-1/2 -translate-y-1/2 right-[10%] w-[40%] max-w-[600px] flex flex-col pointer-events-auto pl-8 border-l border-white/30 portrait:top-[34%] portrait:bottom-[17%] portrait:translate-y-0 portrait:left-[9%] portrait:right-auto portrait:w-[74%] portrait:overflow-y-auto portrait:pr-4 portrait:bg-[#171717]/80"
           onWheel={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()} onTouchEnd={e => e.stopPropagation()}>
           <div className="world-copy-kicker">WORLD ARCHIVE <span>{item.subTitle}</span></div>
-          <img className="world-mobile-detail-art" src={item.imageUrl} alt="" aria-hidden="true" />
+          <WorldMobileSymbol imageUrl={item.imageUrl} active={active} />
           {/* 装饰线 */}
           <div className="world-copy-rule absolute top-0 bottom-0 left-0 w-px bg-gradient-to-b from-transparent via-white/50 to-transparent" />
 

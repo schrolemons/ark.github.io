@@ -79,7 +79,7 @@
     width: 34px;
     height: 2px;
     margin-top: 5px;
-    background: #18d1ff;
+    background: #ffd700;
   }
   .operator-art {
     position: relative;
@@ -139,7 +139,7 @@
   .operator-eyebrow > span:first-child {
     padding: 5px 10px 4px;
     color: #071014;
-    background: #18d1ff;
+    background: #ffd700;
     font-size: 11px;
     letter-spacing: .08em;
   }
@@ -170,7 +170,7 @@
     margin-top: 0;
     padding: 15px 16px 13px;
     overflow: visible;
-    border-left: 2px solid #18d1ff99;
+    border-left: 2px solid #ffd70099;
     background: linear-gradient(90deg, #10171ad9, #0b0f11a8);
   }
   .desc-text {
@@ -194,7 +194,7 @@
     font-size: 13px;
     backdrop-filter: blur(5px);
   }
-  .operator-record-link span { color: #18d1ff; font-size: 8px; }
+  .operator-record-link span { color: #ffd700; font-size: 8px; }
   .operator-roster {
     grid-template-columns: repeat(4, minmax(66px, 1fr));
     gap: 8px;
@@ -208,7 +208,7 @@
     border-color: #ffffff38;
     background: #0b0f11d9;
   }
-  .operator-roster .thumbnail.active { border-color: #18d1ff; box-shadow: inset 0 -2px #18d1ff; }
+  .operator-roster .thumbnail.active { border-color: #ffd700; box-shadow: inset 0 -2px #ffd700; }
   .operator-roster .name-label { left: 6px; bottom: 5px; font-size: 10px; }
   .operator-number { top: 4px; left: 5px; font-size: 7px; }
   .operator-roster-line {

@@ -7,6 +7,7 @@ import arknightsConfig from "../../../arknights.config.tsx";
 import PortraitBottomGradientMask from "../../components/PortraitBottomGradientMask";
 import {readyToTouch} from "../../components/store/rootLayoutStore.ts"
 import Hls from 'hls.js';
+import { useMobileLayout } from '../../components/useMobileLayout';
 
 function HeroActionButton({icon, label, subLabel, target, href, className}: HeroActionButtonProps) {
     return <a target={target ?? "_blank"} href={href}
@@ -20,6 +21,7 @@ function HeroActionButton({icon, label, subLabel, target, href, className}: Hero
 }
 
 export default function Index() {
+    const mobile = useMobileLayout();
     const {title, subtitle, url, copyright} = arknightsConfig.rootPage.INDEX
     const $viewIndex = useStore(viewIndex)
     const $readyToTouch = useStore(readyToTouch)
@@ -90,7 +92,8 @@ export default function Index() {
             };
             
             // 开始循环
-            maskCycle();
+            if (!mobile) maskCycle();
+            else { setShowLeftMask(false); setShowRightMask(false); }
             
         } else {
             videoRef.current?.pause();
@@ -104,7 +107,7 @@ export default function Index() {
         return () => {
             timers.forEach(clearTimeout);
         };
-    }, [$viewIndex, $readyToTouch])
+    }, [$viewIndex, $readyToTouch, mobile])
     // TODO: 使用m3u8
     return <div className={"home-view w-[100vw] max-w-[180rem] h-full absolute top-0 right-0 bottom-0 left-0 z-[2]"
         + " transition-opacity duration-100"}>
@@ -160,7 +163,7 @@ export default function Index() {
         </div>
         <div className="home-mobile-footer">
             <span>© SCHNIE</span>
-            <a href="#information" target="_self">向上滑动探索 <span aria-hidden="true">↓</span></a>
+            <a href="#information" target="_self">向上滑动探索</a>
         </div>
     </div>
 }

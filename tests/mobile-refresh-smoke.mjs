@@ -69,15 +69,15 @@ try {
     await button.click();
     await page.waitForFunction(label=>[...document.querySelectorAll('.media-categories button')].some(el=>el.getAttribute('aria-label')===label && el.getAttribute('aria-pressed')==='true'),await button.getAttribute('aria-label'));
     const metrics=await button.evaluate(el=>{
-      const box=el.getBoundingClientRect(),dot=getComputedStyle(el,'::before');
-      return {width:box.width,dotLeft:parseFloat(dot.left),height:box.height,pressed:el.getAttribute('aria-pressed')};
+      const box=el.getBoundingClientRect();
+      return {height:box.height,label:el.querySelector('.media-category-cn').textContent,pressed:el.getAttribute('aria-pressed')};
     });
     assert.equal(metrics.pressed,'true');
-    assert.ok(metrics.height>=40 && Math.abs(metrics.width/2-metrics.dotLeft)<1,'Dot is centered in a generous touch target');
+    assert.ok(metrics.height>=44 && metrics.label.length>0,'Named category has a generous touch target');
   }
-  const dots=await page.locator('.media-categories button').evaluateAll(elements=>elements.map(el=>el.getBoundingClientRect().y));
-  assert.ok(Math.max(...dots)-Math.min(...dots)<1,'All four dots share one horizontal row');
-  console.log('PASS About: four selectable dots, accessible labels, no redundant heading');
+  const tabs=await page.locator('.media-categories button').evaluateAll(elements=>elements.map(el=>el.getBoundingClientRect().y));
+  assert.ok(Math.max(...tabs)-Math.min(...tabs)<1,'All four categories share one horizontal row');
+  console.log('PASS About: four named categories, accessible labels, no redundant heading');
   await visit('more');
   const cards=await page.locator('.archive-card').evaluateAll(elements=>elements.map(el=>({height:el.getBoundingClientRect().height,bg:getComputedStyle(el).backgroundColor})));
   assert.ok(cards.every(card=>card.height<=150),'Resource cards stay compact');

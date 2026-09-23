@@ -287,6 +287,7 @@ class ParticleCanvas {
   private entryAnimationDuration: number;
   private isExiting: boolean = false;
   private nextLogo: LogoImg | null = null;
+  private pointerTarget: HTMLElement;
 
   constructor(
     target: HTMLCanvasElement,
@@ -324,14 +325,19 @@ class ParticleCanvas {
     this.newImageDelay = newImageDelay;
     scale = initialScale;
 
-    this.canvasEle.addEventListener("mousemove", this.handleMouseMove);
-    this.canvasEle.addEventListener("mouseleave", this.handleMouseLeave);
+    // The decorative canvas is click-through; observe the containing world instead.
+    this.pointerTarget = target.closest<HTMLElement>(".world-view") ?? target;
+    this.pointerTarget.addEventListener("pointermove", this.handleMouseMove);
+    this.pointerTarget.addEventListener("pointerleave", this.handleMouseLeave);
+    window.addEventListener("blur", this.handleMouseLeave);
   }
 
-  handleMouseMove = (e: MouseEvent) => {
-    const { left, top } = this.canvasEle.getBoundingClientRect();
-    this.mouseX = e.clientX - left;
-    this.mouseY = e.clientY - top;
+  handleMouseMove = (e: PointerEvent) => {
+    if (e.pointerType === "touch") return;
+    const rect = this.canvasEle.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    this.mouseX = (e.clientX - rect.left) * this.canvasEle.width / rect.width;
+    this.mouseY = (e.clientY - rect.top) * this.canvasEle.height / rect.height;
   };
 
   handleMouseLeave = () => {
@@ -483,8 +489,9 @@ class ParticleCanvas {
       window.cancelAnimationFrame(this.animationFrameId);
       this.animationFrameId = null;
     }
-    this.canvasEle.removeEventListener("mousemove", this.handleMouseMove);
-    this.canvasEle.removeEventListener("mouseleave", this.handleMouseLeave);
+    this.pointerTarget.removeEventListener("pointermove", this.handleMouseMove);
+    this.pointerTarget.removeEventListener("pointerleave", this.handleMouseLeave);
+    window.removeEventListener("blur", this.handleMouseLeave);
   }
 
   changeScale(newScale: number) {
