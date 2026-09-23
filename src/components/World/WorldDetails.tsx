@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { IconArrow } from "../SvgIcons.tsx";
 import config from "../../../arknights.config.tsx";
 import { motion } from "framer-motion";
@@ -34,6 +34,14 @@ export default function WorldDetails({
     return null;
   }
 
+  // 内容滚动容器，切换词条时滚回顶部
+  const contentRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollTop = 0;
+    }
+  }, [item.subTitle]);
+
   // 动画配置
   const textVariants = {
     initial: { y: 20, opacity: 0 },
@@ -50,7 +58,7 @@ export default function WorldDetails({
     >
       {/* 内容层 */}
       <motion.div className="absolute inset-0 z-[3] pointer-events-none">
-        <div className="world-copy absolute top-1/2 -translate-y-1/2 right-[10%] w-[40%] max-w-[600px] flex flex-col pointer-events-auto pl-8 border-l border-white/30 portrait:top-[34%] portrait:bottom-[17%] portrait:translate-y-0 portrait:left-[9%] portrait:right-auto portrait:w-[74%] portrait:overflow-y-auto portrait:pr-4 portrait:bg-[#171717]/80"
+        <div ref={contentRef} className="world-copy absolute top-1/2 -translate-y-1/2 right-[10%] w-[40%] max-w-[600px] flex flex-col pointer-events-auto pl-8 border-l border-white/30 portrait:top-[34%] portrait:bottom-[17%] portrait:translate-y-0 portrait:left-[9%] portrait:right-auto portrait:w-[74%] portrait:overflow-y-auto portrait:pr-4 portrait:bg-[#171717]/80"
           onWheel={e => e.stopPropagation()} onTouchStart={e => e.stopPropagation()} onTouchEnd={e => e.stopPropagation()}>
           <div className="world-copy-kicker">WORLD ARCHIVE <span>{item.subTitle}</span></div>
           <img className="world-mobile-detail-art" src={item.imageUrl} alt="" aria-hidden="true" />
@@ -100,7 +108,7 @@ export default function WorldDetails({
           <motion.a
             role="button" aria-label="上一条设定" tabIndex={0}
             onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onPrevious(); } }}
-            className="absolute left-[5%] top-1/2 -translate-y-1/2 p-4 cursor-pointer hover:bg-white/10 rounded-full transition-colors z-[10] origin-center"
+            className="absolute left-[5%] top-1/2 -translate-y-1/2 p-4 cursor-pointer hover:bg-white/10 rounded-full transition-colors z-[10] origin-center portrait:left-auto portrait:top-auto portrait:bottom-[10%] portrait:right-[calc(10% + 56px)] portrait:translate-y-0 portrait:p-3"
             onClick={(e) => {
               e.preventDefault();
               onPrevious();
@@ -112,7 +120,7 @@ export default function WorldDetails({
           <motion.a
             role="button" aria-label="下一条设定" tabIndex={0}
             onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNext(); } }}
-            className="absolute right-[15%] top-1/2 -translate-y-1/2 p-4 cursor-pointer hover:bg-white/10 rounded-full transition-colors z-[10] origin-center"
+            className="absolute right-[15%] top-1/2 -translate-y-1/2 p-4 cursor-pointer hover:bg-white/10 rounded-full transition-colors z-[10] origin-center portrait:left-auto portrait:top-auto portrait:bottom-[10%] portrait:right-[10%] portrait:translate-y-0 portrait:p-3"
             onClick={(e) => {
               e.preventDefault();
               onNext();
@@ -143,9 +151,9 @@ export default function WorldDetails({
         ))}
       </motion.div>
 
-      {/* 返回按钮 */}
+      {/* 返回按钮 - 仅桌面端显示，手机端隐藏 */}
       <motion.button
-        className="world-detail-back absolute bottom-[10%] right-[10%] bg-[#333] hover:bg-[#444] text-white px-8 py-3 flex items-center gap-4 z-[10] transition-colors"
+        className="world-detail-back absolute bottom-[10%] right-[10%] bg-[#333] hover:bg-[#444] text-white px-8 py-3 flex items-center gap-4 z-[10] transition-colors portrait:hidden"
         onClick={onBack}
         initial={{ x: 50, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}

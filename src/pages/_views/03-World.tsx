@@ -27,7 +27,8 @@ export default function World() {
   const world = useRef<HTMLDivElement>(null);
   const route = useHashRoute();
   const itemIndex = route.section === 'world' ? items.findIndex(item => routeSegment(item.subTitle) === route.segments[0]) : -1;
-  const selectedItemIndex = itemIndex < 0 ? null : itemIndex;
+  // 手机端默认进入第一条设定的详情页，而非目录列表
+  const selectedItemIndex = itemIndex < 0 ? (mobile ? 0 : null) : itemIndex;
   const requestedPage = Number(route.params.page);
   const currentPage = route.section === 'world' && Number.isInteger(requestedPage)
     ? Math.max(1, Math.min(Math.ceil(items.length / WORLD_PAGE_SIZE), requestedPage)) : 1;
