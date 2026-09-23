@@ -1,18 +1,57 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react';
 import { useStore } from '@nanostores/react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion, useAnimationControls } from 'framer-motion';
 import config from '../../../arknights.config';
-import { viewIndex } from '../../components/store/rootLayoutStore';
+import { readyToTouch, viewIndex } from '../../components/store/rootLayoutStore';
+import { identityDialogOpen } from '../../components/store/identityStore';
 import { directions } from '../../components/store/lineDecoratorStore';
 import { navigateRoute, useHashRoute } from '../../components/useHashRoute';
 import '../../_styles/Operator/base.scss';
 
+const subscribeMotionPreference = (notify: () => void) => {
+  const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+  query.addEventListener('change', notify);
+  return () => query.removeEventListener('change', notify);
+};
+
+function OperatorArtwork({ operator, artStyle, active, loaded, reduced, onLoad }: {
+  operator: (typeof config.rootPage.OPERATOR.data)[number];
+  artStyle: CSSProperties;
+  active: boolean;
+  loaded: boolean;
+  reduced: boolean | null;
+  onLoad: () => void;
+}) {
+  const controls = useAnimationControls();
+  useLayoutEffect(() => {
+    if (!active || !loaded) { controls.stop(); return; }
+    // Replay on section entry as well as character changes, including cached images.
+    controls.set({ opacity: reduced ? 1 : 0, x: reduced ? 0 : 80 });
+    void controls.start({ opacity: 1, x: 0, transition: { duration: reduced ? 0 : .6, ease: [.22, .8, .24, 1] } });
+    return () => controls.stop();
+  }, [active, loaded, reduced, controls]);
+
+  return <motion.div className="operator-art-frame" style={artStyle}
+    initial={{ opacity: 0, x: reduced ? 0 : 80 }} animate={controls}
+    exit={{ opacity: 0, transition: { duration: reduced ? 0 : .18 } }}>
+    <div className="operator-echo-frame"><img className="operator-echo" src={operator.fullbody} alt="" /></div>
+    <img className="operator-figure" src={operator.fullbody} alt={operator.cnName} onLoad={onLoad} />
+  </motion.div>;
+}
+
 export default function Operator() {
   const active = useStore(viewIndex) === 2;
+  const ready = useStore(readyToTouch);
+  const choosingIdentity = useStore(identityDialogOpen);
   const route = useHashRoute();
-  const reduced = useReducedMotion();
+  const reduced = useSyncExternalStore(subscribeMotionPreference,
+    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches, () => true);
   const operators = config.rootPage.OPERATOR.data;
-  const currentIndex = Math.max(0, operators.findIndex(op => route.section === 'operator' && [op.id, op.cnName].includes(route.segments[0])));
+  const lastIndex = useRef(0);
+  const currentIndex = route.section === 'operator'
+    ? Math.max(0, operators.findIndex(op => [op.id, op.cnName].includes(route.segments[0])))
+    : lastIndex.current;
+  useEffect(() => { if (route.section === 'operator') lastIndex.current = currentIndex; }, [route.section, currentIndex]);
   const current = operators[currentIndex];
   const select = (id: string) => navigateRoute('operator', [id]);
   const [loaded, setLoaded] = useState<Record<string, boolean>>({});
@@ -32,13 +71,12 @@ export default function Operator() {
       <span>SCHNIE ARCHIVE //</span>
       <strong>PROFILE</strong>
     </div>
-    <div className="operator-art" style={artStyle} aria-hidden="true" data-loading={!loaded[current.id]}>
+    <div className="operator-art" aria-hidden="true" data-loading={!loaded[current.id]}>
       {!loaded[current.id] && <span className="operator-loading">LOADING / 载入立绘</span>}
       <AnimatePresence mode="wait">
-        <motion.div key={current.id} className="operator-art-frame" initial={{opacity: 0}} animate={{opacity: loaded[current.id] ? 1 : 0}} exit={{opacity: 0}} transition={{duration: reduced ? 0 : .3}}>
-          <div className="operator-echo-frame"><img className="operator-echo" src={current.fullbody} alt="" /></div>
-          <img className="operator-figure" src={current.fullbody} alt={current.cnName} onLoad={() => setLoaded(previous => ({...previous, [current.id]: true}))} />
-        </motion.div>
+        <OperatorArtwork key={current.id} operator={current} artStyle={artStyle} active={active && ready && !choosingIdentity}
+          loaded={Boolean(loaded[current.id])} reduced={reduced}
+          onLoad={() => setLoaded(previous => ({...previous, [current.id]: true}))} />
       </AnimatePresence>
     </div>
     <div className="operator-info">

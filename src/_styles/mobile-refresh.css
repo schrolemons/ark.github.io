@@ -219,14 +219,6 @@
   #root-page-views .media-content[data-category="books"] { --media-focal-x: 33%; }
   #root-page-views .media-content[data-category="Query_matrix"] { --media-focal-x: 34%; }
   #root-page-views .media-background { opacity: .28 !important; background-position: var(--media-focal-x) center !important; pointer-events: none; }
-  #root-page-views .media-background[data-tilt="true"] { top: -6%; bottom: -6%; background-position: clamp(0%, calc(var(--media-focal-x) + var(--media-tilt-x, 0%)), 100%) center !important; transform: translate3d(0, var(--media-tilt-y, 0%), 0); }
-  #root-page-views .media-tilt-controls { order: 7; position: relative; z-index: 1; margin-top: 12px; }
-  #root-page-views .media-tilt-controls button { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 6px 0; color: #c8c2b1; font-size: 11px; background: transparent; }
-  #root-page-views .media-tilt-controls button[aria-pressed="true"] { color: var(--mobile-accent); }
-  #root-page-views .media-tilt-controls button:disabled { opacity: .55; }
-  #root-page-views .media-tilt-controls svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.2; }
-  #root-page-views .media-tilt-controls button > span { font: 8px 'Bender-Regular', monospace; letter-spacing: .12em; opacity: .6; }
-  #root-page-views .media-tilt-controls p { margin: 0; min-height: 15px; font-size: 10px; line-height: 1.5; color: #b8b2a3; }
   #root-page-views .media-content::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, #0b0f1126, #0b0f1166 45%, #0b0f11dd); pointer-events: none; }
   #root-page-views .media-categories { order: 0; }
   #root-page-views .media-categories h2 { display: none; }
