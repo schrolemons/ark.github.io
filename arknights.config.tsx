@@ -139,7 +139,7 @@ export default {
       data: [
         {
           id: "Mosae",
-          name: "MO XUE",
+          name: "Mosae",
           cnName: "墨薛",
           logo: "/images/logo.png",
           url: base + "operator/Mosae",

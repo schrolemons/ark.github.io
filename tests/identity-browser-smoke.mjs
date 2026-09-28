@@ -47,7 +47,7 @@ try {
     await switchIdentity(); await input.fill(alias); await enter.click();
     assert.equal(await page.locator('.identity-brand > img').count(),1);
     assert.equal(await page.locator('.identity-brand strong').innerText(),'墨薛');
-    assert.equal(await page.locator('.identity-brand small').innerText(),'MO XUE');
+    assert.equal(await page.locator('.identity-brand small').innerText(),'Mosae');
     assert.equal(await page.locator('.identity-brand strong').evaluate(el=>getComputedStyle(el).color),'rgb(216, 189, 112)');
   }
   console.log('PASS member persistence, ordinary replacement, ellipsis, both special aliases');
