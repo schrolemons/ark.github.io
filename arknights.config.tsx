@@ -76,7 +76,7 @@ export default {
             "text-black bg-[#18d1ff] border-ark-gold hover:border-white font-bold font-benderBold",
         },
         {
-          // TODO: 换个好看的图标
+
           icon: (
             <svg
               className="w-full h-auto pointer-events-none"
@@ -178,7 +178,7 @@ export default {
           logo: "/images/logo.png",
           url: base + "operator/fanxin",
           desc: "灰白色毛发与蓝色眼眸，白衬衫外搭米色背心，系着黑色领带。\n怀中抱着一束白花，向你伸出手。",
-          portrait: "/images/02-operator/fanxin_full.png",
+          portrait: "/images/02-operator/fanxin.png",
           fullbody: "/images/02-operator/fanxin_full.png",
         },
       ],
