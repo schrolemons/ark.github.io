@@ -5,7 +5,7 @@ try {
   for (const width of [390, 1440]) {
     const page=await browser.newPage({viewport:{width,height:900}});
     await page.addInitScript(()=>localStorage.setItem('schnie.identity.v1','{"version":1,"kind":"guest"}'));
-    await page.goto((process.env.TEST_URL || 'http://127.0.0.1:4321/')+'#operator/moxue');
+    await page.goto((process.env.TEST_URL || 'http://127.0.0.1:4321/')+'#operator/Mosae');
     await page.waitForTimeout(1800);
     const old=await page.locator('.operator-figure').boundingBox();
     await page.getByRole('button',{name:'选择瑞',exact:true}).click();

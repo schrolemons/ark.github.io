@@ -57,7 +57,7 @@ export default function Operator() {
   const [loaded, setLoaded] = useState<Record<string, boolean>>({});
   // Alpha bounds measured from the original files; preserve the art, normalize its visible height and center.
   const bounds: Record<string, {height: number; center: number; bottom: number}> = {
-    moxue: {height: 1, center: 511.5 / 1024, bottom: 0},
+    Mosae: {height: 1, center: 511.5 / 1024, bottom: 0},
     ruifox: {height: 1024 / 886, center: 522 / 1024, bottom: 81 / 886},
     lifeng: {height: 1, center: .5, bottom: 0},
     fanxin: {height: 1, center: 464.5 / 1055, bottom: 0},

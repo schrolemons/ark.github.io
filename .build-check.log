@@ -273,8 +273,8 @@ The CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troub
 23:26:56   └─ /index.html (+6ms)
 23:26:56 ▶ src/pages/operator/[...slug].astro
 23:26:56   ├─ /operator/lifeng/index.html (+10ms)
-23:26:56   ├─ /operator/moxue/index.html (+7ms)
-23:26:56   ├─ /operator/moxue_info/index.html (+6ms)
+23:26:56   ├─ /operator/Mosae/index.html (+7ms)
+23:26:56   ├─ /operator/Mosae_info/index.html (+6ms)
 23:26:56   └─ /operator/ruifox/index.html (+6ms)
 23:26:56 ▶ src/pages/operator/index.astro
 23:26:56   └─ /operator/index.html (+6ms)

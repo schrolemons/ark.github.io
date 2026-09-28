@@ -26,7 +26,7 @@ const swipe=async(x,from,to)=>{
   await page.waitForTimeout(450);
 };
 try {
-  for(const id of ['moxue','ruifox','lifeng','fanxin']) {
+  for(const id of ['Mosae','ruifox','lifeng','fanxin']) {
     await visit('operator/'+id);
     const geometry=await page.evaluate(()=>{
       const rect=s=>{const r=document.querySelector(s).getBoundingClientRect();return {top:r.top,bottom:r.bottom};};

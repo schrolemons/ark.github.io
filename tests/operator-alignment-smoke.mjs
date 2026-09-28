@@ -7,7 +7,7 @@ try {
  for(const viewport of [{width:1440,height:1000},{width:390,height:844}]) {
   await page.setViewportSize(viewport);
   const rows=[];
-  for(const id of ['moxue','ruifox','lifeng','fanxin']) {
+  for(const id of ['Mosae','ruifox','lifeng','fanxin']) {
    await page.goto((process.env.TEST_URL||'http://127.0.0.1:4321/')+'#operator/'+id);
    await page.waitForFunction(()=>document.querySelector('.operator-art')?.getAttribute('data-loading')==='false');
    await page.waitForTimeout(1400);

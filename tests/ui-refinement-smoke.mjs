@@ -50,7 +50,7 @@ try {
     await page.locator('.information-view').evaluate(el=>{el.scrollTop=0;});
     await swipe('.information-view',650,430); assert.match(page.url(),/#information/);
   });
-  await visit('#operator/moxue');
+  await visit('#operator/Mosae');
   await check('roster is next to artwork before the biography', async () => {
     const roster=await page.locator('.operator-roster').boundingBox(), desc=await page.locator('.description-section').boundingBox();
     assert.ok(roster.y < desc.y); assert.ok(roster.y+roster.height<844);
@@ -68,14 +68,14 @@ try {
   await check('closing passport unmounts video',async()=>assert.equal(await page.locator('.passport-video iframe').count(),0));
   await check('article returns to selected character', async () => {
     await page.getByRole('link',{name:/查看人物档案/}).click();
-    await page.waitForURL(/\/operator\/moxue\/?$/);
-    await page.waitForFunction(() => document.querySelector('.go-back-tool')?.getAttribute('href')?.includes('#operator/moxue'));
+    await page.waitForURL(/\/operator\/Mosae\/?$/);
+    await page.waitForFunction(() => document.querySelector('.go-back-tool')?.getAttribute('href')?.includes('#operator/Mosae'));
     await page.evaluate(() => { location.hash = 'reading-position'; });
     await page.waitForFunction(() => Boolean(history.state?.archiveReturn));
     await page.reload();
-    await page.waitForFunction(() => document.querySelector('.go-back-tool')?.getAttribute('href')?.includes('#operator/moxue'));
+    await page.waitForFunction(() => document.querySelector('.go-back-tool')?.getAttribute('href')?.includes('#operator/Mosae'));
     await page.getByRole('link',{name:/返回上一级/}).click({timeout:2500});
-    await page.waitForURL('**/#operator/moxue',{timeout:4000});
+    await page.waitForURL('**/#operator/Mosae',{timeout:4000});
     await page.waitForFunction(() => document.querySelector('.operator-view')?.scrollTop > 0);
   });
   await visit('#media/visual_archive');

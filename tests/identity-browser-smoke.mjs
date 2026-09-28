@@ -43,7 +43,7 @@ try {
   assert.ok(truncation.scroll > truncation.width); assert.equal(truncation.overflow,'ellipsis'); assert.equal(truncation.color,'rgb(255, 255, 255)');
   await page.reload(); await page.waitForTimeout(1600);
   assert.equal(await dialog.count(),0); assert.equal(await page.locator('.identity-brand strong').innerText(),longName);
-  for (const alias of ['MOXUE','墨薛']) {
+  for (const alias of ['Mosae','墨薛']) {
     await switchIdentity(); await input.fill(alias); await enter.click();
     assert.equal(await page.locator('.identity-brand > img').count(),1);
     assert.equal(await page.locator('.identity-brand strong').innerText(),'墨薛');
