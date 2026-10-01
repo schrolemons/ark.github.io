@@ -43,9 +43,9 @@ html[data-identity-pending="true"] body::before { content: ''; position: fixed; 
 .identity-brand-name { min-width: 0; color: #b8b9b5; display: flex; align-items: center; gap: 6px; font-family: 'Bender-Regular', 'Microsoft YaHei', sans-serif; }
 .identity-brand-name strong { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 16px; font-weight: 400; }
 .identity-brand-name small { flex: none; white-space: nowrap; font: 9px/1 'Novecentosanswide-Medium', sans-serif; letter-spacing: .5px; }
-.identity-welcome { flex: none; font: 12px/1.5 'Bender-Regular', 'Microsoft YaHei', sans-serif; color: #858985; white-space: nowrap; }
-.identity-brand[data-special="false"] .identity-brand-name { gap: 10px; }
-.identity-brand[data-special="false"] .identity-brand-name strong { font-weight: 500; letter-spacing: .08em; padding-block: 2px; border-bottom: 1px solid #b8b9b530; }
+.identity-welcome { flex: none; font: 500 13px/1.5 'Bender-Regular', 'Microsoft YaHei', sans-serif; color: #c5c8c3; white-space: nowrap; }
+.identity-brand[data-special="false"] .identity-brand-name { gap: 10px; color: #e0e2dd; text-shadow: 0 1px 3px #0009; }
+.identity-brand[data-special="false"] .identity-brand-name strong { font-weight: 600; letter-spacing: .06em; padding-block: 2px; border-bottom: 1px solid #e0e2dd55; }
 .identity-brand[data-special="true"] .identity-brand-name { color: #d8bd70; border-left: 1px solid #d8bd7055; padding-left: 12px; }
 .identity-switch { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 0; margin: 14px 0 0; color: #d8bd70; font-size: 12px; border-block: 1px solid #d8bd7033; text-align: left; }
 .identity-switch:hover { background: #d8bd700b; }
@@ -64,7 +64,7 @@ html[data-identity-pending="true"] body::before { content: ''; position: fixed; 
   .identity-brand[data-special="true"] .identity-brand-name { padding-left: 6px; }
   .identity-brand-name small { font-size: 8px; letter-spacing: 0; }
   .identity-brand[data-special="false"] .identity-brand-name { gap: 6px; }
-  .identity-welcome { font-size: 10px; }
+  .identity-welcome { font-size: 12px; }
 }
 @media (max-width: 767px) {
   .identity-signal { top: 40px; left: 24px; font-size: 9px; }
